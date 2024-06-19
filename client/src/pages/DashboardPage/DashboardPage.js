@@ -1,7 +1,11 @@
 import "./DashboardPage.scss";
+import ProductList from "../../components/ProductList/ProductList";
 
-const DashboardPage = () => {
-  return <div>DashboardPage</div>;
+function DashboardPage() {
+
+  return(
+    <div>DashboardPage</div>
+  )
 };
 
 export default DashboardPage;
