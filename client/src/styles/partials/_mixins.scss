@@ -1,0 +1,36 @@
+@mixin mobile {
+    @media ((min-width: 320px) and (max-width: 767px)) {
+        @content
+    }
+};
+
+@mixin tablet {
+    @media ((min-width: 768px) and (max-width: 1279px)) {
+        @content
+    }
+};
+
+@mixin desktop {
+    @media ((min-width: 1280px)) {
+        @content
+    }
+};
+
+// should I also include page-header, subheader, body, buttons etc Eg.
+// @mixin page-header {
+//     @include mobile {
+//         font-size: 1.5rem;
+//         line-height: 2rem;
+//         font-family: roboto-light;
+//     }
+//     @include tablet {
+//         font-size: 2.063rem;
+//         line-height: 2.75rem;
+//         font-family: roboto-light;
+//     }
+//     @include desktop {
+//         font-size: 2.063rem;
+//         line-height: 2.75rem;
+//         font-family: roboto-light;
+//     }
+// }
