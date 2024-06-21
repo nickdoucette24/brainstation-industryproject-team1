@@ -1,3 +1,15 @@
+# Node.js dependencies
 node_modules/
-uploads/
+
+# Environment variables
 .env
+
+# Python virtual environment
+venv/
+
+# Uploaded files
+uploads/
+
+# Python cache files
+__pycache__/
+*.pyc
