@@ -18,26 +18,52 @@ app.post("/convert", upload.single("file"), (req, res) => {
   const filePath = req.file.path;
   console.log(`Received file: ${filePath}`);
 
-  const pythonProcess = spawn("python3", [path.join(__dirname, "scripts", "convert_csv_to_json.py"), filePath]);
+  const pythonProcess = spawn("python", [path.join(__dirname, "scripts", "convert_csv_to_json.py"), filePath]);
+
+  let hasSentResponse = false;
 
   pythonProcess.stdout.on("data", (data) => {
     console.log(`Python output: ${data.toString()}`);
-    res.json(JSON.parse(data.toString()));
+    if (!hasSentResponse) {
+      try {
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+        hasSentResponse = true;
+      } catch (error) {
+        console.error(`Error parsing JSON: ${error.message}`);
+        if (!hasSentResponse) {
+          res.status(500).send(`Error parsing JSON: ${error.message}`);
+          hasSentResponse = true;
+        }
+      }
+    }
   });
 
   pythonProcess.stderr.on("data", (data) => {
     console.error(`Python stderr: ${data}`);
-    res.status(500).send(`Error processing file: ${data.toString()}`);
+    if (!hasSentResponse) {
+      res.status(500).send(`Error processing file: ${data.toString()}`);
+      hasSentResponse = true;
+    }
   });
 
   pythonProcess.on('error', (error) => {
     console.error(`Failed to start subprocess: ${error.message}`);
-    res.status(500).send(`Error processing file: ${error.message}`);
+    if (!hasSentResponse) {
+      res.status(500).send(`Error processing file: ${error.message}`);
+      hasSentResponse = true;
+    }
   });
 
   pythonProcess.on('exit', (code, signal) => {
     if (code !== 0) {
       console.error(`Python process exited with code: ${code}, signal: ${signal}`);
+      if (!hasSentResponse) {
+        res.status(500).send(`Python process exited with code: ${code}, signal: ${signal}`);
+        hasSentResponse = true;
+      }
+    } else {
+      console.log('Python process exited successfully');
     }
   });
 });
