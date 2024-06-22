@@ -4,23 +4,24 @@
 .auth-page {
   background-color: $Midnight;
   width: 100%;
+  height: 64rem;
   @include flex-center;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .register-wrapper {
   @include flex-center;
-  height: 64rem;
   width: 36.375rem;
   background-color: $White;
+  height: 64rem;
 }
 
 .login-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 64rem;
   position: relative;
+  margin-top: 15.25rem;
 }
 
 .login-form {
@@ -46,13 +47,12 @@
     rgb(43, 77, 153) 0%,
     rgb(72, 128, 255) 100%
   );
-  border-radius: 21.24px/21.87px;
-  height: 44px;
+  border-radius: 50%;
+  height: 2.75rem;
   left: 14rem;
   position: absolute;
-  top: 18.5rem;
-  transform: rotate(34.29deg);
-  width: 42px;
+  top: 12.5rem;
+  width: 2.625rem;
 }
 .droplet-2 {
   background: linear-gradient(
@@ -60,11 +60,112 @@
     rgb(43, 77, 153) 0%,
     rgb(72, 128, 255) 100%
   );
-  border-radius: 64.95px/66.86px;
-  height: 134px;
+  border-radius: 50%;
+  height: 8.375rem;
   left: 30rem;
   position: absolute;
   top: 5rem;
-  transform: rotate(34.29deg);
-  width: 130px;
+  width: 8.125rem;
+}
+
+.droplet-3 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 5.25rem;
+  left: 23rem;
+  position: absolute;
+  top: 39rem;
+  width: 5.0625rem;
+}
+
+.droplet-4 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 12.8125rem;
+  left: 3.5rem;
+  position: absolute;
+  top: 45rem;
+  width: 12.5625rem;
+}
+
+.droplet-5 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 9.8125rem;
+  left: 14.5rem;
+  position: absolute;
+  top: 45rem;
+  width: 9.3125rem;
+  z-index: 1;
+}
+
+.droplet-6 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 11.4375rem;
+  left: 13.5rem;
+  position: absolute;
+  top: 51rem;
+  width: 11.3125rem;
+}
+
+.droplet-7 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 13.125rem;
+  left: 22rem;
+  position: absolute;
+  top: 47rem;
+  width: 13.0625rem;
+  z-index: 2;
+}
+
+.droplet-8 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 9.4375rem;
+  left: 27rem;
+  position: absolute;
+  top: 43.5rem;
+  width: 9.1875rem;
+  z-index: 1;
+}
+
+.droplet-9 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 50%;
+  height: 7.125rem;
+  left: 33rem;
+  position: absolute;
+  top: 47.5rem;
+  width: 6.875rem;
+  z-index: 0;
 }
