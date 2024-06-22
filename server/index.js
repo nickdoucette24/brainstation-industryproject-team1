@@ -22,8 +22,6 @@ app.post("/convert", upload.single("file"), (req, res) => {
 
   let hasSentResponse = false;
 
-  let hasSentResponse = false;
-
   pythonProcess.stdout.on("data", (data) => {
     console.log(`Python output: ${data.toString()}`);
     if (!hasSentResponse) {
