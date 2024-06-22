@@ -74,6 +74,10 @@ app.post('/convert', upload.single('file'), (req, res) => {
 
 app.use(express.static('public'));
 
+// Replace with actual product data router
+const mockProductsRouter = require('./routes/mockProducts');
+app.use('/products', mockProductsRouter)
+
 app.use((req, res, next) => {
   next();
 });
