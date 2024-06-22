@@ -1,5 +1,12 @@
 import './LandingPage.scss';
 import dellLogoWht from '../../assets/images/logos/dell-spectra-logo-wh.svg';
+import monitoring from '../../assets/images/icons+btns/monitoring-icon.svg';
+import detection from '../../assets/images/icons+btns/detection-icon.svg';
+import scalability from '../../assets/images/icons+btns/scalability-icon.svg';
+import integrity from '../../assets/images/icons+btns/brand-icon.svg';
+import stability from '../../assets/images/icons+btns/market-stability.svg';
+import efficiency from '../../assets/images/icons+btns/efficiency.svg';
+
 
 function LandingPage() {
 
@@ -10,33 +17,29 @@ function LandingPage() {
                     <div className='title__page-header'>Track MSRP Compliance Effortlessly</div>
                     <div className='title__subheader'>Empower your decision making with Spectra.<br/>Redefining MSRP Tracking.</div>
                 </section>
-                <section className='card'>
-                    <div className='card-container'>
+                <section className='card-container'>
+                    <div className='card'>
                         <div className='card__features'>
-                            <div className='card__features--cm'>
-                                <img src="" alt="" />
+                            <div className='card__features--img'>
+                                <img src={monitoring} alt="" />
+                                <img src={detection} alt="" />
+                                <img src={scalability} alt="" />
+                            </div>
+                            <div className='card__features--text'>
                                 <p>Continuous<br/>Monitoring</p>
-                            </div>
-                            <div className='card__features--ad'>
-                                <img src="" alt="" />
                                 <p>Accurate<br/>Detection</p>
-                            </div>
-                            <div className='card__features--s'>
-                                <img src="" alt="" />
                                 <p>Scalability</p>
                             </div>
                         </div>
                         <div className='card__benefits'>
-                            <div className='card__benefits--bi'>
-                                <img src="" alt="" />
+                            <div className='card__benefits--img'>
+                                <img src={integrity} alt="" />
+                                <img src={stability} alt="" />
+                                <img src={efficiency} alt="" />
+                            </div>
+                            <div className='card__benefits--text'>
                                 <p>Brand<br/>Integrity</p>
-                            </div>
-                            <div className='card__benefits--ms'>
-                                <img src="" alt="" />
                                 <p>Market<br/>Stability</p>
-                            </div>
-                            <div className='card__benefits--e'>
-                                <img src="" alt="" />
                                 <p>Efficiency</p>
                             </div>
                         </div>

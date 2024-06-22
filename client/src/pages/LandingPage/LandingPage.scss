@@ -1,11 +1,94 @@
+@import '../../styles/partials/mixins';
+@import '../../styles/partials/typography';
+@import '../../styles/partials/variables';
+
 .landing-page {
     background-color: #0d2155;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
     width: 100%;
     color: white;
-  }
+    height: 100vh;
+    padding: 0 2rem;
+}
+
+main {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.title {
+
+    &__page-header {
+        @include page-header;
+    }
+
+    &__subheader {
+        @include subheader;
+    }
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    
+    &__features {
+        display: flex;
+        flex-direction: column;
+        justify-content:space-around;
+        background: linear-gradient(180deg, rgb(72, 128, 255) 0%, rgb(43, 77, 153) 100%);
+        border-radius: 8px;
+        margin-right: 1rem;
+        padding: 1rem;
+
+
+        &--img {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 0.5rem;
+        }
+
+        &--text {
+            display: flex;
+            justify-content: space-around;
+
+            & p {
+                text-align: center;
+            }
+        }
+    }
+
+    &__benefits {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        background: linear-gradient(180deg, rgb(72, 128, 255) 0%, rgb(43, 77, 153) 100%);
+        border-radius: 8px;
+        margin: 0.5rem 1rem -1.5rem 0rem;
+        padding-bottom: 1rem;
+
+        &--img {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0 -1.5rem 0;
+        }
+
+        &--text {
+            display: flex;
+            justify-content: space-around;
+            
+            & p {
+                text-align: center;
+            }
+        }
+    }
+}
+
+
 
 .dell-molecules {
     box-shadow: var(--enhanced-drop-shadow);
@@ -22,7 +105,7 @@
     height: 508px;
     left: 0;
     position: absolute;
-    top: 0;
+    top: 200px;
     width: 641px;
   }
   
@@ -92,7 +175,7 @@
     height: 105px;
     left: 240px;
     position: absolute;
-    top: 32px;
+    top: 225px;
     width: 102px;
   }
   

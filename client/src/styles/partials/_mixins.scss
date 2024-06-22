@@ -20,35 +20,35 @@
   @include mobile {
     font-size: 1.5rem;
     line-height: 2rem;
-    font-family: roboto-light;
+    font-family: roboto-bold;
   }
   @include tablet {
     font-size: 2.063rem;
     line-height: 2.75rem;
-    font-family: roboto-light;
+    font-family: roboto-bold;
   }
   @include desktop {
     font-size: 2.063rem;
     line-height: 2.75rem;
-    font-family: roboto-light;
+    font-family: roboto-bold;
   }
 }
 
 @mixin subheader {
   @include mobile {
-    font-size: 0.813rem;
-    line-height: 1.125rem;
-    font-family: roboto-light;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: roboto-medium;
   }
   @include tablet {
-    font-size: 0.875rem;
-    line-height: 1.1375rem;
-    font-family: roboto-light;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: roboto-medium;
   }
   @include desktop {
-    font-size: 0.875rem;
-    line-height: 1.1375rem;
-    font-family: roboto-light;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: roboto-medium;
   }
 }
 
@@ -72,19 +72,19 @@
 
 @mixin labels-buttons {
   @include mobile {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
   @include tablet {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
   @include desktop {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
 }
 
