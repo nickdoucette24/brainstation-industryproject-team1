@@ -7,7 +7,7 @@ export const AuthPage = () => {
   return (
     <div className="auth-page">
       <div className="login-wrapper">
-        <div className="login-form">
+        <div className="login-form__wrapper">
           <h1 className="login-form__heading">Sign In</h1>
           <div className="login-form__container">
             <LoginForm />

@@ -10,11 +10,61 @@
 
 .register-wrapper {
   @include flex-center;
-  height: 100vh;
+  height: 64rem;
   width: 36.375rem;
   background-color: $White;
 }
 
 .login-wrapper {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 64rem;
+  position: relative;
+}
+
+.login-form {
+  &__wrapper {
+    margin-left: 5.75rem;
+  }
+
+  &__heading {
+    @include auth-heading;
+    color: $Dell-Light-Blue;
+    margin-bottom: 0.5rem;
+  }
+
+  &__container {
+    @include flex-center;
+  }
+}
+
+// Droplets
+.droplet-1 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 21.24px/21.87px;
+  height: 44px;
+  left: 14rem;
+  position: absolute;
+  top: 18.5rem;
+  transform: rotate(34.29deg);
+  width: 42px;
+}
+.droplet-2 {
+  background: linear-gradient(
+    180deg,
+    rgb(43, 77, 153) 0%,
+    rgb(72, 128, 255) 100%
+  );
+  border-radius: 64.95px/66.86px;
+  height: 134px;
+  left: 30rem;
+  position: absolute;
+  top: 5rem;
+  transform: rotate(34.29deg);
+  width: 130px;
 }
