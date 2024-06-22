@@ -1,0 +1,20 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.auth-page {
+  background-color: $Midnight;
+  width: 100%;
+  @include flex-center;
+  justify-content: space-between;
+}
+
+.register-wrapper {
+  @include flex-center;
+  height: 100vh;
+  width: 36.375rem;
+  background-color: $White;
+}
+
+.login-wrapper {
+  display: flex;
+}
