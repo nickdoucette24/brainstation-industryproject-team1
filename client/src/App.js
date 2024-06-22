@@ -4,6 +4,8 @@ import useAuth from "./hooks/useAuth";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import RetailerPage from "./pages/RetailerPage/RetailerPage";
+import ProductLinePage from "./pages/ProductLinePage/ProductLinePage";
 // import axios from "axios";
 import CsvToJsonConverter from "./components/CsvToJsonConverter/CsvToJsonConverter";
 import "./App.scss";
@@ -90,13 +92,12 @@ function App() {
         ) : (
           <Route path="/dashboard" element={<DashboardPage />} />
         )}
-        <Route path="/dashboard" element={<DashboardPage />} />
-        {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+        <Route path="/retailer/:id" element={<RetailerPage />} />
+        <Route path="/product-line/:id" element={<ProductLinePage />} />
         <Route
           path="/convert"
           element={<CsvToJsonConverter baseURL={baseUrl} />}
         />{" "}
-        {/* Pass baseURL as prop */}
       </Routes>
     </BrowserRouter>
   );
