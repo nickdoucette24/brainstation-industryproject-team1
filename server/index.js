@@ -1,28 +1,32 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const multer = require("multer");
-const { spawn } = require("child_process");
-const path = require("path");
+const { spawn } = require('child_process');
+const path = require('path');
+const os = require('os');
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
 
-require("dotenv").config();
+const app = express();
+require('dotenv').config();
 const { CORS_ORIGIN } = process.env;
 
 app.use(express.json());
 app.use(cors({ origin: CORS_ORIGIN }));
 
 // Set up Multer for file uploads
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: 'uploads/' });
 
-app.post("/convert", upload.single("file"), (req, res) => {
+app.post('/convert', upload.single('file'), (req, res) => {
   const filePath = req.file.path;
   console.log(`Received file: ${filePath}`);
 
-  const pythonProcess = spawn("python", [path.join(__dirname, "scripts", "convert_csv_to_json.py"), filePath]);
+  // Determine the correct Python executable
+  const pythonExecutable = os.platform() === 'win32' ? 'python' : 'python3';
+
+  const pythonProcess = spawn(pythonExecutable, [path.join(__dirname, 'scripts', 'convert_csv_to_json.py'), filePath]);
 
   let hasSentResponse = false;
 
-  pythonProcess.stdout.on("data", (data) => {
+  pythonProcess.stdout.on('data', (data) => {
     console.log(`Python output: ${data.toString()}`);
     if (!hasSentResponse) {
       try {
@@ -39,7 +43,7 @@ app.post("/convert", upload.single("file"), (req, res) => {
     }
   });
 
-  pythonProcess.stderr.on("data", (data) => {
+  pythonProcess.stderr.on('data', (data) => {
     console.error(`Python stderr: ${data}`);
     if (!hasSentResponse) {
       res.status(500).send(`Error processing file: ${data.toString()}`);
@@ -68,7 +72,7 @@ app.post("/convert", upload.single("file"), (req, res) => {
   });
 });
 
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
   next();
