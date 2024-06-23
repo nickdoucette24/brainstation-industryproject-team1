@@ -11,7 +11,7 @@
     flex-direction: column;
 
     &--label {
-      @include labels-buttons;
+      @include input-field-labels;
       color: $Black;
       margin: 2rem 0 0.75rem 0;
     }

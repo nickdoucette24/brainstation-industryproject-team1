@@ -6,16 +6,16 @@ import "./AuthPage.scss";
 export const AuthPage = () => {
   return (
     <div className="auth-page">
-      <div className="droplet-1"></div>
-      <div className="droplet-2"></div>
-      <div className="droplet-3"></div>
-      <div className="droplet-4"></div>
-      <div className="droplet-5"></div>
-      <div className="droplet-6"></div>
-      <div className="droplet-7"></div>
-      <div className="droplet-8"></div>
-      <div className="droplet-9"></div>
       <div className="login-wrapper">
+        <div className="molecule-1"></div>
+        <div className="molecule-2"></div>
+        <div className="molecule-3"></div>
+        <div className="molecule-4"></div>
+        <div className="molecule-5"></div>
+        <div className="molecule-6"></div>
+        <div className="molecule-7"></div>
+        <div className="molecule-8"></div>
+        <div className="molecule-9"></div>
         <div className="login-form__wrapper">
           <h1 className="login-form__heading">Sign In</h1>
           <div className="login-form__container">
