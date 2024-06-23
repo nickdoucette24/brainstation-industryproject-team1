@@ -7,8 +7,6 @@
 # Import necessary libraries
 import pandas as pd
 import datetime
-import matplotlib.pyplot as plt
-import numpy as np
 import os
 from dotenv import load_dotenv
 
@@ -67,35 +65,36 @@ print(f'Total deviated products are {deviated.shape[0]}.')
 # It is rounded to integar.
 print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.shape[0] * 100)}%.')
 
+# Commenting out the charts
 # List the offending products with a descending order in a bar chart
-plt.figure()
-plt.bar(offender['Dell_product'], offender['Price_dif'])
-plt.xticks(rotation=-45)
-plt.ylabel('Price difference in $CAD')
-plt.xlabel('Dell product')
-plt.show()
+# plt.figure()
+# plt.bar(offender['Dell_product'], offender['Price_dif'])
+# plt.xticks(rotation=-45)
+# plt.ylabel('Price difference in $CAD')
+# plt.xlabel('Dell product')
+# plt.show()
 
 # Make a line graph showing the deviation percentage of each product from this retailer
 df['Deviation'] = df['Price_dif'] / df['Dell_price'] * 100
 df_deviation_order = df.sort_values('Deviation', ascending=True)
 
-plt.figure()
-plt.plot(df_deviation_order['Dell_product'], df_deviation_order['Deviation'])
-plt.xticks(rotation=-45)
-plt.title('The deviation % of Best Buy\'s price comparing to Dell MSRP')
-plt.ylabel('Price deviation %')
-plt.xlabel('Dell product')
-plt.show()
+# plt.figure()
+# plt.plot(df_deviation_order['Dell_product'], df_deviation_order['Deviation'])
+# plt.xticks(rotation=-45)
+# plt.title('The deviation % of Best Buy\'s price comparing to Dell MSRP')
+# plt.ylabel('Price deviation %')
+# plt.xlabel('Dell product')
+# plt.show()
 
 # Calculate avg. deviation
-dev_perc = round(df_deviation_order['Deviation'].mean(), 2)
+dev_perc = round(df['Deviation'].mean(), 2)
 print(f'The average deviation for this retailer is: {dev_perc}%.')
 
 # The following is to bring out the Retailer page categorizing deviation percentage into colored status
 conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= -10), (df['Deviation'] < -10)]
 status = ['Green', 'Yellow', 'Red']
 default = 'Unknown'
-df['Status'] = np.select(conditions, status, default=default)
+df['Status'] = 'Unknown' # np.select(conditions, status, default=default)
 print(df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
 
 # Below is to save the comparison results as csv
