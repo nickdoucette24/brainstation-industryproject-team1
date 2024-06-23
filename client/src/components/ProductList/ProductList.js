@@ -3,10 +3,12 @@ import axios from 'axios';
 import './ProductList.scss';
 
 const ProductList = () => {
+  // State to store product data, loading status, and total offenders
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalOffenders, setTotalOffenders] = useState(0);
 
+  // Function to combine data from Dell, BestBuy, and Newegg
   const combineData = useCallback((dell, bestbuy, newegg) => {
     let offendersCount = 0;
     const combined = dell.map(dellItem => {
@@ -33,6 +35,7 @@ const ProductList = () => {
     return combined;
   }, []);
 
+  // Fetch product data from APIs and combine them
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -52,6 +55,7 @@ const ProductList = () => {
     fetchProducts();
   }, [combineData]);
 
+  // Generate a unique ID for each product
   const generateUUID = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       const r = Math.random() * 16 | 0;
