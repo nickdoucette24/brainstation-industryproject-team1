@@ -11,13 +11,20 @@ import pandas as pd
 from string import digits
 import datetime
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Get the current date for dataset reference
 current_time = datetime.datetime.now()
 date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
 
+# Directory paths
+script_dir = os.path.dirname(__file__)
+data_dir = os.path.join(script_dir, 'data')
+
 # Create the data directory if it doesn't exist
-data_dir = os.path.join(os.path.dirname(__file__), 'data')
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 

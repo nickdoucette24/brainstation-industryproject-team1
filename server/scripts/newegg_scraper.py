@@ -11,8 +11,12 @@ import pandas as pd
 from string import digits
 import datetime
 import os
+from dotenv import load_dotenv
 
-# Get the current date for dataset reference
+# Load environment variables
+load_dotenv()
+
+# Define the date variable
 current_time = datetime.datetime.now()
 date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
 
@@ -28,14 +32,18 @@ if not os.path.exists(data_dir):
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 }
-url = f'https://www.newegg.ca/p/pl?d=monitor+dell&page=1'
+url = 'https://www.newegg.ca/p/pl?d=monitor+dell&page=1'
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.content, 'html.parser')
 
 # Fetch the number of total product pages on the Newegg website
-pageinfo = soup.find('div', class_='list-tool-pagination').get_text().split('/')[1]
-pageinfo = ''.join(c for c in pageinfo if c in digits)
-page_loop = int(pageinfo) + 1
+pagination = soup.find('span', class_='list-tool-pagination-text')
+if pagination:
+    pageinfo = pagination.get_text().split('/')[1]
+    pageinfo = ''.join(c for c in pageinfo if c in digits)
+    page_loop = int(pageinfo) + 1
+else:
+    page_loop = 1
 
 print('Loop through this many pages: ', page_loop - 1)
 

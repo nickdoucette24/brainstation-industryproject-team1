@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# !!!Important note: run the scraper first to obtain the daily csv before any data analysis!!!
+# !!!Important note: run the scrapper first to obtain the daily csv before any data analysis!!!
 # This script is for comparing the price difference between Dell and Newegg
 
 # Import necessary libraries
@@ -12,6 +12,10 @@ import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # The followings are to prepare the variables
 current_time = datetime.datetime.now()
@@ -21,18 +25,17 @@ date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_t
 script_dir = os.path.dirname(__file__)
 data_dir = os.path.join(script_dir, 'data')
 
-# Import all CSVs needed for this comparison
+# Import all csvs needed for this comparison
 # !!!Important: the index.csv file is a local file. Make sure you put the correct path here to find the file
 index_path = os.path.join(script_dir, 'index.csv')
-dell_path = os.path.join(data_dir, f'official_dell_monitor_{date}.csv')
-newegg_path = os.path.join(data_dir, f'newegg_dell_monitor_{date}.csv')
-
 index = pd.read_csv(index_path)
+dell_path = os.path.join(data_dir, f'official_dell_monitor_{date}.csv')
 dell = pd.read_csv(dell_path)
+newegg_path = os.path.join(data_dir, f'newegg_dell_monitor_{date}.csv')
 newegg = pd.read_csv(newegg_path)
 newegg['Newegg_price'] = newegg['Newegg_price'].astype(float)
 
-# Merge the CSVs into a big table
+# Merge the csvs into a big table
 df = pd.merge(index, newegg, how="left", on=['Newegg_sku'])
 df = pd.merge(df, dell, how="left", on=['Dell_product'])
 df = df[['Dell_product', 'Newegg_sku', 'Newegg_price', 'Dell_price']]
@@ -63,7 +66,7 @@ print(f'Total deviated products are {deviated.shape[0]}.')
 # Compliance rate
 # Important note: This is to recording only the products that are undercutting.
 # Which means it does not count the products those are sold more expensive than Dell.
-# It is rounded to integer.
+# It is rounded to integar.
 print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.shape[0] * 100)}%.')
 
 # List the offending products with a descending order in a bar chart
@@ -81,7 +84,7 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 plt.figure()
 plt.plot(df_deviation_order['Dell_product'], df_deviation_order['Deviation'])
 plt.xticks(rotation=-45)
-plt.title("The deviation % of Newegg's price comparing to Dell MSRP")
+plt.title('The deviation % of Newegg\'s price comparing to Dell MSRP')
 plt.ylabel('Price deviation %')
 plt.xlabel('Dell product')
 plt.show()
@@ -91,13 +94,11 @@ dev_perc = round(df_deviation_order['Deviation'].mean(), 2)
 print(f'The average deviation for this retailer is: {dev_perc}%.')
 
 # The following is to bring out the Retailer page categorizing deviation percentage into colored status
-conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= (-10)), (df['Deviation'] < (-10))]
+conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= -10), (df['Deviation'] < -10)]
 status = ['Green', 'Yellow', 'Red']
 df['Status'] = np.select(conditions, status)
 print(df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
 
-# Below is to save the comparison results as CSV. Do not run unless it's necessary
-# Uncomment to save the file
-# save_path = os.path.join(data_dir, f'newegg_comparison_{date}.csv')
+# Below is to save the comparison results as csv. Do not run unless it's necessary
 # save = df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True)
-# save.to_csv(save_path, index=False)
+# save.to_csv(os.path.join(data_dir, f'newegg_comparison_{date}.csv'))

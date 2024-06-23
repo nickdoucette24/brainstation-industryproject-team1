@@ -13,6 +13,10 @@ import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # The followings are to define the date variable
 current_time = datetime.datetime.now()
