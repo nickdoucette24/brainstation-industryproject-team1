@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-// Load env variables
 module.exports = {
   client: "mysql2",
   connection: {

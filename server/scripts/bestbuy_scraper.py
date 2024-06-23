@@ -1,24 +1,32 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
-# This script is used to scrape the monitor product info from Canada Computers & Electronics
+# This script is used to scrape the monitor product info from BestBuy
 # Always run the scraper first before doing any data analysis
 
-# Import python libraries
-
+# Import necessary libraries
 import requests
 import csv
 import time
 import datetime
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-# Define current date
+# Load environment variables
+load_dotenv()
 
+# Define the date variable
 current_time = datetime.datetime.now()
-date = str(current_time.year) + str(current_time.month) + str(current_time.day)
+date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
+
+# Directory paths
+script_dir = os.path.dirname(__file__)
+data_dir = os.path.join(script_dir, 'data')
+
+# Create the data directory if it doesn't exist
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
 
 # Function to check if the item is new and not refurbished, open box, or other unwanted items
 def is_new_item(name):
@@ -27,7 +35,7 @@ def is_new_item(name):
         'refurbished', 'open box', 'charger', 'adapter',
         'battery', 'sleeve', 'case', 'cable', 'custom', 'briefcase',
         'stand', 'lock', 'keyboard', 'fan', 'jack', 'drive', 'desktop', 'windows', 'processor',
-        'laptop', 'printer', 'projector', 'tablet', 'televesion',
+        'laptop', 'printer', 'projector', 'tablet', 'television',
         'compatible', 'module'
     ]
     return not any(keyword in name_lower for keyword in unwanted_keywords)
@@ -77,21 +85,17 @@ def scrape_bestbuy_dell():
         else:
             break
     
-    # Pull out the current date and include it in the csv
-    current_time = datetime.datetime.now()
-    date = str(current_time.year) + str(current_time.month) + str(current_time.day)
-    
     # Write data to CSV
-    with open(f'bestbuy_dell_monitor{date}.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    csv_path = os.path.join(data_dir, f'bestbuy_dell_monitor_{date}.csv')
+    with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
         fieldnames = ['Bestbuy_name', 'Bestbuy_sku', 'Bestbuy_price', 'Bestbuy_link']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(products)
 
-    print(f'Data scraped and saved to bestbuy_dell_monitor{date}.csv')
+    print(f'Data scraped and saved to {csv_path}')
     #df = pd.read_csv(f'd:/brainstation/dropbox/bestbuy_dell_monitor{date}.csv')
     #display(df.head(10))
 
 if __name__ == '__main__':
     scrape_bestbuy_dell()
-

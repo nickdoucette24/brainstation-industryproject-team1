@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const knex = require('../knexfile');
+const knex = require('../knex'); 
 
 // Endpoint to fetch products
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const products = await knex('products').select('*');
     res.json(products);
