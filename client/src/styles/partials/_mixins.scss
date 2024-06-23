@@ -22,34 +22,34 @@
   @include mobile {
     font-size: 1.5rem;
     line-height: 2rem;
-    font-family: roboto-light;
+    font-family: roboto-bold;
   }
   @include tablet {
-    font-size: 2.063rem;
-    line-height: 2.75rem;
-    font-family: roboto-light;
+    font-size: 3rem;
+    line-height: 3.75rem;
+    font-family: roboto-bold;
   }
   @include desktop {
-    font-size: 2.063rem;
-    line-height: 2.75rem;
-    font-family: roboto-light;
+    font-size: 3rem;
+    line-height: 3.75rem;
+    font-family: roboto-bold;
   }
 }
 
 @mixin subheader {
   @include mobile {
-    font-size: 0.813rem;
-    line-height: 1.125rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-family: roboto-light;
   }
   @include tablet {
-    font-size: 0.875rem;
-    line-height: 1.1375rem;
+    font-size: 2rem;
+    line-height: 2.55rem;
     font-family: roboto-light;
   }
   @include desktop {
-    font-size: 0.875rem;
-    line-height: 1.1375rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
     font-family: roboto-light;
   }
 }
@@ -74,19 +74,19 @@
 
 @mixin labels-buttons {
   @include mobile {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
   @include tablet {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
   @include desktop {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: roboto-bold;
+    font-size: 0.25rem;
+    line-height: 1rem;
+    font-family: roboto-light;
   }
 }
 
@@ -103,10 +103,6 @@
   padding: 0.5rem 0.75rem;
   width: 25.56rem;
   border-radius: 2px;
-}
-
-@mixin buttons {
-  height: 40px;
 }
 
 // Flexbox Mixins
