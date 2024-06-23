@@ -3,7 +3,6 @@ const path = require("path");
 const os = require("os");
 const cors = require("cors");
 const csvtojson = require("csvtojson");
-const { exec } = require("child_process");
 
 const app = express();
 require("dotenv").config();
@@ -30,6 +29,9 @@ function getCurrentDate() {
   const current_time = new Date();
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
+
+// Determine the correct Python executable
+const pythonExecutable = os.platform() === "win32" ? "python" : "python3";
 
 // Endpoint to fetch combined product data
 app.get("/api/data/products", (req, res) => {
