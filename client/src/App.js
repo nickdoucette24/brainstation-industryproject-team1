@@ -6,11 +6,10 @@ import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import RetailerPage from "./pages/RetailerPage/RetailerPage";
 import ProductListPage from "./pages/ProductListPage/ProductListPage";
 import AccountSettingsPage from "./pages/AccountSettingsPage/AccountSettingsPage";
-import CsvToJsonConverter from "./components/CsvToJsonConverter/CsvToJsonConverter";
 import "./App.scss";
 
 // Base URL for API calls
-const baseUrl = process.env.REACT_APP_BASE_URL;
+// const baseUrl = process.env.REACT_APP_BASE_URL;
 
 function App() {
   const loggedIn = useAuth();
@@ -30,10 +29,6 @@ function App() {
         />
         <Route path="/retailer/:id" element={<RetailerPage />} />
         <Route path="/product-list" element={<ProductListPage />} />
-        <Route
-          path="/convert"
-          element={<CsvToJsonConverter baseURL={baseUrl} />}
-        />
       </Routes>
     </BrowserRouter>
   );

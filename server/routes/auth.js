@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const knex = require("knex")(require("../knexfile"));
+const knex = require("../knex"); 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();

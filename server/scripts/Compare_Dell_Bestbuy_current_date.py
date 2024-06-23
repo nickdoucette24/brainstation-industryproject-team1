@@ -6,8 +6,6 @@
 
 # Import necessary libraries
 import pandas as pd
-import csv
-import time
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np
@@ -96,9 +94,11 @@ print(f'The average deviation for this retailer is: {dev_perc}%.')
 # The following is to bring out the Retailer page categorizing deviation percentage into colored status
 conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= -10), (df['Deviation'] < -10)]
 status = ['Green', 'Yellow', 'Red']
-df['Status'] = np.select(conditions, status)
+default = 'Unknown'
+df['Status'] = np.select(conditions, status, default=default)
 print(df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
 
-# Below is to save the comparison results as csv. Do not run unless it's necessary
-# save = df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True)
-# save.to_csv(os.path.join(data_dir, f'bestbuy_comparison_{date}.csv'))
+# Below is to save the comparison results as csv
+save_path = os.path.join(data_dir, f'bestbuy_comparison_{date}.csv')
+df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
+print(f"Comparison results saved to {save_path}")

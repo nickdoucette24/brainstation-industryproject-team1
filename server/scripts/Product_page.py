@@ -3,22 +3,18 @@
 
 # This script is used to call out all products from all retailers and Dell
 # Also has a search product function
-# !!!Important note: run the scrapper first to obtain the daily csv before any data analysis!!!
+# !!!Important note: run the scraper first to obtain the daily CSV before any data analysis!!!
 
 # Import necessary libraries
 import pandas as pd
-import csv
-import time
 import datetime
-import matplotlib.pyplot as plt
-import numpy as np
 import os
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# The followings are to define the date variable
+# Define the date variable
 current_time = datetime.datetime.now()
 date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
 
@@ -26,19 +22,35 @@ date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_t
 script_dir = os.path.dirname(__file__)
 data_dir = os.path.join(script_dir, 'data')
 
-# Import all csv files saved daily
+# Import all CSV files saved daily
 # Note that the index.csv is a local file. Make sure to put the correct path to read it
 index_path = os.path.join(script_dir, 'index.csv')
 dell_path = os.path.join(data_dir, f'official_dell_monitor_{date}.csv')
 bestbuy_path = os.path.join(data_dir, f'bestbuy_dell_monitor_{date}.csv')
 newegg_path = os.path.join(data_dir, f'newegg_dell_monitor_{date}.csv')
 
-index = pd.read_csv(index_path)
-dell = pd.read_csv(dell_path)
-bestbuy = pd.read_csv(bestbuy_path)
-newegg = pd.read_csv(newegg_path)
+# Function to read CSV files and handle errors
+def read_csv_file(file_path):
+    try:
+        return pd.read_csv(file_path)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return pd.DataFrame()  # Return an empty DataFrame if file is not found
+    except Exception as e:
+        print(f"Error reading {file_path}: {e}")
+        return pd.DataFrame()  # Return an empty DataFrame if any other error occurs
 
-# Merge the csv files into a big table
+index = read_csv_file(index_path)
+dell = read_csv_file(dell_path)
+bestbuy = read_csv_file(bestbuy_path)
+newegg = read_csv_file(newegg_path)
+
+# Ensure all required data frames are not empty
+if index.empty or dell.empty or bestbuy.empty or newegg.empty:
+    print("One or more CSV files are missing or empty. Exiting script.")
+    exit(1)
+
+# Merge the CSV files into a big table
 df = pd.merge(index, bestbuy, how="left", on=['Bestbuy_sku'])
 df = pd.merge(df, newegg, how="left", on=['Newegg_sku'])
 df = pd.merge(df, dell, how="inner", on=['Dell_product'])
@@ -55,6 +67,11 @@ b = df['Newegg_price'].count()
 print(f'There are {df.shape[0]} products found on Dell.')
 print(f'Bestbuy has {a} products.')
 print(f'Newegg has {b} products.')
+
+# Save the merged data to a CSV file
+output_path = os.path.join(data_dir, f'combined_product_data_{date}.csv')
+df.to_csv(output_path, index=False)
+print(f"Combined product data saved to {output_path}")
 
 # Define a function to search the product name
 df['Dell_product'] = df['Dell_product'].astype(str)
