@@ -3,7 +3,7 @@ import dellLogoWht from '../../assets/images/logos/dell-spectra-logo-wh.svg';
 import monitoring from '../../assets/images/icons+btns/monitoring-icon.svg';
 import detection from '../../assets/images/icons+btns/detection-icon.svg';
 import scalability from '../../assets/images/icons+btns/scalability-icon.svg';
-import integrity from '../../assets/images/icons+btns/brand-icon.svg';
+import integrity from '../../assets/images/icons+btns/brand-integrity.svg';
 import stability from '../../assets/images/icons+btns/market-stability.svg';
 import efficiency from '../../assets/images/icons+btns/efficiency.svg';
 

@@ -23,13 +23,13 @@
     font-family: roboto-bold;
   }
   @include tablet {
-    font-size: 2.063rem;
-    line-height: 2.75rem;
+    font-size: 3rem;
+    line-height: 3.75rem;
     font-family: roboto-bold;
   }
   @include desktop {
-    font-size: 2.063rem;
-    line-height: 2.75rem;
+    font-size: 3rem;
+    line-height: 3.75rem;
     font-family: roboto-bold;
   }
 }
@@ -38,17 +38,17 @@
   @include mobile {
     font-size: 1rem;
     line-height: 1.5rem;
-    font-family: roboto-medium;
+    font-family: roboto-light;
   }
   @include tablet {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-family: roboto-medium;
+    font-size: 2rem;
+    line-height: 2.55rem;
+    font-family: roboto-light;
   }
   @include desktop {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-family: roboto-medium;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-family: roboto-light;
   }
 }
 

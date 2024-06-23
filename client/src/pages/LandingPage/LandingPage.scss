@@ -25,6 +25,7 @@ main {
 
     &__page-header {
         @include page-header;
+        margin-bottom: 2rem;
     }
 
     &__subheader {
@@ -35,6 +36,8 @@ main {
 .card {
     display: flex;
     flex-direction: column;
+    height: fit-content;
+    max-width: 80%;
     
     &__features {
         display: flex;
@@ -68,7 +71,7 @@ main {
         justify-content: space-around;
         background: linear-gradient(180deg, rgb(72, 128, 255) 0%, rgb(43, 77, 153) 100%);
         border-radius: 8px;
-        margin: 0.5rem 1rem -1.5rem 0rem;
+        margin: 0.5rem 1rem 0rem 0rem;
         padding-bottom: 1rem;
 
         &--img {
@@ -88,6 +91,11 @@ main {
     }
 }
 
+.dell-logo {
+    height: 80%;
+    justify-content: center;    
+}
+
 
 
 .dell-molecules {
@@ -105,7 +113,7 @@ main {
     height: 508px;
     left: 0;
     position: absolute;
-    top: 200px;
+    top: 100px;
     width: 641px;
   }
   
@@ -173,9 +181,9 @@ main {
     background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
     border-radius: 51px/52.5px;
     height: 105px;
-    left: 240px;
+    left: 245px;
     position: absolute;
-    top: 225px;
+    top: 140px;
     width: 102px;
   }
   
