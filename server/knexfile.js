@@ -10,4 +10,10 @@ module.exports = {
     database: process.env.DB_NAME,
     charset: "utf8",
   },
+  migrations: {
+    directory: './migrations',
+  },
+  seeds: {
+    directory: './seeds',
+  },
 };

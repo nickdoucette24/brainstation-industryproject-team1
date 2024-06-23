@@ -24,5 +24,11 @@ exports.seed = async function (knex) {
       email: "alihayder@dell.com",
       password: hashedPassword,
     },
+    {
+      first_name: "Sunshine",
+      last_name: "Agoo",
+      email: "sunshine.agoo@dell.com",
+      password: hashedPassword,
+    },
   ]);
 };

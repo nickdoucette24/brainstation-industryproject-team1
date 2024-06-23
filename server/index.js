@@ -1,7 +1,7 @@
+const express = require("express");
 const { spawn } = require("child_process");
 const path = require("path");
 const os = require("os");
-const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
 
@@ -15,9 +15,13 @@ app.use(cors({ origin: CORS_ORIGIN }));
 // Express Routes
 const dashboardRoutes = require("./routes/dashboard");
 const authRoutes = require("./routes/auth");
+const productsRoutes = require("./routes/products"); 
+const retailersRoutes = require("./routes/retailers"); 
 
 app.use("/dashboard", dashboardRoutes);
 app.use("/auth", authRoutes);
+app.use("/api/products", productsRoutes); 
+app.use("/api/retailers", retailersRoutes); 
 
 // Set up Multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -86,15 +90,67 @@ app.post("/convert", upload.single("file"), (req, res) => {
   });
 });
 
-app.use(express.static("public"));
+// New API endpoint to fetch processed data
+app.get("/api/data", (req, res) => {
+  const pythonExecutable = os.platform() === "win32" ? "python" : "python3";
 
-// Replace with actual product data router
-const mockProductsRouter = require("./routes/mockProducts");
-app.use("/products", mockProductsRouter);
+  const pythonProcess = spawn(pythonExecutable, [
+    path.join(__dirname, "scripts", "process_data.py"), 
+  ]);
 
-app.use((req, res, next) => {
-  next();
+  let hasSentResponse = false;
+
+  pythonProcess.stdout.on("data", (data) => {
+    console.log(`Python output: ${data.toString()}`);
+    if (!hasSentResponse) {
+      try {
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+        hasSentResponse = true;
+      } catch (error) {
+        console.error(`Error parsing JSON: ${error.message}`);
+        if (!hasSentResponse) {
+          res.status(500).send(`Error parsing JSON: ${error.message}`);
+          hasSentResponse = true;
+        }
+      }
+    }
+  });
+
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`Python stderr: ${data}`);
+    if (!hasSentResponse) {
+      res.status(500).send(`Error processing file: ${data.toString()}`);
+      hasSentResponse = true;
+    }
+  });
+
+  pythonProcess.on("error", (error) => {
+    console.error(`Failed to start subprocess: ${error.message}`);
+    if (!hasSentResponse) {
+      res.status(500).send(`Error processing file: ${error.message}`);
+      hasSentResponse = true;
+    }
+  });
+
+  pythonProcess.on("exit", (code, signal) => {
+    if (code !== 0) {
+      console.error(
+        `Python process exited with code: ${code}, signal: ${signal}`
+      );
+      if (!hasSentResponse) {
+        res
+          .status(500)
+          .send(`Python process exited with code: ${code}, signal: ${signal}`);
+        hasSentResponse = true;
+      }
+    } else {
+      console.log("Python process exited successfully");
+    }
+  });
 });
+
+app.use(express.static("public"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
