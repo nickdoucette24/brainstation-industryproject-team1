@@ -91,6 +91,21 @@ main {
     }
 }
 
+.login {
+    text-decoration: none;
+
+    &__cta {
+        @include auth-button;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        &--text {
+            font-size: 1.5rem;
+        }
+    }
+}
+
 .dell-logo {
     height: 80%;
     justify-content: center;    
@@ -102,88 +117,85 @@ main {
     box-shadow: var(--enhanced-drop-shadow);
     height: 508px;
     width: 641px;
+
+    &__overlap {
+        height: 508px;
+        position: relative;
+
+        &--group {
+            height: 508px;
+            left: 0;
+            position: absolute;
+            top: 100px;
+            width: 641px;
+        }
+    }
   }
-  
-  .dell-molecules .overlap {
-    height: 508px;
-    position: relative;
-  }
-  
-  .dell-molecules .overlap-group {
-    height: 508px;
-    left: 0;
-    position: absolute;
-    top: 100px;
-    width: 641px;
-  }
-  
-  .dell-molecules .div {
+
+  .molecule {
     background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+    position: absolute;
+  }
+  
+  .m1 {
     border-radius: 126.11px/128.6px;
     height: 257px;
     left: 0;
-    position: absolute;
     top: 251px;
     width: 252px;
   }
   
-  .dell-molecules .div-2 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m2 {
     border-radius: 113.67px/114.91px;
     height: 230px;
     left: 228px;
-    position: absolute;
     top: 236px;
     width: 227px;
   }
   
-  .dell-molecules .div-3 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m3 {
     border-radius: 93.34px/98.32px;
     height: 197px;
     left: 170px;
-    position: absolute;
     top: 152px;
     width: 187px;
   }
   
-  .dell-molecules .div-4 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m4 {
     border-radius: 131.09px/131.92px;
     height: 264px;
     left: 342px;
-    position: absolute;
     top: 75px;
     width: 262px;
   }
   
-  .dell-molecules .div-5 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m5 {
     border-radius: 92.1px/95px;
     height: 190px;
     left: 368px;
-    position: absolute;
     top: 0;
     width: 184px;
   }
   
-  .dell-molecules .div-6 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m6 {
     border-radius: 69.28px/71.35px;
     height: 143px;
     left: 503px;
-    position: absolute;
     top: 0;
     width: 139px;
   }
   
-  .dell-molecules .div-7 {
-    background: linear-gradient(180deg, rgb(43, 77, 153) 0%, rgb(72, 128, 255) 100%);
+  .m7 {
     border-radius: 51px/52.5px;
     height: 105px;
     left: 245px;
-    position: absolute;
     top: 140px;
     width: 102px;
   }
   
+  .integrity {
+    height: 35px;
+    align-self: flex-start;
+    padding-left: 1rem;
+    padding-top: 0.25rem;
+  }

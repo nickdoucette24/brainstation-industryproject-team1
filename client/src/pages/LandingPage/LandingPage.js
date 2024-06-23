@@ -3,9 +3,10 @@ import dellLogoWht from '../../assets/images/logos/dell-spectra-logo-wh.svg';
 import monitoring from '../../assets/images/icons+btns/monitoring-icon.svg';
 import detection from '../../assets/images/icons+btns/detection-icon.svg';
 import scalability from '../../assets/images/icons+btns/scalability-icon.svg';
-import integrity from '../../assets/images/icons+btns/brand-integrity.svg';
+import integrity from '../../assets/images/icons+btns/brand-icon.svg';
 import stability from '../../assets/images/icons+btns/market-stability.svg';
 import efficiency from '../../assets/images/icons+btns/efficiency.svg';
+import start from '../../assets/images/icons+btns/login-icon.svg';
 
 import { Link } from 'react-router-dom';
 
@@ -35,7 +36,7 @@ function LandingPage() {
                         </div>
                         <div className='card__benefits'>
                             <div className='card__benefits--img'>
-                                <img src={integrity} alt="" />
+                                <img className='integrity' src={integrity} alt="" />
                                 <img src={stability} alt="" />
                                 <img src={efficiency} alt="" />
                             </div>
@@ -47,26 +48,26 @@ function LandingPage() {
                         </div>
                     </div>
                 </section>
-                <section className='login'>
-                    <button className='login__cta'>
-                        <Link to='/auth'>
-                        <img className='login__icon' src="" alt="" />
-                        <div className='login__btn-text'>Start Now</div>
-                        </Link>
-                    </button>
+                <section>
+                    <Link to='/auth' className='login'>
+                        <button className='login__cta'>
+                            <img className='login__cta--icon' src={start} alt="" />
+                            <div className='login__cta--text'>Start Now</div>
+                        </button>
+                    </Link>
                 </section>
             </main>
             <div className="dell-molecules">
-                <div className="overlap">
-                    <div className="overlap-group">
-                        <div className="div" />
-                        <div className="div-2" />
-                        <div className="div-3" />
-                        <div className="div-4" />
-                        <div className="div-5" />
-                        <div className="div-6" />
+                <div className="dell-molecules__overlap">
+                    <div className="dell-molecules__overlap--group">
+                        <div className="molecule m1"></div> 
+                        <div className="molecule m2"></div> 
+                        <div className="molecule m3"></div> 
+                        <div className="molecule m4"></div> 
+                        <div className="molecule m5"></div> 
+                        <div className="molecule m6"></div>
                     </div>
-                    <div className="div-7" />
+                    <div className="moecule m7"></div>
                 </div>
             </div>
             <div className='dell-logo'>

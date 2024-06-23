@@ -105,10 +105,6 @@
   border-radius: 2px;
 }
 
-@mixin buttons {
-  height: 40px;
-}
-
 // Flexbox Mixins
 @mixin flex-center {
   display: flex;
