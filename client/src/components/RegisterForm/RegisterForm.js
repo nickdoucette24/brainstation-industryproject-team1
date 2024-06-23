@@ -140,6 +140,7 @@ const RegisterForm = () => {
               placeholder="**********"
               onChange={handleInput}
               value={formValues.password}
+              autoComplete="off"
             />
             <button className="show-password" onClick={handleShowPassword}>
               {showPassword ? (

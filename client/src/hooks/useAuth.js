@@ -4,7 +4,7 @@ const useAuth = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("jwt");
+    const token = localStorage.getItem("jwt");
     if (token) {
       setLoggedIn(true);
     }

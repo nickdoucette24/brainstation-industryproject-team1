@@ -6,6 +6,7 @@ import AuthPage from "./pages/AuthPage/AuthPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import RetailerPage from "./pages/RetailerPage/RetailerPage";
 import ProductLinePage from "./pages/ProductLinePage/ProductLinePage";
+import AccountSettingsPage from "./pages/AccountSettingsPage/AccountSettingsPage";
 // import axios from "axios";
 import CsvToJsonConverter from "./components/CsvToJsonConverter/CsvToJsonConverter";
 import "./App.scss";
@@ -90,8 +91,12 @@ function App() {
         {!loggedIn ? (
           <Route path="/auth" element={<AuthPage />} />
         ) : (
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard/:id" element={<DashboardPage />} />
         )}
+        <Route
+          path="/dashboard/:id/settings"
+          element={<AccountSettingsPage />}
+        />
         <Route path="/retailer/:id" element={<RetailerPage />} />
         <Route path="/product-line/:id" element={<ProductLinePage />} />
         <Route
