@@ -15,9 +15,13 @@ app.use(cors({ origin: CORS_ORIGIN }));
 // Express Routes
 const dashboardRoutes = require("./routes/dashboard");
 const authRoutes = require("./routes/auth");
+const productsRoutes = require("./routes/products"); 
+const retailersRoutes = require("./routes/retailers"); 
 
 app.use("/dashboard", dashboardRoutes);
 app.use("/auth", authRoutes);
+app.use("/api/products", productsRoutes); 
+app.use("/api/retailers", retailersRoutes); 
 
 // Set up Multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -147,14 +151,6 @@ app.get("/api/data", (req, res) => {
 });
 
 app.use(express.static("public"));
-
-// Replace with actual product data router
-const mockProductsRouter = require("./routes/mockProducts");
-app.use("/products", mockProductsRouter);
-
-app.use((req, res, next) => {
-  next();
-});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
