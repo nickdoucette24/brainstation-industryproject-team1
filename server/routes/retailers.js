@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const knex = require('../knex');
+const knex = require('../knexfile');
 
 // Endpoint to fetch retailers
 router.get('/', async (req, res) => {
