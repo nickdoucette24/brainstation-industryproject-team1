@@ -1,32 +1,42 @@
-const { spawn } = require('child_process');
-const path = require('path');
-const os = require('os');
-const express = require('express');
-const multer = require('multer');
-const cors = require('cors');
+const { spawn } = require("child_process");
+const path = require("path");
+const os = require("os");
+const express = require("express");
+const multer = require("multer");
+const cors = require("cors");
 
 const app = express();
-require('dotenv').config();
+require("dotenv").config();
 const { CORS_ORIGIN } = process.env;
 
 app.use(express.json());
 app.use(cors({ origin: CORS_ORIGIN }));
 
-// Set up Multer for file uploads
-const upload = multer({ dest: 'uploads/' });
+// Express Routes
+const dashboardRoutes = require("./routes/dashboard");
+const authRoutes = require("./routes/auth");
 
-app.post('/convert', upload.single('file'), (req, res) => {
+app.use("/dashboard", dashboardRoutes);
+app.use("/auth", authRoutes);
+
+// Set up Multer for file uploads
+const upload = multer({ dest: "uploads/" });
+
+app.post("/convert", upload.single("file"), (req, res) => {
   const filePath = req.file.path;
   console.log(`Received file: ${filePath}`);
 
   // Determine the correct Python executable
-  const pythonExecutable = os.platform() === 'win32' ? 'python' : 'python3';
+  const pythonExecutable = os.platform() === "win32" ? "python" : "python3";
 
-  const pythonProcess = spawn(pythonExecutable, [path.join(__dirname, 'scripts', 'convert_csv_to_json.py'), filePath]);
+  const pythonProcess = spawn(pythonExecutable, [
+    path.join(__dirname, "scripts", "convert_csv_to_json.py"),
+    filePath,
+  ]);
 
   let hasSentResponse = false;
 
-  pythonProcess.stdout.on('data', (data) => {
+  pythonProcess.stdout.on("data", (data) => {
     console.log(`Python output: ${data.toString()}`);
     if (!hasSentResponse) {
       try {
@@ -43,7 +53,7 @@ app.post('/convert', upload.single('file'), (req, res) => {
     }
   });
 
-  pythonProcess.stderr.on('data', (data) => {
+  pythonProcess.stderr.on("data", (data) => {
     console.error(`Python stderr: ${data}`);
     if (!hasSentResponse) {
       res.status(500).send(`Error processing file: ${data.toString()}`);
@@ -51,7 +61,7 @@ app.post('/convert', upload.single('file'), (req, res) => {
     }
   });
 
-  pythonProcess.on('error', (error) => {
+  pythonProcess.on("error", (error) => {
     console.error(`Failed to start subprocess: ${error.message}`);
     if (!hasSentResponse) {
       res.status(500).send(`Error processing file: ${error.message}`);
@@ -59,24 +69,28 @@ app.post('/convert', upload.single('file'), (req, res) => {
     }
   });
 
-  pythonProcess.on('exit', (code, signal) => {
+  pythonProcess.on("exit", (code, signal) => {
     if (code !== 0) {
-      console.error(`Python process exited with code: ${code}, signal: ${signal}`);
+      console.error(
+        `Python process exited with code: ${code}, signal: ${signal}`
+      );
       if (!hasSentResponse) {
-        res.status(500).send(`Python process exited with code: ${code}, signal: ${signal}`);
+        res
+          .status(500)
+          .send(`Python process exited with code: ${code}, signal: ${signal}`);
         hasSentResponse = true;
       }
     } else {
-      console.log('Python process exited successfully');
+      console.log("Python process exited successfully");
     }
   });
 });
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Replace with actual product data router
-const mockProductsRouter = require('./routes/mockProducts');
-app.use('/products', mockProductsRouter)
+const mockProductsRouter = require("./routes/mockProducts");
+app.use("/products", mockProductsRouter);
 
 app.use((req, res, next) => {
   next();

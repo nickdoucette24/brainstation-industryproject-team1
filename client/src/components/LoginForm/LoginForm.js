@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import "./LoginForm.scss";
 
+const url = process.env.REACT_APP_BASE_URL;
+
 const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [formValues, setFormValues] = useState({
@@ -42,19 +44,18 @@ const LoginForm = () => {
           email: formValues.email,
           password: formValues.password,
         };
-        const response = await axios.post(
-          process.env.REACT_APP_BASE_URL,
-          loginPayload
-        );
+        const response = await axios.post(`${url}/auth/login`, loginPayload);
+        const userId = response.data.id;
+        const message = response.data.message;
 
         if (response.data.success) {
           localStorage.setItem("token", response.data.token);
-          navigate("/dashboard");
+          navigate(`/dashboard/${userId}`);
         } else {
-          setErrors({ form: "Invalid Email or Password." });
+          setErrors({ form: message });
         }
       } catch (error) {
-        setErrors({ form: "Invalid Email or Password." });
+        setErrors({ form: "Unable to Login User." });
       }
     }
   };
