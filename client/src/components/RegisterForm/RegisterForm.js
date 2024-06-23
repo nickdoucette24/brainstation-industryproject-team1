@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import "./RegisterForm.scss";
 
+const url = process.env.REACT_APP_BASE_URL;
+
 const RegisterForm = () => {
   const [errors, setErrors] = useState({});
   const [formValues, setFormValues] = useState({
@@ -61,15 +63,23 @@ const RegisterForm = () => {
           password: formValues.password,
         };
         const response = await axios.post(
-          process.env.REACT_APP_BASE_URL,
+          `${url}/auth/register`,
           registerPayload
         );
-
+        const message = response.data.message;
+        console.log(response.data);
         if (response.data.success) {
+          const userId = response.data.id;
           localStorage.setItem("token", response.data.token);
-          navigate("/dashboard");
+
+          // Navigate AFTER the userId is received
+          if (userId) {
+            navigate(`/dashboard/${userId}`);
+          } else {
+            setErrors({ form: "Registration failed. Please try again." });
+          }
         } else {
-          setErrors({ form: "Unable to Register User." });
+          setErrors({ form: message });
         }
       } catch (error) {
         setErrors({ form: "Unable to Register User." });
@@ -140,6 +150,7 @@ const RegisterForm = () => {
               placeholder="**********"
               onChange={handleInput}
               value={formValues.password}
+              autoComplete="off"
             />
             <button className="show-password" onClick={handleShowPassword}>
               {showPassword ? (

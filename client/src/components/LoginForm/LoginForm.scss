@@ -25,6 +25,7 @@
       line-height: 1.5rem;
       max-height: 2.5rem;
       max-width: 32.625rem;
+      min-width: 25.61rem;
       border: 2px solid transparent;
 
       &:hover {
@@ -56,6 +57,7 @@
 
 .login-password__wrapper {
   display: flex;
+  max-width: 47rem;
 }
 
 .login-password__container {
