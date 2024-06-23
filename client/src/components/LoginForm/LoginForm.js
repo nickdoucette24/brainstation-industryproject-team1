@@ -49,8 +49,8 @@ const LoginForm = () => {
         const message = response.data.message;
 
         if (response.data.success) {
-          localStorage.setItem("token", response.data.token);
-          navigate(`/dashboard/${userId}`);
+          localStorage.setItem("jwt", response.data.token);
+          navigate(`/dashboard/${userId}/settings`); // Temporary route to code settings page
         } else {
           setErrors({ form: message });
         }
