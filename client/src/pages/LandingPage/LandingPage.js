@@ -7,6 +7,8 @@ import integrity from '../../assets/images/icons+btns/brand-integrity.svg';
 import stability from '../../assets/images/icons+btns/market-stability.svg';
 import efficiency from '../../assets/images/icons+btns/efficiency.svg';
 
+import { Link } from 'react-router-dom';
+
 
 function LandingPage() {
 
@@ -47,8 +49,10 @@ function LandingPage() {
                 </section>
                 <section className='login'>
                     <button className='login__cta'>
+                        <Link to='/auth'>
                         <img className='login__icon' src="" alt="" />
                         <div className='login__btn-text'>Start Now</div>
+                        </Link>
                     </button>
                 </section>
             </main>
