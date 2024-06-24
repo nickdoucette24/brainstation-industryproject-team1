@@ -4,20 +4,20 @@ import axios from "axios";
 import "./RetailerPage.scss";
 
 const RetailerPage = () => {
-  const { id } = useParams();
+  const { retailerId } = useParams();
   const [retailer, setRetailer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchRetailer = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/retailers/${id}`);
+      const response = await axios.get(`http://localhost:8080/api/retailers/${retailerId}`);
       setRetailer(response.data);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching retailer:', err);
       setLoading(false);
     }
-  }, [id]);
+  }, [retailerId]);
 
   useEffect(() => {
     fetchRetailer();
@@ -25,6 +25,10 @@ const RetailerPage = () => {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!retailer) {
+    return <div>Error loading retailer data.</div>;
   }
 
   return (

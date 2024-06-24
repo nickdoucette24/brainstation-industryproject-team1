@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import os
+import json
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -72,7 +73,7 @@ conditions = [
     (df['Deviation'] < 0) & (df['Deviation'] >= -10),
     (df['Deviation'] < -10)
 ]
-status = ['Green', 'Yellow', 'Red']
+status = ['Compliant', 'Needs Attention', 'Non-Compliant']
 df['Status'] = np.select(conditions, status, default='Undetermined')
 
 # Print the DataFrame for verification
@@ -102,3 +103,15 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 # plt.ylabel('Price deviation %')
 # plt.xlabel('Dell product')
 # plt.show()
+
+# Prepare output data for JSON
+output_data = {
+    'total_products': total_products,
+    'total_offending_products': total_offending_products,
+    'total_deviated_products': total_deviated_products,
+    'compliance_rate': round(compliance_rate, 2),
+    'products': df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_dict(orient='records')
+}
+
+# Output JSON
+print(json.dumps(output_data))
