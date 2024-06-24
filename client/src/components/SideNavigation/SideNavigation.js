@@ -59,11 +59,7 @@ const SideNavigation = () => {
                 <p className="nav-list__link--text">Dashboard</p>
               </Link>
             </li>
-            <li
-              className={`nav-list__item ${
-                isActive(`/product-list`) ? "selected" : ""
-              }`}
-            >
+            <li className="nav-list__item">
               <Link
                 to={"/product-list"}
                 className={`nav-list__link ${

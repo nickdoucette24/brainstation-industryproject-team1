@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import './ProductList.scss';
+import React, { useEffect, useState, useCallback } from "react";
+import axios from "axios";
+import "./ProductList.scss";
 
 const ProductList = () => {
   // State to store product data, loading status, and total offenders
@@ -11,9 +11,13 @@ const ProductList = () => {
   // Function to combine data from Dell, BestBuy, and Newegg
   const combineData = useCallback((dell, bestbuy, newegg) => {
     let offendersCount = 0;
-    const combined = dell.map(dellItem => {
-      const bestbuyItem = bestbuy.find(item => item.Dell_product === dellItem.Dell_product) || {};
-      const neweggItem = newegg.find(item => item.Dell_product === dellItem.Dell_product) || {};
+    const combined = dell.map((dellItem) => {
+      const bestbuyItem =
+        bestbuy.find((item) => item.Dell_product === dellItem.Dell_product) ||
+        {};
+      const neweggItem =
+        newegg.find((item) => item.Dell_product === dellItem.Dell_product) ||
+        {};
 
       if (bestbuyItem.Deviation < 0 || neweggItem.Deviation < 0) {
         offendersCount++;
@@ -23,12 +27,12 @@ const ProductList = () => {
         id: generateUUID(),
         dellProductName: dellItem.Dell_product,
         msrp: dellItem.Dell_price,
-        bestbuyPrice: bestbuyItem.Bestbuy_price || 'Not Available',
-        bestbuyDeviation: bestbuyItem.Deviation || 'N/A',
-        bestbuyCompliance: bestbuyItem.Status || 'N/A',
-        neweggPrice: neweggItem.Newegg_price || 'Not Available',
-        neweggDeviation: neweggItem.Deviation || 'N/A',
-        neweggCompliance: neweggItem.Status || 'N/A'
+        bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
+        bestbuyDeviation: bestbuyItem.Deviation || "N/A",
+        bestbuyCompliance: bestbuyItem.Status || "N/A",
+        neweggPrice: neweggItem.Newegg_price || "Not Available",
+        neweggDeviation: neweggItem.Deviation || "N/A",
+        neweggCompliance: neweggItem.Status || "N/A",
       };
     });
     setTotalOffenders(offendersCount);
@@ -39,15 +43,23 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const dellData = await axios.get('http://localhost:8080/api/data/dell');
-        const bestbuyData = await axios.get('http://localhost:8080/api/data/compare/dell-bestbuy');
-        const neweggData = await axios.get('http://localhost:8080/api/data/compare/dell-newegg');
+        const dellData = await axios.get("http://localhost:8080/api/data/dell");
+        const bestbuyData = await axios.get(
+          "http://localhost:8080/api/data/compare/dell-bestbuy"
+        );
+        const neweggData = await axios.get(
+          "http://localhost:8080/api/data/compare/dell-newegg"
+        );
 
-        const combinedData = combineData(dellData.data, bestbuyData.data, neweggData.data);
+        const combinedData = combineData(
+          dellData.data,
+          bestbuyData.data,
+          neweggData.data
+        );
         setProducts(combinedData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
@@ -57,9 +69,9 @@ const ProductList = () => {
 
   // Generate a unique ID for each product
   const generateUUID = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : ((r & 0x3) | 0x8);
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === "x" ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   };
@@ -70,7 +82,7 @@ const ProductList = () => {
 
   return (
     <div className="container-pl">
-      <h1 className="title-pl">Dell Products</h1>
+      <h1 className="title-l">Dell Products</h1>
       <p>Total Offending Products: {totalOffenders}</p>
       <table>
         <thead>
@@ -87,7 +99,7 @@ const ProductList = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
+          {products.map((product) => (
             <tr key={product.id}>
               <td>{product.id}</td>
               <td>{product.dellProductName}</td>
