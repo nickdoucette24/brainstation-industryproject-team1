@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
@@ -13,9 +13,10 @@ const url = process.env.REACT_APP_BASE_URL;
 const Header = () => {
   const [user, setUser] = useState({});
   const [isTyping, setIsTyping] = useState(false);
-  // const navigate = useNavigate();
   const { userId } = useParams();
   const loggedIn = useAuth();
+  const userNameRef = useRef(null);
+  const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -23,10 +24,30 @@ const Header = () => {
         try {
           const response = await axios.get(`${url}/dashboard/${userId}`);
           setUser(response.data);
+          formatUserName(response.data.first_name, response.data.last_name);
         } catch (error) {
           console.error(error.message);
         }
+      }
+    };
+
+    const calculateTextWidth = (text) => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.font = "400 0.83rem Arial"; // Match the font properties
+      return context.measureText(text).width;
+    };
+
+    const formatUserName = (firstName, lastName) => {
+      const fullName = `${firstName} ${lastName}`;
+      const containerWidth = 60; // Fixed width of the container in px
+
+      if (calculateTextWidth(fullName) <= containerWidth) {
+        setDisplayName(fullName);
       } else {
+        const lastInitial = `${lastName.charAt(0)}.`;
+        const adjustedName = `${firstName} ${lastInitial}`;
+        setDisplayName(adjustedName);
       }
     };
 
@@ -53,7 +74,10 @@ const Header = () => {
           />
         </div>
         <div className="header-wrapper__content">
-          <Link to={`/dashboard/${userId}/settings`} className="alerts-link">
+          <Link
+            to={`/dashboard/${userId}/settings?tab=alerts`}
+            className="alerts-link"
+          >
             <img
               src={alertIcon}
               className="alerts-link__icon"
@@ -61,10 +85,17 @@ const Header = () => {
             />
           </Link>
           <div className="user-info">
-            <div className="user-info__titles">
-              <h5 className="user-info__titles--name">
-                {user.first_name} {user.last_name}
-              </h5>
+            <div
+              className="user-info__titles"
+              ref={userNameRef}
+              style={{
+                maxWidth: "60px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              <h5 className="user-info__titles--name">{displayName}</h5>
               <p className="user-info__titles--position">Admin</p>
             </div>
             <div className="img-cont">

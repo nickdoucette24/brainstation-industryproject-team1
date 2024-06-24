@@ -49,84 +49,46 @@ app.get("/api/data/products", (req, res) => {
     });
 });
 
-// Endpoint to fetch Dell-BestBuy comparison data
-app.get("/api/data/compare/dell-bestbuy", (req, res) => {
+// New endpoint to fetch dashboard data
+app.get("/api/data/dashboard", async (req, res) => {
   const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+  try {
+    const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
+    const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+    const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
+    const dellData = await csvtojson().fromFile(dellFilePath);
+    const bestbuyData = await csvtojson().fromFile(bestbuyFilePath);
+    const neweggData = await csvtojson().fromFile(neweggFilePath);
 
-// Endpoint to fetch Dell-Newegg comparison data
-app.get("/api/data/compare/dell-newegg", (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
+    const totalOffenders = 2; // Assuming monitoring BestBuy and Newegg
+    const bestbuyTop5 = bestbuyData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+    const neweggTop5 = neweggData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+    const totalDeviatedProductsBestBuy = bestbuyData.filter(item => item.Deviation !== 0).length;
+    const averageDeviationBestBuy = bestbuyData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / bestbuyData.length;
+    const averageDeviationNewegg = neweggData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / neweggData.length;
+    const complianceRateBestBuy = (bestbuyData.filter(item => item.Status === 'Green').length / bestbuyData.length) * 100;
+    const complianceRateNewegg = (neweggData.filter(item => item.Status === 'Green').length / neweggData.length) * 100;
 
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
+    const combinedTopOffenders = [...bestbuyTop5, ...neweggTop5].sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
 
-// Endpoint to fetch BestBuy Dell monitors data
-app.get("/api/data/bestbuy", (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `bestbuy_dell_monitor_${date}.csv`);
+    const dashboardData = {
+      totalOffenders,
+      bestbuyTop5,
+      neweggTop5,
+      totalDeviatedProductsBestBuy,
+      averageDeviationBestBuy,
+      averageDeviationNewegg,
+      complianceRateBestBuy,
+      complianceRateNewegg,
+      combinedTopOffenders
+    };
 
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
-
-// Endpoint to fetch Newegg Dell monitors data
-app.get("/api/data/newegg", (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `newegg_dell_monitor_${date}.csv`);
-
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
-
-// Endpoint to fetch Dell monitors data
-app.get("/api/data/dell", (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
-
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
+    res.json(dashboardData);
+  } catch (error) {
+    console.error(`Error fetching dashboard data: ${error.message}`);
+    res.status(500).json({ message: 'Error fetching dashboard data', error });
+  }
 });
 
 app.use(express.static("public"));
