@@ -1,11 +1,28 @@
 const express = require('express');
-const router = express.Router();
 const path = require('path');
 const csvtojson = require('csvtojson');
+const cors = require('cors');
 require('dotenv').config();
 
+const app = express();
+const router = express.Router();
+
+// Import the auth routes
+const authRoutes = require('./routes/auth');
+
 // Load environment variables
-const DATA_DIR = path.resolve(__dirname, '../scripts/data'); // Ensure the correct path
+const DATA_DIR = path.resolve(__dirname, './scripts/data');
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Use the auth routes
+app.use('/auth', authRoutes);
 
 // Function to get the current date in the desired format
 function getCurrentDate() {
@@ -104,4 +121,10 @@ router.get('/dashboard', async (req, res) => {
   }
 });
 
-module.exports = router;
+// Use the router and listen on the specified port
+app.use('/', router);
+
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
