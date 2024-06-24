@@ -2,10 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import './ProductList.scss';
 
+// Base Url
+const url = process.env.REACT_APP_BASE_URL;
+
 const ProductList = () => {
-  // State to store product data, loading status, and total offenders
+  // State to store product data and total offenders
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [totalOffenders, setTotalOffenders] = useState(0);
 
   // Function to combine data from Dell, BestBuy, and Newegg
@@ -39,21 +41,19 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const dellData = await axios.get('http://localhost:8080/api/data/dell');
-        const bestbuyData = await axios.get('http://localhost:8080/api/data/compare/dell-bestbuy');
-        const neweggData = await axios.get('http://localhost:8080/api/data/compare/dell-newegg');
+        const dellData = await axios.get(`${url}/api/data/dell`);
+        const bestbuyData = await axios.get(`${url}/api/data/compare/dell-bestbuy`);
+        const neweggData = await axios.get(`${url}/api/data/compare/dell-newegg`);
 
         const combinedData = combineData(dellData.data, bestbuyData.data, neweggData.data);
         setProducts(combinedData);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [combineData]);
+  }, [combineData, url]);
 
   // Generate a unique ID for each product
   const generateUUID = () => {
@@ -63,10 +63,6 @@ const ProductList = () => {
       return v.toString(16);
     });
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="container-pl">

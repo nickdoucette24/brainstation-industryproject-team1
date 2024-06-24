@@ -18,20 +18,19 @@ const productsRoutes = require("./routes/products");
 const retailersRoutes = require("./routes/retailers");
 const dataRoutes = require("./routes/data");
 
-app.use("/dashboard", dashboardRoutes);
-app.use("/auth", authRoutes);
-app.use("/api/products", productsRoutes);
-app.use("/api/retailers", retailersRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/auth", authRoutes); // Added /api prefix
+app.use("/api/products", productsRoutes); // Added /api prefix
+app.use("/api/retailers", retailersRoutes); // Added /api prefix
 app.use("/api/data", dataRoutes);
+
+app.use(express.static("public"));
 
 // Function to get the current date in the desired format
 function getCurrentDate() {
   const current_time = new Date();
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
-
-// Determine the correct Python executable
-const pythonExecutable = os.platform() === "win32" ? "python" : "python3";
 
 // Endpoint to fetch combined product data
 app.get("/api/data/products", (req, res) => {
@@ -57,9 +56,16 @@ app.get("/api/data/dashboard", async (req, res) => {
     const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
     const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
-    const dellData = await csvtojson().fromFile(dellFilePath);
-    const bestbuyData = await csvtojson().fromFile(bestbuyFilePath);
-    const neweggData = await csvtojson().fromFile(neweggFilePath);
+    console.log('Checking file paths:');
+    console.log(`Dell: ${dellFilePath}`);
+    console.log(`BestBuy: ${bestbuyFilePath}`);
+    console.log(`Newegg: ${neweggFilePath}`);
+
+    const [dellData, bestbuyData, neweggData] = await Promise.all([
+      csvtojson().fromFile(dellFilePath),
+      csvtojson().fromFile(bestbuyFilePath),
+      csvtojson().fromFile(neweggFilePath)
+    ]);
 
     const totalOffenders = 2; // Assuming monitoring BestBuy and Newegg
     const bestbuyTop5 = bestbuyData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
@@ -90,8 +96,6 @@ app.get("/api/data/dashboard", async (req, res) => {
     res.status(500).json({ message: 'Error fetching dashboard data', error });
   }
 });
-
-app.use(express.static("public"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
