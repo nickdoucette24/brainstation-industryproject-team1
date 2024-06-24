@@ -73,7 +73,7 @@ conditions = [
     (df['Deviation'] < -10)
 ]
 status = ['Green', 'Yellow', 'Red']
-df['Status'] = np.select(conditions, status, default='Unknown')
+df['Status'] = np.select(conditions, status, default='Undetermined')
 
 # Print the DataFrame for verification
 print(df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
@@ -82,3 +82,23 @@ print(df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']]
 save_path = os.path.join(data_dir, f'bestbuy_comparison_{date}.csv')
 df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
 print(f"Comparison results saved to {save_path}")
+
+# Commenting out the charts
+# List the offending products with a descending order in a bar chart
+# plt.figure()
+# plt.bar(offender['Dell_product'], offender['Price_dif'])
+# plt.xticks(rotation=-45)
+# plt.ylabel('Price difference in $CAD')
+# plt.xlabel('Dell product')
+# plt.show()
+
+# Make a line graph showing the deviation percentage of each product from this retailer
+df_deviation_order = df.sort_values('Deviation', ascending=True)
+
+# plt.figure()
+# plt.plot(df_deviation_order['Dell_product'], df_deviation_order['Deviation'])
+# plt.xticks(rotation=-45)
+# plt.title('The deviation % of BestBuy\'s price comparing to Dell MSRP')
+# plt.ylabel('Price deviation %')
+# plt.xlabel('Dell product')
+# plt.show()
