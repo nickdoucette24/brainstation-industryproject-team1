@@ -67,7 +67,7 @@ const ProfileSettings = () => {
           setErrors({ form: response.data.message });
         }
       } catch (error) {
-        setErrors({ form: "Unable to Register User." });
+        setErrors({ form: "Unable to Update User." });
       }
     }
   };
