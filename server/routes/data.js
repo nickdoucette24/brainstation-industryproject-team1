@@ -25,7 +25,7 @@ router.get('/dashboard', async (req, res) => {
       csvtojson().fromFile(neweggFilePath)
     ]);
 
-    const totalOffenders = 2; // Assuming monitoring BestBuy and Newegg
+    const totalOffenders = 2; 
     const bestbuyTop5 = bestbuyData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
     const neweggTop5 = neweggData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
     const totalDeviatedProductsBestBuy = bestbuyData.filter(item => item.Deviation !== 0).length;
@@ -33,8 +33,6 @@ router.get('/dashboard', async (req, res) => {
     const averageDeviationNewegg = neweggData.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / neweggData.length;
     const complianceRateBestBuy = (bestbuyData.filter(item => item.Status === 'Green').length / bestbuyData.length) * 100;
     const complianceRateNewegg = (neweggData.filter(item => item.Status === 'Green').length / neweggData.length) * 100;
-
-    const combinedTopOffenders = [...bestbuyTop5, ...neweggTop5].sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
 
     const dashboardData = {
       totalOffenders,
@@ -44,8 +42,7 @@ router.get('/dashboard', async (req, res) => {
       averageDeviationBestBuy,
       averageDeviationNewegg,
       complianceRateBestBuy,
-      complianceRateNewegg,
-      combinedTopOffenders
+      complianceRateNewegg
     };
 
     res.json(dashboardData);
