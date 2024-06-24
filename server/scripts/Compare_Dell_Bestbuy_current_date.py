@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# !!!Important note: run the scrapper first to obtain the daily csv before any data analysis!!!
-# This script is for comparing the price difference between Dell and BestBuy
+# !!!Important note: run the scraper first to obtain the daily CSV before any data analysis!!!
+# This script is for comparing the price difference between Dell and Newegg
 
 # Import necessary libraries
 import pandas as pd
+import numpy as np
 import datetime
 import os
 from dotenv import load_dotenv
@@ -13,7 +14,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# The followings are to prepare the variables
+# Prepare the variables
 current_time = datetime.datetime.now()
 date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
 
@@ -21,24 +22,23 @@ date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_t
 script_dir = os.path.dirname(__file__)
 data_dir = os.path.join(script_dir, 'data')
 
-# Import all csvs needed for this comparison
-# !!!Important: the index.csv file is a local file. Make sure you put the correct path here to find the file
+# Import all CSVs needed for this comparison
 index_path = os.path.join(script_dir, 'index.csv')
 index = pd.read_csv(index_path)
 dell_path = os.path.join(data_dir, f'official_dell_monitor_{date}.csv')
 dell = pd.read_csv(dell_path)
-bestbuy_path = os.path.join(data_dir, f'bestbuy_dell_monitor_{date}.csv')
-bestbuy = pd.read_csv(bestbuy_path)
+newegg_path = os.path.join(data_dir, f'newegg_dell_monitor_{date}.csv')
+newegg = pd.read_csv(newegg_path)
+newegg['Newegg_price'] = newegg['Newegg_price'].astype(float)
 
-# Merge the csvs into a big table
-df = pd.merge(index, bestbuy, how="left", on=['Bestbuy_sku'])
+# Merge the CSVs into a big table
+df = pd.merge(index, newegg, how="left", on=['Newegg_sku'])
 df = pd.merge(df, dell, how="left", on=['Dell_product'])
-df = df[['Dell_product', 'Bestbuy_sku', 'Bestbuy_price', 'Dell_price']]
+df = df[['Dell_product', 'Newegg_sku', 'Newegg_price', 'Dell_price']]
 df.dropna(axis=0, inplace=True)
-df['Bestbuy_sku'] = df['Bestbuy_sku'].astype(int)
 
 # Create a new column of how the retailer's price is different from Dell's price
-df['Price_dif'] = df['Bestbuy_price'] - df['Dell_price']
+df['Price_dif'] = df['Newegg_price'] - df['Dell_price']
 
 offender = df.sort_values('Price_dif', ascending=True)
 
@@ -60,9 +60,6 @@ print(f'Total offending products are {offender.shape[0]}.')
 print(f'Total deviated products are {deviated.shape[0]}.')
 
 # Compliance rate
-# Important note: This is to recording only the products that are undercutting.
-# Which means it does not count the products those are sold more expensive than Dell.
-# It is rounded to integar.
 print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.shape[0] * 100)}%.')
 
 # Commenting out the charts
@@ -81,7 +78,7 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 # plt.figure()
 # plt.plot(df_deviation_order['Dell_product'], df_deviation_order['Deviation'])
 # plt.xticks(rotation=-45)
-# plt.title('The deviation % of Best Buy\'s price comparing to Dell MSRP')
+# plt.title('The deviation % of Newegg\'s price comparing to Dell MSRP')
 # plt.ylabel('Price deviation %')
 # plt.xlabel('Dell product')
 # plt.show()
@@ -90,14 +87,18 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 dev_perc = round(df['Deviation'].mean(), 2)
 print(f'The average deviation for this retailer is: {dev_perc}%.')
 
-# The following is to bring out the Retailer page categorizing deviation percentage into colored status
-conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= -10), (df['Deviation'] < -10)]
+# Categorize deviation percentage into colored status
+conditions = [
+    (df['Deviation'] >= 0),
+    (df['Deviation'] < 0) & (df['Deviation'] >= -10),
+    (df['Deviation'] < -10)
+]
 status = ['Green', 'Yellow', 'Red']
-default = 'Unknown'
-df['Status'] = 'Unknown' # np.select(conditions, status, default=default)
-print(df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
+df['Status'] = np.select(conditions, status, default='Unknown')
 
-# Below is to save the comparison results as csv
-save_path = os.path.join(data_dir, f'bestbuy_comparison_{date}.csv')
-df[['Dell_product', 'Dell_price', 'Bestbuy_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
+print(df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
+
+# Save comparison results as CSV
+save_path = os.path.join(data_dir, f'newegg_comparison_{date}.csv')
+df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
 print(f"Comparison results saved to {save_path}")

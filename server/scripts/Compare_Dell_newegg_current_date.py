@@ -6,6 +6,7 @@
 
 # Import necessary libraries
 import pandas as pd
+import numpy as np
 import datetime
 import os
 from dotenv import load_dotenv
@@ -13,7 +14,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# The followings are to prepare the variables
+# Prepare the variables
 current_time = datetime.datetime.now()
 date = str(current_time.year) + str(current_time.month).zfill(2) + str(current_time.day).zfill(2)
 
@@ -22,7 +23,6 @@ script_dir = os.path.dirname(__file__)
 data_dir = os.path.join(script_dir, 'data')
 
 # Import all CSVs needed for this comparison
-# !!!Important: the index.csv file is a local file. Make sure you put the correct path here to find the file
 index_path = os.path.join(script_dir, 'index.csv')
 index = pd.read_csv(index_path)
 dell_path = os.path.join(data_dir, f'official_dell_monitor_{date}.csv')
@@ -48,7 +48,7 @@ offender = df.sort_values('Price_dif', ascending=True)
 offender = df.loc[df['Price_dif'] < 0].sort_values('Price_dif', ascending=True)
 deviated = df.loc[df['Price_dif'] != 0].sort_values('Price_dif', ascending=True)
 
-# The followings are to provide some headers
+# Provide some headers
 
 # Total products sold with this retailer
 print(f'Total products listed here are {df.shape[0]}.')
@@ -60,9 +60,6 @@ print(f'Total offending products are {offender.shape[0]}.')
 print(f'Total deviated products are {deviated.shape[0]}.')
 
 # Compliance rate
-# Important note: This is to recording only the products that are undercutting.
-# Which means it does not count the products those are sold more expensive than Dell.
-# It is rounded to integer.
 print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.shape[0] * 100)}%.')
 
 # Commenting out the charts
@@ -90,11 +87,15 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 dev_perc = round(df['Deviation'].mean(), 2)
 print(f'The average deviation for this retailer is: {dev_perc}%.')
 
-# The following is to bring out the Retailer page categorizing deviation percentage into colored status
-conditions = [(df['Deviation'] >= 0), (df['Deviation'] < 0) & (df['Deviation'] >= -10), (df['Deviation'] < -10)]
+# Categorize deviation percentage into colored status
+conditions = [
+    (df['Deviation'] >= 0),
+    (df['Deviation'] < 0) & (df['Deviation'] >= -10),
+    (df['Deviation'] < -10)
+]
 status = ['Green', 'Yellow', 'Red']
-default = 'Unknown'
-df['Status'] = 'Unknown' # np.select(conditions, status, default=default)
+df['Status'] = np.select(conditions, status, default='Unknown')
+
 print(df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
 
 # Save comparison results as CSV

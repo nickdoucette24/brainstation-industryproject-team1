@@ -2,10 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./ProductList.scss";
 
+// Base Url
+const url = process.env.REACT_APP_BASE_URL;
+
 const ProductList = () => {
-  // State to store product data, loading status, and total offenders
+  // State to store product data and total offenders
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [totalOffenders, setTotalOffenders] = useState(0);
 
   // Function to combine data from Dell, BestBuy, and Newegg
@@ -19,7 +21,10 @@ const ProductList = () => {
         newegg.find((item) => item.Dell_product === dellItem.Dell_product) ||
         {};
 
-      if (bestbuyItem.Deviation < 0 || neweggItem.Deviation < 0) {
+      if (
+        parseFloat(bestbuyItem.Deviation) < 0 ||
+        parseFloat(neweggItem.Deviation) < 0
+      ) {
         offendersCount++;
       }
 
@@ -28,10 +33,14 @@ const ProductList = () => {
         dellProductName: dellItem.Dell_product,
         msrp: dellItem.Dell_price,
         bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
-        bestbuyDeviation: bestbuyItem.Deviation || "N/A",
+        bestbuyDeviation: bestbuyItem.Deviation
+          ? parseFloat(bestbuyItem.Deviation).toFixed(2)
+          : "N/A",
         bestbuyCompliance: bestbuyItem.Status || "N/A",
         neweggPrice: neweggItem.Newegg_price || "Not Available",
-        neweggDeviation: neweggItem.Deviation || "N/A",
+        neweggDeviation: neweggItem.Deviation
+          ? parseFloat(neweggItem.Deviation).toFixed(2)
+          : "N/A",
         neweggCompliance: neweggItem.Status || "N/A",
       };
     });
@@ -43,12 +52,12 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const dellData = await axios.get("http://localhost:8080/api/data/dell");
+        const dellData = await axios.get(`${url}/api/data/dell`);
         const bestbuyData = await axios.get(
-          "http://localhost:8080/api/data/compare/dell-bestbuy"
+          `${url}/api/data/compare/dell-bestbuy`
         );
         const neweggData = await axios.get(
-          "http://localhost:8080/api/data/compare/dell-newegg"
+          `${url}/api/data/compare/dell-newegg`
         );
 
         const combinedData = combineData(
@@ -57,15 +66,13 @@ const ProductList = () => {
           neweggData.data
         );
         setProducts(combinedData);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [combineData]);
+  }, [combineData, url]);
 
   // Generate a unique ID for each product
   const generateUUID = () => {
@@ -75,10 +82,6 @@ const ProductList = () => {
       return v.toString(16);
     });
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="container-pl">
