@@ -29,6 +29,19 @@ const ProductList = () => {
         offendersCount++;
       }
 
+      const getStatus = (status) => {
+        switch (status) {
+          case 'Green':
+            return 'Compliant';
+          case 'Yellow':
+            return 'Needs Attention';
+          case 'Red':
+            return 'Non-Compliant';
+          default:
+            return 'Undetermined';
+        }
+      };
+
       return {
         id: generateUUID(),
         dellProductName: dellItem.Dell_product,
@@ -37,12 +50,12 @@ const ProductList = () => {
         bestbuyDeviation: bestbuyItem.Deviation
           ? parseFloat(bestbuyItem.Deviation).toFixed(2)
           : "N/A",
-        bestbuyCompliance: bestbuyItem.Status || "N/A",
+        bestbuyCompliance: getStatus(bestbuyItem.Status),
         neweggPrice: neweggItem.Newegg_price || "Not Available",
         neweggDeviation: neweggItem.Deviation
           ? parseFloat(neweggItem.Deviation).toFixed(2)
           : "N/A",
-        neweggCompliance: neweggItem.Status || "N/A",
+        neweggCompliance: getStatus(neweggItem.Status),
       };
     });
     setTotalOffenders(offendersCount);

@@ -40,27 +40,48 @@ df.dropna(axis=0, inplace=True)
 # Create a new column of how the retailer's price is different from Dell's price
 df['Price_dif'] = df['Newegg_price'] - df['Dell_price']
 
-offender = df.sort_values('Price_dif', ascending=True)
+# Calculate the deviation
+df['Deviation'] = (df['Price_dif'] / df['Dell_price']) * 100
 
-# We are separating "offenders" from "deviated"
-# 'Offenders' means the products that the retailer undercutting Dell
-# 'Deviated' means the products that sold with different price with Dell
+# Offenders: products where Newegg price is less than Dell price
 offender = df.loc[df['Price_dif'] < 0].sort_values('Price_dif', ascending=True)
+
+# Deviated: products where Newegg price is not equal to Dell price
 deviated = df.loc[df['Price_dif'] != 0].sort_values('Price_dif', ascending=True)
 
-# Provide some headers
-
 # Total products sold with this retailer
-print(f'Total products listed here are {df.shape[0]}.')
+total_products = df.shape[0]
+print(f'Total products listed here are {total_products}.')
 
 # Total offending products from this retailer
-print(f'Total offending products are {offender.shape[0]}.')
+total_offending_products = offender.shape[0]
+print(f'Total offending products are {total_offending_products}.')
 
 # Total deviated products
-print(f'Total deviated products are {deviated.shape[0]}.')
+total_deviated_products = deviated.shape[0]
+print(f'Total deviated products are {total_deviated_products}.')
 
 # Compliance rate
-print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.shape[0] * 100)}%.')
+compliant_products = df.loc[df['Price_dif'] == 0].shape[0]
+compliance_rate = (compliant_products / total_products) * 100
+print(f'The compliance rate is {round(compliance_rate, 2)}%.')
+
+# Categorize deviation percentage into colored status
+conditions = [
+    (df['Deviation'] >= 0),
+    (df['Deviation'] < 0) & (df['Deviation'] >= -10),
+    (df['Deviation'] < -10)
+]
+status = ['Green', 'Yellow', 'Red']
+df['Status'] = np.select(conditions, status, default='Undetermined')
+
+# Print the DataFrame for verification
+print(df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
+
+# Save comparison results as CSV
+save_path = os.path.join(data_dir, f'newegg_comparison_{date}.csv')
+df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
+print(f"Comparison results saved to {save_path}")
 
 # Commenting out the charts
 # List the offending products with a descending order in a bar chart
@@ -72,7 +93,6 @@ print(f'The compliance rate is {round((df.shape[0] - offender.shape[0]) / df.sha
 # plt.show()
 
 # Make a line graph showing the deviation percentage of each product from this retailer
-df['Deviation'] = df['Price_dif'] / df['Dell_price'] * 100
 df_deviation_order = df.sort_values('Deviation', ascending=True)
 
 # plt.figure()
@@ -82,23 +102,3 @@ df_deviation_order = df.sort_values('Deviation', ascending=True)
 # plt.ylabel('Price deviation %')
 # plt.xlabel('Dell product')
 # plt.show()
-
-# Calculate avg. deviation
-dev_perc = round(df['Deviation'].mean(), 2)
-print(f'The average deviation for this retailer is: {dev_perc}%.')
-
-# Categorize deviation percentage into colored status
-conditions = [
-    (df['Deviation'] >= 0),
-    (df['Deviation'] < 0) & (df['Deviation'] >= -10),
-    (df['Deviation'] < -10)
-]
-status = ['Green', 'Yellow', 'Red']
-df['Status'] = np.select(conditions, status, default='Unknown')
-
-print(df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True))
-
-# Save comparison results as CSV
-save_path = os.path.join(data_dir, f'newegg_comparison_{date}.csv')
-df[['Dell_product', 'Dell_price', 'Newegg_price', 'Deviation', 'Status']].sort_values('Deviation', ascending=True).to_csv(save_path, index=False)
-print(f"Comparison results saved to {save_path}")
