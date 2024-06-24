@@ -32,16 +32,6 @@ const ProfileSettings = () => {
     });
   };
 
-  const handleClear = (event) => {
-    event.preventDefault();
-    setFormValues({
-      first_name: "",
-      last_name: "",
-      email: "",
-    });
-    setErrors({});
-  };
-
   const validate = () => {
     let formErrors = {};
     if (!formValues.first_name)
@@ -158,7 +148,7 @@ const ProfileSettings = () => {
         </div>
       </form>
       <div className="update-buttons">
-        <UpdateButtons handleSubmit={handleSubmit} handleClear={handleClear} />
+        <UpdateButtons handleSubmit={handleSubmit} userId={userId} />
       </div>
     </>
   );

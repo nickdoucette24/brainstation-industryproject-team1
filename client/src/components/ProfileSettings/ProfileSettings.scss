@@ -28,7 +28,7 @@
       font-size: 1rem;
       margin: 0;
       padding-left: 0.75rem;
-      color: $Midnight;
+      color: $Dell-Blue;
     }
   }
 }
@@ -38,12 +38,12 @@
     &--label {
       @include input-field-labels;
       color: $Off-Black;
-      margin: 0.5rem 0;
     }
 
     &--field {
       @include input-field;
       color: $Dell-Blue;
+      margin: 1rem 0 2rem 0;
     }
   }
 }
