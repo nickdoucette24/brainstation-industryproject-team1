@@ -5,7 +5,7 @@ const csvtojson = require('csvtojson');
 require('dotenv').config();
 
 // Load environment variables
-const DATA_DIR = path.resolve(__dirname, '../scripts/data'); // Ensure the correct path
+const DATA_DIR = path.resolve(__dirname, '../scripts/data'); 
 
 // Function to get the current date in the desired format
 function getCurrentDate() {

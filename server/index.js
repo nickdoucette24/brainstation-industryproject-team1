@@ -39,15 +39,19 @@ function getCurrentDate() {
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
 
-// Determine the correct Python executable
-const pythonExecutable = os.platform() === 'win32' ? 'python' : 'python3';
-
 // Endpoint to fetch Dell data
 router.get('/dell', async (req, res) => {
   const date = getCurrentDate();
   const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
 
+  console.log(`Fetching Dell data from: ${dellFilePath}`); // Debug log
+
   try {
+    if (!fs.existsSync(dellFilePath)) {
+      console.error(`File does not exist: ${dellFilePath}`);
+      return res.status(404).json({ message: `File does not exist: ${dellFilePath}` });
+    }
+
     const dellData = await csvtojson().fromFile(dellFilePath);
     res.json(dellData);
   } catch (error) {
@@ -60,6 +64,8 @@ router.get('/dell', async (req, res) => {
 router.get('/compare/dell-bestbuy', async (req, res) => {
   const date = getCurrentDate();
   const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+
+  console.log(`Fetching BestBuy data from: ${bestbuyFilePath}`); // Debug log
 
   try {
     const bestbuyData = await csvtojson().fromFile(bestbuyFilePath);
@@ -74,6 +80,8 @@ router.get('/compare/dell-bestbuy', async (req, res) => {
 router.get('/compare/dell-newegg', async (req, res) => {
   const date = getCurrentDate();
   const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
+
+  console.log(`Fetching Newegg data from: ${neweggFilePath}`); // Debug log
 
   try {
     const neweggData = await csvtojson().fromFile(neweggFilePath);
@@ -138,6 +146,8 @@ app.get('/api/data/products', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `combined_product_data_${date}.csv`);
 
+  console.log(`Fetching combined product data from: ${csvFilePath}`); // Debug log
+
   csvtojson()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
@@ -153,6 +163,8 @@ app.get('/api/data/products', (req, res) => {
 app.get('/api/data/compare/dell-bestbuy', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+
+  console.log(`Fetching Dell-BestBuy comparison data from: ${csvFilePath}`); // Debug log
 
   csvtojson()
     .fromFile(csvFilePath)
@@ -170,6 +182,8 @@ app.get('/api/data/compare/dell-newegg', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
+  console.log(`Fetching Dell-Newegg comparison data from: ${csvFilePath}`); // Debug log
+
   csvtojson()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
@@ -185,6 +199,8 @@ app.get('/api/data/compare/dell-newegg', (req, res) => {
 app.get('/api/data/bestbuy', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `bestbuy_dell_monitor_${date}.csv`);
+
+  console.log(`Fetching BestBuy Dell monitors data from: ${csvFilePath}`); // Debug log
 
   csvtojson()
     .fromFile(csvFilePath)
@@ -202,6 +218,8 @@ app.get('/api/data/newegg', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `newegg_dell_monitor_${date}.csv`);
 
+  console.log(`Fetching Newegg Dell monitors data from: ${csvFilePath}`); // Debug log
+
   csvtojson()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
@@ -217,6 +235,8 @@ app.get('/api/data/newegg', (req, res) => {
 app.get('/api/data/dell', (req, res) => {
   const date = getCurrentDate();
   const csvFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
+
+  console.log(`Fetching Dell monitors data from: ${csvFilePath}`); // Debug log
 
   csvtojson()
     .fromFile(csvFilePath)
