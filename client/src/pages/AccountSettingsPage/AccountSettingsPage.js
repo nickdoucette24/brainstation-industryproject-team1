@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Header from "../../components/Header/Header";
 import SideNavigation from "../../components/SideNavigation/SideNavigation";
@@ -10,11 +11,22 @@ import "./AccountSettingsPage.scss";
 
 const AccountSettingsPage = () => {
   const loggedIn = useAuth();
+  const { userId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedComponent, setSelectedComponent] = useState("Profile");
 
-  if (!loggedIn) {
-    return null;
-  }
+  useEffect(() => {
+    // if (!loggedIn) {
+    //   navigate("/auth");
+    // }
+
+    const queryParams = new URLSearchParams(location.search);
+    const tab = queryParams.get("tab");
+    if (tab) {
+      setSelectedComponent(tab.charAt(0).toUpperCase() + tab.slice(1));
+    }
+  }, [loggedIn, navigate, location]);
 
   const settingsComponents = {
     Profile: <ProfileSettings />,
