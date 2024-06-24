@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Header from "../../components/Header/Header";
 import SideNavigation from "../../components/SideNavigation/SideNavigation";
@@ -11,7 +11,7 @@ import "./AccountSettingsPage.scss";
 
 const AccountSettingsPage = () => {
   const loggedIn = useAuth();
-  const { userId } = useParams();
+  // const { userId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedComponent, setSelectedComponent] = useState("Profile");

@@ -4,6 +4,7 @@
 
 .account-settings {
   display: flex;
+  background-color: $White;
 
   &__nav-container {
     @include flex-center;
@@ -12,7 +13,9 @@
   }
 
   &__section-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 }
