@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import "./UpdateButtons.scss";
 
-const UpdateButtons = ({ handleSubmit, handleClear }) => {
+const UpdateButtons = ({ handleSubmit, userId }) => {
   return (
     <div className="update-buttons__container">
       <button
@@ -10,13 +11,9 @@ const UpdateButtons = ({ handleSubmit, handleClear }) => {
       >
         Save
       </button>
-      <button
-        type="button"
-        onClick={handleClear}
-        className="update-cancel__button"
-      >
-        Cancel
-      </button>
+      <Link to={`/dashboard/${userId}`} className="update-cancel__button">
+        <span className="update-cancel__button--text">Cancel</span>
+      </Link>
     </div>
   );
 };

@@ -24,7 +24,6 @@ body {
   &__nav {
     @include flex-center;
     width: 15%;
-    height: 100%;
   }
 
   &__body {

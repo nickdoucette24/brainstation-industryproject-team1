@@ -104,7 +104,7 @@ const SideNavigation = () => {
           <ul className="nav-list">
             <li className="nav-list__item">
               <Link
-                to={`/dashboard/${userId}/settings`}
+                to={`/dashboard/${userId}/settings?tab=profile`}
                 className={`nav-list__link ${
                   isActive(`/dashboard/${userId}/settings`) ? "selected" : ""
                 }`}

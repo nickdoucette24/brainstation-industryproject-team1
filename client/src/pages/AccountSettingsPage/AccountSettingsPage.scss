@@ -7,9 +7,8 @@
   background-color: $White;
 
   &__nav-container {
-    @include flex-center;
+    display: flex;
     width: 21.8%;
-    height: 100%;
   }
 
   &__section-container {
@@ -18,4 +17,8 @@
     flex-direction: column;
     align-items: center;
   }
+}
+
+.update-buttons {
+  margin: 3rem 0;
 }

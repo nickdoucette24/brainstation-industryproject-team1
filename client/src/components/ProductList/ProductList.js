@@ -17,7 +17,7 @@ const ProductList = () => {
       const bestbuyItem = bestbuy.find(item => item.Dell_product === dellItem.Dell_product) || {};
       const neweggItem = newegg.find(item => item.Dell_product === dellItem.Dell_product) || {};
 
-      if (bestbuyItem.Deviation < 0 || neweggItem.Deviation < 0) {
+      if (parseFloat(bestbuyItem.Deviation) < 0 || parseFloat(neweggItem.Deviation) < 0) {
         offendersCount++;
       }
 
@@ -26,10 +26,10 @@ const ProductList = () => {
         dellProductName: dellItem.Dell_product,
         msrp: dellItem.Dell_price,
         bestbuyPrice: bestbuyItem.Bestbuy_price || 'Not Available',
-        bestbuyDeviation: bestbuyItem.Deviation || 'N/A',
+        bestbuyDeviation: bestbuyItem.Deviation ? parseFloat(bestbuyItem.Deviation).toFixed(2) : 'N/A',
         bestbuyCompliance: bestbuyItem.Status || 'N/A',
         neweggPrice: neweggItem.Newegg_price || 'Not Available',
-        neweggDeviation: neweggItem.Deviation || 'N/A',
+        neweggDeviation: neweggItem.Deviation ? parseFloat(neweggItem.Deviation).toFixed(2) : 'N/A',
         neweggCompliance: neweggItem.Status || 'N/A'
       };
     });
