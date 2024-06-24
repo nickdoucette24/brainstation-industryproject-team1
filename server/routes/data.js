@@ -17,18 +17,14 @@ function getCurrentDate() {
 // Endpoint to run the comparison script and return the data
 router.get('/compare/dell-bestbuy', async (req, res) => {
   try {
-    // Run the comparison script
     exec('python3 ./scripts/compare_dell_bestbuy_current_date.py', (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing script: ${error.message}`);
         console.error(`Script stderr: ${stderr}`);
         return res.status(500).json({ message: 'Error executing comparison script', error: error.message, stderr });
       }
-
-      // Read the generated CSV file
       const date = getCurrentDate();
       const csvFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
-      console.log(`Reading CSV file from: ${csvFilePath}`); // Add logging
       csvtojson()
         .fromFile(csvFilePath)
         .then((jsonObj) => {
@@ -47,18 +43,14 @@ router.get('/compare/dell-bestbuy', async (req, res) => {
 
 router.get('/compare/dell-newegg', async (req, res) => {
   try {
-    // Run the comparison script
     exec('python3 ./scripts/compare_dell_newegg_current_date.py', (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing script: ${error.message}`);
         console.error(`Script stderr: ${stderr}`);
         return res.status(500).json({ message: 'Error executing comparison script', error: error.message, stderr });
       }
-
-      // Read the generated CSV file
       const date = getCurrentDate();
       const csvFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-      console.log(`Reading CSV file from: ${csvFilePath}`); // Add logging
       csvtojson()
         .fromFile(csvFilePath)
         .then((jsonObj) => {
@@ -82,10 +74,6 @@ router.get('/dashboard', async (req, res) => {
     const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
     const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
     const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-
-    console.log(`Dell File Path: ${dellFilePath}`);
-    console.log(`BestBuy File Path: ${bestbuyFilePath}`);
-    console.log(`Newegg File Path: ${neweggFilePath}`);
 
     const dellData = await csvtojson().fromFile(dellFilePath);
     const bestbuyData = await csvtojson().fromFile(bestbuyFilePath);
@@ -113,8 +101,6 @@ router.get('/dashboard', async (req, res) => {
       complianceRateNewegg,
       combinedTopOffenders
     };
-
-    console.log('Dashboard Data:', JSON.stringify(dashboardData, null, 2)); // Add logging here
 
     res.json(dashboardData);
   } catch (error) {

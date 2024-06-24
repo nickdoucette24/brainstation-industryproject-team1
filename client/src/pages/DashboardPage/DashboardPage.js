@@ -13,9 +13,10 @@ const DashboardPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const loggedIn = useAuth();
+  const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
-  // const [user, setUser] = useState(null); // Commented out because it's not used yet
-  // const [loading, setLoading] = useState(true); // Commented out because it's not used yet
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -29,8 +30,7 @@ const DashboardPage = () => {
           });
 
           if (response.data) {
-            // setUser(response.data); // Commented out because it's not used yet
-            // setLoading(false); // Commented out because it's not used yet
+            setUser(response.data);
           } else {
             navigate("/auth");
           }
@@ -46,14 +46,31 @@ const DashboardPage = () => {
         setProducts(response.data);
       } catch (err) {
         console.error("Error fetching products:", err);
-      } finally {
-        // setLoading(false); // Commented out because it's not used yet
       }
     };
 
-    fetchUser();
-    fetchProducts();
+    const fetchDashboardData = async () => {
+      try {
+        const response = await axios.get(`${url}/data/dashboard`);
+        setDashboardData(response.data);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      }
+    };
+
+    const initializeData = async () => {
+      await fetchUser();
+      await fetchProducts();
+      await fetchDashboardData();
+      setLoading(false);
+    };
+
+    initializeData();
   }, [id, navigate, loggedIn]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="main-page">
@@ -66,6 +83,56 @@ const DashboardPage = () => {
         </div>
         <div className="dashboard-container">
           <h1>Dashboard</h1>
+          <div className="user-info">
+            <h2>Welcome, {user?.first_name} {user?.last_name}</h2>
+          </div>
+          <div className="dashboard-metrics">
+            <p>Total Offenders: {dashboardData?.totalOffenders}</p>
+            <p>Total Deviated Products (BestBuy): {dashboardData?.totalDeviatedProductsBestBuy}</p>
+            <p>Average Price Deviation (BestBuy): {dashboardData?.averageDeviationBestBuy?.toFixed(2)}%</p>
+            <p>Average Price Deviation (Newegg): {dashboardData?.averageDeviationNewegg?.toFixed(2)}%</p>
+            <p>Compliance Rate (BestBuy): {dashboardData?.complianceRateBestBuy?.toFixed(2)}%</p>
+            <p>Compliance Rate (Newegg): {dashboardData?.complianceRateNewegg?.toFixed(2)}%</p>
+          </div>
+          <h2>Top 5 Offending Products (BestBuy)</h2>
+          <ul>
+            {dashboardData?.bestbuyTop5.map(product => (
+              <li key={product.Dell_product}>
+                {product.Dell_product} - Deviation: {product.Deviation}%
+              </li>
+            ))}
+          </ul>
+          <h2>Top 5 Offending Products (Newegg)</h2>
+          <ul>
+            {dashboardData?.neweggTop5.map(product => (
+              <li key={product.Dell_product}>
+                {product.Dell_product} - Deviation: {product.Deviation}%
+              </li>
+            ))}
+          </ul>
+          <h2>Combined Top Offenders</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Retailer</th>
+                <th>Product Name</th>
+                <th>MSRP</th>
+                <th>Current Price</th>
+                <th>Deviation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData?.combinedTopOffenders.map(product => (
+                <tr key={product.Dell_product}>
+                  <td>{product.Retailer}</td>
+                  <td>{product.Dell_product}</td>
+                  <td>{product.Dell_price}</td>
+                  <td>{product.Current_price}</td>
+                  <td>{product.Deviation}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <div className="product-overview">
             <h2>Product Overview</h2>
             {products.map((product) => (
