@@ -38,6 +38,7 @@
     &--label {
       @include input-field-labels;
       color: $Off-Black;
+      margin: 0.5rem 0;
     }
 
     &--field {
