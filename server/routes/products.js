@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const knex = require('../knex'); 
+const knex = require("../knex");
 
 // Endpoint to fetch products
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const products = await knex('products').select('*');
-    res.json(products);
+    const products = await knex("products").select("*");
+    res.status(200).json(products);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch products' });
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import searchIcon from "../../assets/icons/search-icon.svg";
@@ -13,7 +13,7 @@ const url = process.env.REACT_APP_BASE_URL;
 const Header = () => {
   const [user, setUser] = useState({});
   const [isTyping, setIsTyping] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { userId } = useParams();
   const loggedIn = useAuth();
 
@@ -31,7 +31,7 @@ const Header = () => {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [userId, loggedIn]);
 
   return (
     <header className="header-bar">
@@ -54,11 +54,17 @@ const Header = () => {
         </div>
         <div className="header-wrapper__content">
           <Link to={`/dashboard/${userId}/settings`} className="alerts-link">
-            <img src={alertIcon} className="alerts-link__icon" />
+            <img
+              src={alertIcon}
+              className="alerts-link__icon"
+              alt="bell icon for the alert icon"
+            />
           </Link>
           <div className="user-info">
             <div className="user-info__titles">
-              <h5 className="user-info__titles--name">Ali Hayder</h5>
+              <h5 className="user-info__titles--name">
+                {user.first_name} {user.last_name}
+              </h5>
               <p className="user-info__titles--position">Admin</p>
             </div>
             <div className="img-cont">
