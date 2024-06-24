@@ -66,20 +66,15 @@ const RegisterForm = () => {
           `${url}/auth/register`,
           registerPayload
         );
-        const message = response.data.message;
-        console.log(response.data);
+
         if (response.data.success) {
-          const userId = response.data.id;
-          localStorage.setItem("token", response.data.token);
+          const { id, token } = response.data;
+          localStorage.setItem("jwt", token);
 
           // Navigate AFTER the userId is received
-          if (userId) {
-            navigate(`/dashboard/${userId}`);
-          } else {
-            setErrors({ form: "Registration failed. Please try again." });
-          }
+          navigate(`/dashboard/${id}`);
         } else {
-          setErrors({ form: message });
+          setErrors({ form: response.data.message });
         }
       } catch (error) {
         setErrors({ form: "Unable to Register User." });

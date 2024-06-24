@@ -1,3 +1,8 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 @use "../../styles/global/global" as *;
+
+.settings-nav {
+  width: 100%;
+  background-color: $Shale;
+}
