@@ -1,3 +1,16 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 @use "../../styles/global/global" as *;
+
+.account-settings {
+  display: flex;
+
+  &__nav-container {
+    @include flex-center;
+  }
+
+  &__section-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

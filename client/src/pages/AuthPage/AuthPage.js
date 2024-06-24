@@ -25,7 +25,7 @@ export const AuthPage = () => {
       </div>
       <div className="register-wrapper">
         <div className="register-container">
-          <div className="logo-container">
+          <div className="spectra-container">
             <img src={spectraLogo} alt="dell spectra brand logo" />
           </div>
           <div className="auth-form">

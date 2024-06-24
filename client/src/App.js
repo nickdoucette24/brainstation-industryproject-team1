@@ -14,20 +14,19 @@ import "./App.scss";
 function App() {
   const loggedIn = useAuth();
 
+  console.log("Is user logged in?", loggedIn);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        {!loggedIn ? (
-          <Route path="/auth" element={<AuthPage />} />
-        ) : (
-          <Route path="/dashboard/:id" element={<DashboardPage />} />
-        )}
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/dashboard/:userId" element={<DashboardPage />} />
         <Route
-          path="/dashboard/:id/settings"
+          path="/dashboard/:userId/settings"
           element={<AccountSettingsPage />}
         />
-        <Route path="/retailer/:id" element={<RetailerPage />} />
+        <Route path="/retailer/:retailerId" element={<RetailerPage />} />
         <Route path="/product-list" element={<ProductListPage />} />
       </Routes>
     </BrowserRouter>

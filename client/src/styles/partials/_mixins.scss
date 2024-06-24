@@ -222,3 +222,10 @@
   line-height: 1rem;
   font-family: roboto-bold;
 }
+
+@mixin list-label {
+  font-family: roboto-light;
+  font-size: 1.08rem;
+  color: $Dell-Light-Blue;
+  line-height: 1.25rem;
+}
