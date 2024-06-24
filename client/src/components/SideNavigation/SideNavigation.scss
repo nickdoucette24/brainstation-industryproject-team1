@@ -82,7 +82,7 @@
     border: 1px solid transparent;
     transition: background-color 0.1s ease, box-shadow 0.1s ease;
 
-    &:hover {
+    &:not(.selected):hover {
       box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
       background-color: $Dell-Blue;
       border: 1px solid $True-White;
@@ -109,5 +109,6 @@
 }
 
 .selected-icon {
-  filter: $Black;
+  filter: invert(35%) sepia(77%) saturate(2819%) hue-rotate(196deg)
+    brightness(40%) contrast(100%);
 }

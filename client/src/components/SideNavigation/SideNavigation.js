@@ -4,7 +4,6 @@ import spectraLogo from "../../assets/images/logos/dell-spectra-logo-wh.svg";
 import dashboardIcon from "../../assets/icons/dashboard-icon.svg";
 import productsIcon from "../../assets/icons/products-icon.svg";
 import retailersIcon from "../../assets/icons/retailers-icon.svg";
-import settingsIcon from "../../assets/icons/settings-icon.svg";
 import accountIcon from "../../assets/icons/account-icon.svg";
 import logoutIcon from "../../assets/icons/logout-icon.svg";
 
