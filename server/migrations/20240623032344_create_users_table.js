@@ -1,22 +1,12 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.up = function (knex) {
-  return knex.schema.createTable("users", (table) => {
-    table.increments("id").primary();
-    table.string("first_name").notNullable();
-    table.string("last_name").notNullable();
-    table.string("email").notNullable().unique();
-    table.string("password").notNullable();
-    table.timestamp("created_at").defaultTo(knex.fn.now());
-  });
-};
-
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.down = function (knex) {
-  return knex.schema.dropTable("users");
+exports.seed = function(knex) {
+  // Deletes ALL existing entries
+  return knex('retailers').del()
+    .then(function () {
+      // Inserts seed entries
+      return knex('retailers').insert([
+        {name: 'BestBuy', totalProducts: 100, complianceRate: 95.50, averageDeviation: 5.25},
+        {name: 'Newegg', totalProducts: 80, complianceRate: 90.00, averageDeviation: 8.30},
+        {name: 'Amazon', totalProducts: 120, complianceRate: 98.00, averageDeviation: 2.10}
+      ]);
+    });
 };
