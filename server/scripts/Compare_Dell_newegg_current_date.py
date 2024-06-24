@@ -48,7 +48,7 @@ offender = df.sort_values('Price_dif', ascending=True)
 offender = df.loc[df['Price_dif'] < 0].sort_values('Price_dif', ascending=True)
 deviated = df.loc[df['Price_dif'] != 0].sort_values('Price_dif', ascending=True)
 
-# Provide some headers
+# The followings are to provide some headers
 
 # Total products sold with this retailer
 print(f'Total products listed here are {df.shape[0]}.')
