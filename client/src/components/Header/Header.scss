@@ -56,7 +56,8 @@
   }
 
   &__content {
-    width: 12.3124rem;
+    width: auto;
+    max-width: 12.3124rem;
     background-color: transparent;
     height: 2.625rem;
     display: flex;
@@ -85,7 +86,8 @@
   padding: 0.875rem;
   border: 1px solid $True-White;
   border-radius: 4px;
-  width: 7.9375rem;
+  width: auto;
+  max-width: 7.9375rem;
 
   &__titles {
     display: flex;
