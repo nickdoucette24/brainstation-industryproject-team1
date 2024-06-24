@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import boxIcon from "../../assets/icons/box-icon.svg";
 import axios from "axios";
 import "./ProductList.scss";
 
@@ -48,6 +49,12 @@ const ProductList = () => {
     return combined;
   }, []);
 
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   // Fetch product data from APIs and combine them
   useEffect(() => {
     const fetchProducts = async () => {
@@ -84,40 +91,72 @@ const ProductList = () => {
   };
 
   return (
-    <div className="container-pl">
-      <h1 className="title-l">Dell Products</h1>
-      <p>Total Offending Products: {totalOffenders}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Dell Product Name</th>
-            <th>MSRP</th>
-            <th>BestBuy Price</th>
-            <th>BestBuy Deviation</th>
-            <th>BestBuy Compliance</th>
-            <th>Newegg Price</th>
-            <th>Newegg Deviation</th>
-            <th>Newegg Compliance</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>{product.dellProductName}</td>
-              <td>{product.msrp}</td>
-              <td>{product.bestbuyPrice}</td>
-              <td>{product.bestbuyDeviation}</td>
-              <td>{product.bestbuyCompliance}</td>
-              <td>{product.neweggPrice}</td>
-              <td>{product.neweggDeviation}</td>
-              <td>{product.neweggCompliance}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="product-list__wrapper">
+      <div className="product-list__details">
+        <div className="offenders-widget">
+          <div className="offenders-widget__details">
+            <h2 className="offenders-widget__details--heading">
+              Total Offending Products
+            </h2>
+            <span className="offenders-widget__details--count">
+              {totalOffenders}
+            </span>
+          </div>
+          <img
+            className="offenders-widget__icon"
+            src={boxIcon}
+            alt="cube icon for the total offending products widget"
+          />
+        </div>
+        <div className="product-list__heading">
+          <div className="heading__content">
+            <h1 className="heading__content--heading">
+              Product Pricing Compliance
+            </h1>
+            <span className="heading__content--date">{currentDate}</span>
+          </div>
+          <h2 className="product-list__heading--directions">
+            Please review the <strong>compliance status</strong> and{" "}
+            <strong>price deviations</strong> for each product below.
+          </h2>
+        </div>
+      </div>
+      <div className="product-list__table"></div>
+      <div className="export-button"></div>
     </div>
+
+    //   <p>Total Offending Products: {totalOffenders}</p>
+    //   <table>
+    //     <thead>
+    //       <tr>
+    //         <th>ID</th>
+    //         <th>Dell Product Name</th>
+    //         <th>MSRP</th>
+    //         <th>BestBuy Price</th>
+    //         <th>BestBuy Deviation</th>
+    //         <th>BestBuy Compliance</th>
+    //         <th>Newegg Price</th>
+    //         <th>Newegg Deviation</th>
+    //         <th>Newegg Compliance</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {products.map((product) => (
+    //         <tr key={product.id}>
+    //           <td>{product.id}</td>
+    //           <td>{product.dellProductName}</td>
+    //           <td>{product.msrp}</td>
+    //           <td>{product.bestbuyPrice}</td>
+    //           <td>{product.bestbuyDeviation}</td>
+    //           <td>{product.bestbuyCompliance}</td>
+    //           <td>{product.neweggPrice}</td>
+    //           <td>{product.neweggDeviation}</td>
+    //           <td>{product.neweggCompliance}</td>
+    //         </tr>
+    //       ))}
+    //     </tbody>
+    //   </table>
+    // </div>
   );
 };
 

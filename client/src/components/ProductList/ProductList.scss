@@ -1,3 +1,81 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 @use "../../styles/global/global" as *;
+
+.product-list__wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.offenders-widget {
+  display: flex;
+  min-width: 14.125rem;
+  max-width: 14.125rem;
+  padding: 1.25rem;
+  box-shadow: 2px 2px 6px 0px #00000040;
+  background-color: $True-White;
+  border-radius: 1rem;
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &--heading {
+      font-family: roboto-light;
+      font-size: 0.9rem;
+    }
+
+    &--count {
+      font-family: roboto-bold;
+      font-size: 2rem;
+      line-height: 1.75rem;
+    }
+  }
+}
+
+.product-list__details {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.product-list__heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 6px 0px #00000040;
+  padding: 1.25rem;
+  background-color: $True-White;
+  gap: 0.5rem;
+  flex-grow: 1;
+
+  &--directions {
+    font-family: roboto-regular;
+    color: $Grey;
+    font-size: 0.9rem;
+  }
+}
+
+strong {
+  font-family: roboto-bold;
+  font-size: 0.9rem;
+}
+
+.heading__content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  &--heading {
+    font-family: roboto-regular;
+    font-size: 1.5rem;
+    color: $Midnight;
+  }
+
+  &--date {
+    @extend .heading__content--heading;
+  }
+}
