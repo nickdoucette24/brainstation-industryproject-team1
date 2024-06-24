@@ -7,12 +7,24 @@
   align-items: center;
   justify-content: space-between;
   gap: 2.5rem;
+  margin-bottom: 6rem;
 }
 
 .update-save__button {
   @include create-account-button;
+  font-size: 1.25rem;
 }
 
 .update-cancel__button {
   @include auth-button;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+
+  &--text {
+    position: relative;
+    z-index: 2;
+    font-family: roboto-regular;
+    font-size: 1.25rem;
+  }
 }
