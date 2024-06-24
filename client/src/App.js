@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import useAuth from "./hooks/useAuth";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
@@ -12,10 +11,6 @@ import "./App.scss";
 // const baseUrl = process.env.REACT_APP_BASE_URL;
 
 function App() {
-  const loggedIn = useAuth();
-
-  console.log("Is user logged in?", loggedIn);
-
   return (
     <BrowserRouter>
       <Routes>
