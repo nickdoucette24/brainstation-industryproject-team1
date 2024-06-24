@@ -7,9 +7,6 @@ import ProductListPage from "./pages/ProductListPage/ProductListPage";
 import AccountSettingsPage from "./pages/AccountSettingsPage/AccountSettingsPage";
 import "./App.scss";
 
-// Base URL for API calls
-// const baseUrl = process.env.REACT_APP_BASE_URL;
-
 function App() {
   return (
     <BrowserRouter>
@@ -17,10 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard/:userId" element={<DashboardPage />} />
-        <Route
-          path="/dashboard/:userId/settings"
-          element={<AccountSettingsPage />}
-        />
+        <Route path="/dashboard/:userId/settings" element={<AccountSettingsPage />} />
         <Route path="/retailer/:retailerId" element={<RetailerPage />} />
         <Route path="/product-list" element={<ProductListPage />} />
       </Routes>
