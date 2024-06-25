@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import SideNavigation from "../../components/SideNavigation/SideNavigation";
@@ -8,6 +9,7 @@ import "./RetailerPage.scss";
 const url = process.env.REACT_APP_BASE_URL;
 
 const RetailerPage = () => {
+  const { userId } = useParams();  // Get userId from URL parameters
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +17,7 @@ const RetailerPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${url}/api/retailers`);
-        console.log("Fetched data:", response.data);
+        console.log("Fetched data:", response.data);  // Log fetched data for debugging
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -41,7 +43,7 @@ const RetailerPage = () => {
 
   // Function to calculate compliance rate and average deviation
   const calculateMetrics = (products) => {
-    console.log("Calculating metrics for products:", products);
+    console.log("Calculating metrics for products:", products);  // Log products for debugging
     if (!products || products.length === 0) {
       return {
         complianceRate: 0,
@@ -58,10 +60,10 @@ const RetailerPage = () => {
     const averageDeviation =
       products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
 
-    console.log("Total Products: ", totalProducts); // Log total products count
-    console.log("Compliant Products: ", compliantProducts); // Log compliant products count
-    console.log("Compliance Rate: ", complianceRate); // Log compliance rate
-    console.log("Average Deviation: ", averageDeviation); // Log average deviation
+    console.log("Total Products: ", totalProducts);  // Log total products count
+    console.log("Compliant Products: ", compliantProducts);  // Log compliant products count
+    console.log("Compliance Rate: ", complianceRate);  // Log compliance rate
+    console.log("Average Deviation: ", averageDeviation);  // Log average deviation
 
     return {
       complianceRate: complianceRate.toFixed(2),
@@ -124,15 +126,15 @@ const RetailerPage = () => {
   );
 
   if (!data) {
-    console.log("Data is not available yet.");
+    console.log("Data is not available yet.");  // Log if data is not available
     return null;
   }
 
   const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
   const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
-  console.log("BestBuy Metrics:", bestbuyMetrics); // Log BestBuy metrics
-  console.log("Newegg Metrics:", neweggMetrics); // Log Newegg metrics
+  console.log("BestBuy Metrics:", bestbuyMetrics);  // Log BestBuy metrics
+  console.log("Newegg Metrics:", neweggMetrics);  // Log Newegg metrics
 
   return (
     <div className="main-page">
@@ -141,7 +143,7 @@ const RetailerPage = () => {
       </div>
       <main className="main-page__body">
         <div className="header-container">
-          <Header />
+          <Header userId={userId} />  
         </div>
         <div className="retailer-container">
           <h1>Retailers</h1>
