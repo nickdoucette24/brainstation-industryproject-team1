@@ -12,14 +12,14 @@ const url = process.env.REACT_APP_BASE_URL;
 
 const Header = () => {
   const [isTyping, setIsTyping] = useState(false);
-  const { userId } = useParams();
+  const { userId } = useParams(); // Get userId from URL parameters
   const loggedIn = useAuth();
   const userNameRef = useRef(null);
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (loggedIn) {
+      if (loggedIn && userId) {
         try {
           const response = await axios.get(`${url}/dashboard/${userId}`);
           formatUserName(response.data.first_name, response.data.last_name);

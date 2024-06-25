@@ -37,7 +37,8 @@ router.get('/', async (req, res) => {
         complianceRate: complianceRate.toFixed(2),
         averageDeviation: averageDeviation.toFixed(2),
         topOffendingProducts,
-        totalDeviatedProducts
+        totalDeviatedProducts,
+        allProducts: data
       };
     };
 

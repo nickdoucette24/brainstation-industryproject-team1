@@ -18,7 +18,7 @@ function App() {
           path="/dashboard/:userId/settings"
           element={<AccountSettingsPage />}
         />
-        <Route path="/retailers/:userId" element={<RetailerPage />} />
+        <Route path="/retailer/:userId" element={<RetailerPage />} />
         <Route path="/product-list/:userId" element={<ProductListPage />} />
       </Routes>
     </BrowserRouter>
