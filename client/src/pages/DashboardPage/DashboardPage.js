@@ -194,34 +194,22 @@ const DashboardPage = () => {
         <div className="header-container">
           <Header userId={userId} />
         </div>
-        <div className="dashboard-container">
-          <h1>Dashboard</h1>
-          <div className="dashboard-metrics">
-            <h2>Dashboard Metrics</h2>
-            <div>
-              <p>Total Deviated Products: {data.totalOffenders}</p>
-              <p>Total Retailers: 2</p> {/* Static total retailers value */}
-            </div>
-            <div>
-              <h3>
-                BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%
-              </h3>
-              <h3>
-                Newegg Compliance Rate: {neweggMetrics.complianceRate}%
-              </h3>
-            </div>
-            <div>
-              <h3>
-                Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%
-              </h3>
-              <h3>
-                Average Deviation Newegg: {neweggMetrics.averageDeviation}%
-              </h3>
-            </div>
-            <canvas id="bestbuyChart" width="400" height="200"></canvas>
-            <canvas id="neweggChart" width="400" height="200"></canvas>
+        <section className="dashboard">
+          <div className="dashboard__container">
+            <p>Total Deviated Products: {data.totalOffenders}</p>
+            <p>Total Retailers: 2</p>
           </div>
-        </div>
+          <div>
+            <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
+            <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
+          </div>
+          <div>
+            <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
+            <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
+          </div>
+          <canvas id="bestbuyChart" width="400" height="200"></canvas>
+          <canvas id="neweggChart" width="400" height="200"></canvas>
+        </section>
       </main>
     </div>
   );
