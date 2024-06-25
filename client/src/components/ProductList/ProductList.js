@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import boxIcon from "../../assets/icons/box-icon.svg";
 import axios from "axios";
 import "./ProductList.scss";
@@ -7,6 +8,8 @@ import "./ProductList.scss";
 const url = process.env.REACT_APP_BASE_URL;
 
 const ProductList = () => {
+  const { userId } = useParams(); 
+
   // State to store product data and total offenders
   const [products, setProducts] = useState([]);
   const [totalOffenders, setTotalOffenders] = useState(0);

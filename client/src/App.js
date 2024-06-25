@@ -14,9 +14,12 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard/:userId" element={<DashboardPage />} />
-        <Route path="/dashboard/:userId/settings" element={<AccountSettingsPage />} />
+        <Route
+          path="/dashboard/:userId/settings"
+          element={<AccountSettingsPage />}
+        />
         <Route path="/retailer/:retailerId" element={<RetailerPage />} />
-        <Route path="/product-list" element={<ProductListPage />} />
+        <Route path="/product-list/:userId" element={<ProductListPage />} />
       </Routes>
     </BrowserRouter>
   );
