@@ -13,38 +13,41 @@ function getCurrentDate() {
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
 
-// Endpoint to fetch both BestBuy and Newegg retailer data
+// Endpoint to fetch retailer data
 router.get('/', async (req, res) => {
   const date = getCurrentDate();
-
-  const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
-  const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-
   try {
+    const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+    const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
+
     const [bestbuyData, neweggData] = await Promise.all([
       csvtojson().fromFile(bestbuyFilePath),
       csvtojson().fromFile(neweggFilePath)
     ]);
 
-    const formatRetailerData = (retailerId, data) => {
+    const calculateMetrics = (data) => {
       const totalProducts = data.length;
       const complianceRate = (data.filter(item => item.Status === 'Green').length / totalProducts) * 100;
       const averageDeviation = data.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / totalProducts;
       const topOffendingProducts = data.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+      const totalDeviatedProducts = data.filter(item => item.Status !== 'Green').length;
 
       return {
-        name: retailerId.charAt(0).toUpperCase() + retailerId.slice(1),
         totalProducts,
         complianceRate: complianceRate.toFixed(2),
         averageDeviation: averageDeviation.toFixed(2),
-        topOffendingProducts
+        topOffendingProducts,
+        totalDeviatedProducts
       };
     };
 
-    const bestbuy = formatRetailerData('bestbuy', bestbuyData);
-    const newegg = formatRetailerData('newegg', neweggData);
+    const retailerData = {
+      totalOffenders: bestbuyData.concat(neweggData).filter(item => item.Status !== 'Green').length,
+      bestbuy: calculateMetrics(bestbuyData),
+      newegg: calculateMetrics(neweggData)
+    };
 
-    res.json({ bestbuy, newegg });
+    res.json(retailerData);
   } catch (error) {
     console.error(`Error fetching retailer data: ${error.message}`);
     res.status(500).json({ message: 'Error fetching retailer data', error });
