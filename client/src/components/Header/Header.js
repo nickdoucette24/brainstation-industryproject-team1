@@ -10,9 +10,8 @@ import "./Header.scss";
 // Base Url for get requests
 const url = process.env.REACT_APP_BASE_URL;
 
-const Header = () => {
+const Header = ({ userId }) => {
   const [isTyping, setIsTyping] = useState(false);
-  const { userId } = useParams(); // Get userId from URL parameters
   const loggedIn = useAuth();
   const userNameRef = useRef(null);
   const [displayName, setDisplayName] = useState("");
@@ -24,8 +23,10 @@ const Header = () => {
           const response = await axios.get(`${url}/dashboard/${userId}`);
           formatUserName(response.data.first_name, response.data.last_name);
         } catch (error) {
-          console.error(error.message);
+          console.error(`Error fetching user data: ${error.message}`);
         }
+      } else {
+        console.log('LoggedIn:', loggedIn, 'UserId:', userId);
       }
     };
 
