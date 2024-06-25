@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const os = require('os');
+const fs = require('fs');
 const csvtojson = require('csvtojson');
 const cors = require('cors');
 require('dotenv').config();
@@ -115,6 +115,7 @@ router.get('/dashboard', async (req, res) => {
     const bestbuyTop5 = bestbuyData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
     const neweggTop5 = neweggData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
     const totalDeviatedProductsBestBuy = bestbuyData.filter(item => item.Deviation !== 0).length;
+    const totalDeviatedProductsNewegg = neweggData.filter(item => item.Deviation !== 0).length;
     const averageDeviationBestBuy = bestbuyData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / bestbuyData.length;
     const averageDeviationNewegg = neweggData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / neweggData.length;
     const complianceRateBestBuy = (bestbuyData.filter(item => item.Status === 'Green').length / bestbuyData.length) * 100;
@@ -127,6 +128,7 @@ router.get('/dashboard', async (req, res) => {
       bestbuyTop5,
       neweggTop5,
       totalDeviatedProductsBestBuy,
+      totalDeviatedProductsNewegg,
       averageDeviationBestBuy,
       averageDeviationNewegg,
       complianceRateBestBuy,
