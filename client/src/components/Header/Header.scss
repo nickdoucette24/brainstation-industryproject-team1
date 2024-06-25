@@ -52,6 +52,10 @@
       &:hover {
         border: 2px solid $Dell-Light-Blue;
       }
+
+      &:active {
+        border: 2px solid $Dell-Blue;
+      }
     }
   }
 
@@ -71,10 +75,10 @@
   width: 3.4375rem;
   @include flex-center;
   border-radius: 4px;
-  transition: box-shadow 0.4s ease-in-out;
+  transition: box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: $Glacier 0px 3px 8px;
+    box-shadow: $Glacier 0px 1px 8px;
   }
 }
 
