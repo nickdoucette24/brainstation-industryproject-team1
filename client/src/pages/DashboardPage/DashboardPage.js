@@ -41,7 +41,6 @@ const DashboardPage = () => {
       try {
         const response = await axios.get(`${url}/api/products`);
         console.log("Fetched products:", response.data);
-        // Validate if response.data has the expected structure
         if (
           Array.isArray(response.data.dellData) &&
           Array.isArray(response.data.bestbuyData) &&
@@ -146,30 +145,16 @@ const DashboardPage = () => {
           <Header />
         </div>
         <div className="dashboard-container">
-          <h1>Dashboard</h1>
           {loading && <p>Loading...</p>}
           {!loading && dashboardData && (
             <>
-              <div className="product-overview">
-                <h2>Product Overview</h2>
-                {Array.isArray(products) && products.length > 0 ? (
-                  products.dellData.map((product) => (
-                    <div key={product.id} className="product-item">
-                      <img src={product.image} alt={product.name} />
-                      <div>
-                        <p>Name: {product.product_name}</p>
-                        <p>Price: ${product.price}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>No products available.</p>
-                )}
-              </div>
               <div className="dashboard-metrics">
-                <h2>Dashboard Metrics</h2>
                 <div>
                   <p>Total Offenders: {dashboardData.totalOffenders}</p>
+                </div>
+                <div>
+                  <p>Total Deviated Products (BestBuy): {dashboardData.totalDeviatedProductsBestBuy}</p>
+                  <p>Total Deviated Products (Newegg): {dashboardData.totalDeviatedProductsNewegg}</p>
                 </div>
                 <div>
                   <h3>
