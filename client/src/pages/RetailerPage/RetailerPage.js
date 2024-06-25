@@ -1,53 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SideNavigation from "../../components/SideNavigation/SideNavigation";
 import Header from "../../components/Header/Header";
+import SideNavigation from "../../components/SideNavigation/SideNavigation";
 import "./RetailerPage.scss";
 
-// Base Url
+// Base URL
 const url = process.env.REACT_APP_BASE_URL;
 
-const RetailerPage = () => {
-  const [retailerData, setRetailerData] = useState(null);
+const RetailerPage = () => { 
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRetailerData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get(`${url}/api/retailers`);
-        console.log("Fetched retailer data:", response.data);
-        setRetailerData(response.data);
+        setData(response.data);
       } catch (error) {
-        console.error("Error fetching retailer data:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRetailerData();
+    fetchData();
   }, []);
 
-  const renderTable = (data, retailer) => (
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const renderTable = (products, retailer) => (
     <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Dell Product Name</th>
           <th>MSRP</th>
-          <th>{retailer} Price</th>
+          <th>{`${retailer} Price`}</th>
           <th>Deviation</th>
           <th>Compliance</th>
         </tr>
       </thead>
       <tbody>
-        {data && data.map((item, index) => (
+        {products.map((product, index) => (
           <tr key={`${retailer}-${index}`}>
             <td>{index + 1}</td>
-            <td>{item.Dell_product}</td>
-            <td>{item.Dell_price}</td>
-            <td>{item[`${retailer.toLowerCase()}_price`]}</td>
-            <td>{parseFloat(item.Deviation).toFixed(2)}</td>
-            <td>{item.Status}</td>
+            <td>{product.Dell_product}</td>
+            <td>{product.Dell_price}</td>
+            <td>{product[`${retailer}_price`]}</td>
+            <td>{parseFloat(product.Deviation).toFixed(2)}</td>
+            <td>{product.Status}</td>
           </tr>
         ))}
       </tbody>
@@ -57,28 +60,24 @@ const RetailerPage = () => {
   const renderCards = (data) => (
     <div className="cards">
       <div className="card">
-        <h3>Total Products</h3>
+        <h3>Total Deviated Products</h3>
         <p>{data.totalProducts}</p>
       </div>
       <div className="card">
         <h3>Average Price Deviation</h3>
-        <p>{Number(data.averageDeviation).toFixed(2)}%</p>
+        <p>{parseFloat(data.averageDeviation).toFixed(2)}%</p>
       </div>
       <div className="card">
         <h3>Compliance Rate</h3>
-        <p>{Number(data.complianceRate).toFixed(2)}%</p>
+        <p>{parseFloat(data.complianceRate).toFixed(2)}%</p>
       </div>
       <div className="card">
         <h3>Top Offending Products</h3>
         <p>{data.topOffendingProducts.length}</p>
       </div>
-      <button className="export-button">Export Data</button>
+      <button className="export-button">Export</button>
     </div>
   );
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="main-page">
@@ -90,36 +89,21 @@ const RetailerPage = () => {
           <Header />
         </div>
         <div className="retailer-container">
-          <h1>Retailer Overview</h1>
-          {retailerData && (
-            <>
-              <h2>Total Offenders: {retailerData.totalOffenders}</h2>
-
-              <div className="retailer-section">
-                <h2>BestBuy</h2>
-                <div className="section-content">
-                  <div className="table-container">
-                    {retailerData.bestbuy.topOffendingProducts && renderTable(retailerData.bestbuy.topOffendingProducts, "BestBuy")}
-                  </div>
-                  <div className="cards-container">
-                    {retailerData.bestbuy && renderCards(retailerData.bestbuy)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="retailer-section">
-                <h2>Newegg</h2>
-                <div className="section-content">
-                  <div className="table-container">
-                    {retailerData.newegg.topOffendingProducts && renderTable(retailerData.newegg.topOffendingProducts, "Newegg")}
-                  </div>
-                  <div className="cards-container">
-                    {retailerData.newegg && renderCards(retailerData.newegg)}
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+          <h1>Retailers</h1>
+          <div className="retailer-section">
+            <h2>BestBuy</h2>
+            <div className="retailer-content">
+              {renderTable(data.bestbuy.topOffendingProducts, "Bestbuy")}
+              {renderCards(data.bestbuy)}
+            </div>
+          </div>
+          <div className="retailer-section">
+            <h2>Newegg</h2>
+            <div className="retailer-content">
+              {renderTable(data.newegg.topOffendingProducts, "Newegg")}
+              {renderCards(data.newegg)}
+            </div>
+          </div>
         </div>
       </main>
     </div>
