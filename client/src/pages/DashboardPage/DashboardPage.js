@@ -12,8 +12,6 @@ const url = process.env.REACT_APP_BASE_URL;
 const DashboardPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
 
@@ -27,31 +25,11 @@ const DashboardPage = () => {
           },
         });
 
-        if (response.data) {
-          setUser(response.data);
-        } else {
+        if (!response.data) {
           navigate("/auth");
         }
       } catch (error) {
         console.error("Error fetching user:", error);
-      }
-    };
-
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${url}/api/products`);
-        console.log("Fetched products:", response.data);
-        if (
-          Array.isArray(response.data.dellData) &&
-          Array.isArray(response.data.bestbuyData) &&
-          Array.isArray(response.data.neweggData)
-        ) {
-          setProducts(response.data);
-        } else {
-          console.error("Invalid products data structure:", response.data);
-        }
-      } catch (err) {
-        console.error("Error fetching products:", err);
       }
     };
 
@@ -68,7 +46,6 @@ const DashboardPage = () => {
     };
 
     fetchUser();
-    fetchProducts();
     fetchDashboardData();
   }, [userId, navigate]);
 
