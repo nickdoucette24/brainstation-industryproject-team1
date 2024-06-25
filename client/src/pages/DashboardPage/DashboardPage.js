@@ -12,7 +12,7 @@ const url = process.env.REACT_APP_BASE_URL;
 const DashboardPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [dashboardData, setDashboardData] = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,9 +25,7 @@ const DashboardPage = () => {
           },
         });
 
-        if (response.data) {
-          // setUser(response.data); // You might want to set user data if needed
-        } else {
+        if (!response.data) {
           navigate("/auth");
         }
       } catch (error) {
@@ -37,8 +35,9 @@ const DashboardPage = () => {
 
     const fetchDashboardData = async () => {
       try {
-        const response = await axios.get(`${url}/api/data/dashboard`);
-        setDashboardData(response.data);
+        const response = await axios.get(`${url}/api/retailers`);
+        console.log("Fetched data:", response.data); // Log fetched data for debugging
+        setData(response.data);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
       } finally {
@@ -50,13 +49,50 @@ const DashboardPage = () => {
     fetchDashboardData();
   }, [userId, navigate]);
 
+  // Function to get the status based on deviation
+  const getStatus = (deviation) => {
+    if (Math.abs(deviation) <= 5) {
+      return "Compliant";
+    } else if (Math.abs(deviation) > 5 && Math.abs(deviation) <= 15) {
+      return "Needs Attention";
+    } else if (Math.abs(deviation) > 15) {
+      return "Non-Compliant";
+    }
+    return "Undetermined";
+  };
+
+  // Function to calculate compliance rate and average deviation
+  const calculateMetrics = (products) => {
+    if (!products || products.length === 0) {
+      return {
+        complianceRate: 0,
+        averageDeviation: 0,
+        totalDeviatedProducts: 0,
+      };
+    }
+
+    const totalProducts = products.length;
+    const compliantProducts = products.filter(
+      (product) => getStatus(parseFloat(product.Deviation)) === "Compliant"
+    ).length;
+    const complianceRate = (compliantProducts / totalProducts) * 100;
+    const averageDeviation =
+      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+
+    return {
+      complianceRate: complianceRate.toFixed(2),
+      averageDeviation: averageDeviation.toFixed(2),
+      totalDeviatedProducts: totalProducts - compliantProducts,
+    };
+  };
+
   useEffect(() => {
-    if (dashboardData) {
-      const bestbuyTop5 = dashboardData.bestbuyTop5.map((product) => ({
+    if (data) {
+      const bestbuyTop5 = data.bestbuy.topOffendingProducts.map((product) => ({
         name: product.Dell_product,
         deviation: parseFloat(product.Deviation) || 0,
       }));
-      const neweggTop5 = dashboardData.neweggTop5.map((product) => ({
+      const neweggTop5 = data.newegg.topOffendingProducts.map((product) => ({
         name: product.Dell_product,
         deviation: parseFloat(product.Deviation) || 0,
       }));
@@ -136,7 +172,18 @@ const DashboardPage = () => {
 
       createCharts();
     }
-  }, [dashboardData]);
+  }, [data]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <div>No data available</div>;
+  }
+
+  const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
+  const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
   return (
     <div className="main-page">
@@ -149,47 +196,31 @@ const DashboardPage = () => {
         </div>
         <div className="dashboard-container">
           <h1>Dashboard</h1>
-          {loading && <p>Loading...</p>}
-          {!loading && dashboardData && (
-            <>
-              <div className="dashboard-metrics">
-                <h2>Dashboard Metrics</h2>
-                <div>
-                  <p>Total Offenders: {dashboardData.totalOffenders}</p>
-                </div>
-                <div>
-                  <h3>
-                    BestBuy Compliance Rate:{" "}
-                    {parseFloat(dashboardData.complianceRateBestBuy).toFixed(2)}
-                    %
-                  </h3>
-                  <h3>
-                    Newegg Compliance Rate:{" "}
-                    {parseFloat(dashboardData.complianceRateNewegg).toFixed(2)}
-                    %
-                  </h3>
-                </div>
-                <div>
-                  <h3>
-                    Average Deviation BestBuy:{" "}
-                    {parseFloat(
-                      dashboardData.averageDeviationBestBuy
-                    ).toFixed(2)}
-                    %
-                  </h3>
-                  <h3>
-                    Average Deviation Newegg:{" "}
-                    {parseFloat(
-                      dashboardData.averageDeviationNewegg
-                    ).toFixed(2)}
-                    %
-                  </h3>
-                </div>
-                <canvas id="bestbuyChart" width="400" height="200"></canvas>
-                <canvas id="neweggChart" width="400" height="200"></canvas>
-              </div>
-            </>
-          )}
+          <div className="dashboard-metrics">
+            <h2>Dashboard Metrics</h2>
+            <div>
+              <p>Total Deviated Products: {data.totalOffenders}</p>
+              <p>Total Retailers: 2</p> {/* Static total retailers value */}
+            </div>
+            <div>
+              <h3>
+                BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%
+              </h3>
+              <h3>
+                Newegg Compliance Rate: {neweggMetrics.complianceRate}%
+              </h3>
+            </div>
+            <div>
+              <h3>
+                Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%
+              </h3>
+              <h3>
+                Average Deviation Newegg: {neweggMetrics.averageDeviation}%
+              </h3>
+            </div>
+            <canvas id="bestbuyChart" width="400" height="200"></canvas>
+            <canvas id="neweggChart" width="400" height="200"></canvas>
+          </div>
         </div>
       </main>
     </div>
