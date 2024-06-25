@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import SideNavigation from "../../components/SideNavigation/SideNavigation";
+import RetailerList from "../../components/RetailerList/RetailerList";
 import "./RetailerPage.scss";
 
 // Base URL
@@ -14,6 +15,8 @@ const RetailerPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("UserId in RetailerPage:", userId); // Log userId for debugging
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`${url}/api/retailers`);
@@ -27,7 +30,7 @@ const RetailerPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [userId]);
 
   // Function to get the status based on deviation
   const getStatus = (deviation) => {
@@ -146,6 +149,7 @@ const RetailerPage = () => {
           <Header userId={userId} />  
         </div>
         <div className="retailer-container">
+          <RetailerList userId={userId} /> 
           <h1>Retailers</h1>
           <div className="retailer-section">
             <h2>BestBuy</h2>
