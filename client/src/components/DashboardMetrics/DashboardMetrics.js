@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import Chart from "chart.js/auto";
 import "./DashboardMetrics.scss";
 
@@ -183,53 +184,90 @@ const DashboardMetrics = () => {
   const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
   const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <div>
-      <div>
-        <p>Total Deviated Products: {data.totalOffenders}</p>
-        <p>Total Retailers: 2</p>
-      </div>
-      <div>
-        <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
-        <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
-      </div>
-      <div>
-        <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
-        <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
-      </div>
-      <div>
-        <canvas id="bestbuyChart" width="400" height="200"></canvas>
-        <canvas id="neweggChart" width="400" height="200"></canvas>
-      </div>
-      <div className="offending-products-table">
-        <h2>Top Offending Products</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Retailer</th>
-              <th>Product Name</th>
-              <th>MSRP</th>
-              <th>Current Price</th>
-              <th>Deviation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>BestBuy</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
-              <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Newegg</td>
-              <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
-              <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
-              <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
-              <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div className="dashboard__wrapper">
+      <div className="dashboard__details">
+        <div className="dashboard-widget">
+            <div className="dashboard-widget__details">
+                <h2 className="dashboard-widget__details--heading">
+                    Total Offenders
+                </h2>
+                <span className="dashboard-widget__details--count">
+                    2
+                </span>
+            </div>
+            <div className="dashboard-widget__icon-container">
+                <img
+                    className="dashboard-widget__cart-icon"
+                    src={shoppingCartIcon}
+                    alt="shopping cart icon for the total offenders widget"
+                />
+            </div>
+        </div>
+        <div className="dashboard-widget__heading">
+          <div className="heading__content">
+            <h1 className="heading__content--heading">
+              Welcome back, Ali!
+            </h1>
+            <span className="heading__content--date">{currentDate}</span>
+          </div>
+          <h2 className="product-list__heading--directions">
+            Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
+            Please review the details below.
+          </h2>
+        </div>
+        <div>
+          <p>Total Deviated Products: {data.totalOffenders}</p>
+          <p>Total Retailers: 2</p>
+        </div>
+        <div>
+          <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
+          <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
+        </div>
+        <div>
+          <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
+          <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
+        </div>
+        <div>
+          <canvas id="bestbuyChart" width="400" height="200"></canvas>
+          <canvas id="neweggChart" width="400" height="200"></canvas>
+        </div>
+        <div className="offending-products-table">
+          <h2>Top Offending Products</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Retailer</th>
+                <th>Product Name</th>
+                <th>MSRP</th>
+                <th>Current Price</th>
+                <th>Deviation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BestBuy</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
+                <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>Newegg</td>
+                <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
+                <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
+                <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
+                <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

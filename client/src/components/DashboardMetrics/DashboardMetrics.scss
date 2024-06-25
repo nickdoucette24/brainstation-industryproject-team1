@@ -10,7 +10,7 @@
   gap: 2.5rem;
 }
 
-.offenders-widget {
+.dashboard-widget {
   display: flex;
   min-width: 14.125rem;
   max-width: 14.125rem;
@@ -18,6 +18,37 @@
   box-shadow: 2px 2px 6px 0px #00000040;
   background-color: $True-White;
   border-radius: 1rem;
+
+  &__cart-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  &__icon-container {
+    background-color: rgba($Purple, 0.5);
+    border-radius: 1.4375rem;
+    width: 4.4525rem; 
+    height: 4.4525rem;
+    margin-left: 1rem
+  }
+
+  &__dashboard-heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 6px 0px #00000040;
+    padding: 1.25rem;
+    background-color: $True-White;
+    gap: 0.5rem;
+    width: 49.5rem;
+  
+    &--directions {
+      font-family: roboto-regular;
+      color: $Grey;
+      font-size: 0.9rem;
+    }
+  }
 
   &__details {
     display: flex;
@@ -44,30 +75,30 @@
   width: 100%;
 }
 
-.product-list__heading {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 1rem;
-  box-shadow: 2px 2px 6px 0px #00000040;
-  padding: 1.25rem;
-  background-color: $True-White;
-  gap: 0.5rem;
-  width: 49.5rem;
-
-  &--directions {
-    font-family: roboto-regular;
-    color: $Grey;
-    font-size: 0.9rem;
+.dashboard-widget__heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 6px 0px #00000040;
+    padding: 1.25rem;
+    background-color: $True-White;
+    gap: 0.5rem;
+    width: 49.5rem;
+  
+    &--directions {
+      font-family: roboto-regular;
+      color: $Grey;
+      font-size: 0.9rem;
+    }
   }
-}
 
 strong {
   font-family: roboto-bold;
   font-size: 0.9rem;
 }
 
-.heading__content {
+.dashboard-heading__content {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -78,9 +109,9 @@ strong {
     color: $Midnight;
   }
 
-  &--date {
-    @extend .heading__content--heading;
-  }
+//   &--date {
+//     @extend .heading__content--heading;
+//   }
 }
 
 // Table styling
