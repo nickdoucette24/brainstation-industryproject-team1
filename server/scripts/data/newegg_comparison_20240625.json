@@ -1,0 +1,302 @@
+{
+    "total_products": 42,
+    "total_offending_products": 15,
+    "total_deviated_products": 41,
+    "compliance_rate": 2.38,
+    "products": [
+        {
+            "Dell_product": "Dell UltraSharp 27 Monitor - U2724D",
+            "Dell_price": 509.99,
+            "Newegg_price": 426.12,
+            "Deviation": -16.445420498441145,
+            "Status": "Non-Compliant"
+        },
+        {
+            "Dell_product": "Dell 22 Monitor - P2222H",
+            "Dell_price": 204.99,
+            "Newegg_price": 183.12,
+            "Deviation": -10.668813112834775,
+            "Status": "Non-Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 24 Monitor - U2424H",
+            "Dell_price": 379.99,
+            "Newegg_price": 340.12,
+            "Deviation": -10.49238137845733,
+            "Status": "Non-Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 Monitor \u2013 E2723H",
+            "Dell_price": 199.99,
+            "Newegg_price": 182.42,
+            "Deviation": -8.78543927196361,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 32 USB-C Hub Monitor \u2013 P3223DE",
+            "Dell_price": 579.99,
+            "Newegg_price": 542.12,
+            "Deviation": -6.529422921084847,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 27 Monitor - E2724HS",
+            "Dell_price": 199.99,
+            "Newegg_price": 192.82,
+            "Deviation": -3.585179258962956,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 27 Thunderbolt\u2122 Hub Monitor - U2724DE",
+            "Dell_price": 699.99,
+            "Newegg_price": 678.92,
+            "Deviation": -3.010043000614302,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 27 Monitor - P2723D",
+            "Dell_price": 469.99,
+            "Newegg_price": 456.32,
+            "Deviation": -2.9085725228196377,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 24 Monitor - P2423D",
+            "Dell_price": 419.99,
+            "Newegg_price": 408.42,
+            "Deviation": -2.7548274958927577,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 24 USB-C\u00ae Hub Monitor - U2424HE",
+            "Dell_price": 449.99,
+            "Newegg_price": 443.72,
+            "Deviation": -1.3933642969843734,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 22 Monitor \u2013 E2223HN",
+            "Dell_price": 134.99,
+            "Newegg_price": 133.32,
+            "Deviation": -1.2371286761982487,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 24 USB-C Hub Monitor - P2423DE",
+            "Dell_price": 489.99,
+            "Newegg_price": 484.32,
+            "Deviation": -1.1571664727851623,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 27 Video Conferencing Monitor - P2724DEB",
+            "Dell_price": 659.99,
+            "Newegg_price": 653.99,
+            "Deviation": -0.909104683404294,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 24 Monitor - E2424HS",
+            "Dell_price": 179.99,
+            "Newegg_price": 178.72,
+            "Deviation": -0.705594755264187,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 40 Curved WUHD Monitor - U4021QW",
+            "Dell_price": 2399.99,
+            "Newegg_price": 2398.22,
+            "Deviation": -0.07375030729294631,
+            "Status": "Needs Attention"
+        },
+        {
+            "Dell_product": "Dell 24 Monitor - P2422H",
+            "Dell_price": 249.99,
+            "Newegg_price": 249.99,
+            "Deviation": 0.0,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 Monitor - P2725H",
+            "Dell_price": 309.99,
+            "Newegg_price": 311.22,
+            "Deviation": 0.39678699312881643,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 24 Touch USB-C Hub Monitor - P2424HT",
+            "Dell_price": 549.99,
+            "Newegg_price": 553.22,
+            "Deviation": 0.5872834051528243,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 24 USB-C Hub Monitor - P2422HE",
+            "Dell_price": 349.99,
+            "Newegg_price": 353.22,
+            "Deviation": 0.9228835109574611,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 34 Curved Monitor - P3424WE",
+            "Dell_price": 909.99,
+            "Newegg_price": 921.22,
+            "Deviation": 1.2340794953790721,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 24 Video Conferencing Monitor - C2423H",
+            "Dell_price": 289.99,
+            "Newegg_price": 294.22,
+            "Deviation": 1.4586709886547875,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 14\" Portable Travel Monitor - P1424H",
+            "Dell_price": 344.99,
+            "Newegg_price": 353.22,
+            "Deviation": 2.385576393518658,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 27 4K PremierColor Monitor: UP2720Q",
+            "Dell_price": 1649.99,
+            "Newegg_price": 1691.55,
+            "Deviation": 2.518803144261477,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 USB-C\u00ae Hub Monitor - P2725HE",
+            "Dell_price": 399.99,
+            "Newegg_price": 411.55,
+            "Deviation": 2.890072251806296,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 24 Video Conferencing Monitor - P2424HEB",
+            "Dell_price": 559.99,
+            "Newegg_price": 576.55,
+            "Deviation": 2.9571956642082795,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 32 4K USB-C Hub Monitor - U3223QE",
+            "Dell_price": 1089.99,
+            "Newegg_price": 1136.55,
+            "Deviation": 4.271598822007537,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 4K USB-C Hub Monitor - P2723QE",
+            "Dell_price": 609.99,
+            "Newegg_price": 647.02,
+            "Deviation": 6.070591321169195,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 32 4K HDR Monitor - UP3221Q",
+            "Dell_price": 4759.99,
+            "Newegg_price": 5093.3,
+            "Deviation": 7.002325635137898,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 27 4K USB-C Hub Monitor - U2723QE",
+            "Dell_price": 729.99,
+            "Newegg_price": 789.99,
+            "Deviation": 8.219290675214728,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 32 4K USB-C Hub Monitor - P3223QE",
+            "Dell_price": 619.99,
+            "Newegg_price": 696.82,
+            "Deviation": 12.392135357021894,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 22 Monitor - E2222HS",
+            "Dell_price": 149.99,
+            "Newegg_price": 169.99,
+            "Deviation": 13.334222281485431,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 32 4K Video Conferencing Monitor - U3223QZ",
+            "Dell_price": 1464.99,
+            "Newegg_price": 1713.99,
+            "Deviation": 16.99670304916757,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Alienware 27 Gaming Monitor - AW2724DM",
+            "Dell_price": 499.99,
+            "Newegg_price": 624.99,
+            "Deviation": 25.0005000100002,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 34 Curved USB-C Monitor \u2013 S3423DWC",
+            "Dell_price": 579.99,
+            "Newegg_price": 767.99,
+            "Deviation": 32.41435197158572,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Alienware 25 Gaming Monitor - AW2523HF",
+            "Dell_price": 449.99,
+            "Newegg_price": 624.99,
+            "Deviation": 38.88975310562457,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 USB-C Monitor - S2722DC",
+            "Dell_price": 349.99,
+            "Newegg_price": 499.99,
+            "Deviation": 42.85836738192519,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell UltraSharp 43 4K USB-C Hub Monitor - U4323QE",
+            "Dell_price": 1094.99,
+            "Newegg_price": 1594.99,
+            "Deviation": 45.662517465912934,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 34 Curved Monitor - S3422DW",
+            "Dell_price": 349.99,
+            "Newegg_price": 530.99,
+            "Deviation": 51.71576330752307,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 22 Monitor - SE2222H",
+            "Dell_price": 89.99,
+            "Newegg_price": 137.42,
+            "Deviation": 52.70585620624514,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 Monitor - SE2722H",
+            "Dell_price": 119.99,
+            "Newegg_price": 189.99,
+            "Deviation": 58.33819484957081,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 34 Curved Gaming Monitor \u2013 S3422DWG",
+            "Dell_price": 449.99,
+            "Newegg_price": 742.39,
+            "Deviation": 64.97922176048357,
+            "Status": "Compliant"
+        },
+        {
+            "Dell_product": "Dell 27 4K UHD Monitor - S2721QS",
+            "Dell_price": 299.99,
+            "Newegg_price": 560.28,
+            "Deviation": 86.76622554085135,
+            "Status": "Compliant"
+        }
+    ]
+}
