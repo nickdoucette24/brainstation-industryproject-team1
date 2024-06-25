@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import searchIcon from "../../assets/icons/search-icon.svg";
@@ -23,10 +23,8 @@ const Header = ({ userId }) => {
           const response = await axios.get(`${url}/dashboard/${userId}`);
           formatUserName(response.data.first_name, response.data.last_name);
         } catch (error) {
-          console.error(`Error fetching user data: ${error.message}`);
+          console.error(error.message);
         }
-      } else {
-        console.log('LoggedIn:', loggedIn, 'UserId:', userId);
       }
     };
 
