@@ -61,15 +61,15 @@ const SideNavigation = () => {
             </li>
             <li className="nav-list__item">
               <Link
-                to={"/product-list"}
+                to={`/product-list/${userId}`}
                 className={`nav-list__link ${
-                  isActive("/product-list") ? "selected" : ""
+                  isActive(`/product-list/:${userId}`) ? "selected" : ""
                 }`}
               >
                 <img
                   src={productsIcon}
                   className={`nav-list__link--icon ${
-                    isActive("/product-list") ? "selected-icon" : ""
+                    isActive(`/product-list/:${userId}`) ? "selected-icon" : ""
                   }`}
                   alt="products icon"
                 />
