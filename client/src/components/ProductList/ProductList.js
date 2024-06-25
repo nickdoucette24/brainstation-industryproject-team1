@@ -55,10 +55,14 @@ const ProductList = ({ userId }) => {
           newegg.find((item) => item.Dell_product === dellItem.Dell_product) ||
           {};
 
-        if (
-          parseFloat(bestbuyItem.Deviation) < 0 ||
-          parseFloat(neweggItem.Deviation) < 0
-        ) {
+        const bestbuyDeviation = parseFloat(bestbuyItem.Deviation);
+        const neweggDeviation = parseFloat(neweggItem.Deviation);
+
+        // Count as non-compliant if deviation is not within the compliant range
+        if (!isNaN(bestbuyDeviation) && getStatus(bestbuyDeviation) !== "Compliant") {
+          offendersCount++;
+        }
+        if (!isNaN(neweggDeviation) && getStatus(neweggDeviation) !== "Compliant") {
           offendersCount++;
         }
 
@@ -68,14 +72,14 @@ const ProductList = ({ userId }) => {
           msrp: dellItem.Dell_price,
           bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
           bestbuyDeviation: bestbuyItem.Deviation
-            ? parseFloat(bestbuyItem.Deviation).toFixed(2)
+            ? bestbuyDeviation.toFixed(2)
             : "N/A",
-          bestbuyCompliance: getStatus(parseFloat(bestbuyItem.Deviation)),
+          bestbuyCompliance: getStatus(bestbuyDeviation),
           neweggPrice: neweggItem.Newegg_price || "Not Available",
           neweggDeviation: neweggItem.Deviation
-            ? parseFloat(neweggItem.Deviation).toFixed(2)
+            ? neweggDeviation.toFixed(2)
             : "N/A",
-          neweggCompliance: getStatus(parseFloat(neweggItem.Deviation)),
+          neweggCompliance: getStatus(neweggDeviation),
         };
       });
       setTotalOffenders(offendersCount);
