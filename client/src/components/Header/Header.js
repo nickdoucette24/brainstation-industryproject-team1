@@ -11,7 +11,6 @@ import "./Header.scss";
 const url = process.env.REACT_APP_BASE_URL;
 
 const Header = () => {
-  const [user, setUser] = useState({});
   const [isTyping, setIsTyping] = useState(false);
   const { userId } = useParams();
   const loggedIn = useAuth();
@@ -23,7 +22,6 @@ const Header = () => {
       if (loggedIn) {
         try {
           const response = await axios.get(`${url}/dashboard/${userId}`);
-          setUser(response.data);
           formatUserName(response.data.first_name, response.data.last_name);
         } catch (error) {
           console.error(error.message);
@@ -61,7 +59,7 @@ const Header = () => {
           <img
             src={searchIcon}
             className="header-wrapper__search--icon"
-            alt="magnifying glass seach icon"
+            alt="magnifying glass search icon"
           />
           <input
             className={`header-wrapper__search--input ${

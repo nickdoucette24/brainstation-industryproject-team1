@@ -8,7 +8,7 @@ import "./ProductList.scss";
 const url = process.env.REACT_APP_BASE_URL;
 
 const ProductList = () => {
-  const { userId } = useParams(); 
+  const { userId } = useParams();
 
   // State to store product data and total offenders
   const [products, setProducts] = useState([]);
@@ -34,14 +34,14 @@ const ProductList = () => {
 
       const getStatus = (status) => {
         switch (status) {
-          case 'Green':
-            return 'Compliant';
-          case 'Yellow':
-            return 'Needs Attention';
-          case 'Red':
-            return 'Non-Compliant';
+          case "Green":
+            return "Compliant";
+          case "Yellow":
+            return "Needs Attention";
+          case "Red":
+            return "Non-Compliant";
           default:
-            return 'Undetermined';
+            return "Undetermined";
         }
       };
 
@@ -106,6 +106,38 @@ const ProductList = () => {
     });
   };
 
+  // // Generate a unique short ID for each product
+  // const generateShortUUID = () => {
+  //   return Math.random().toString(36).substring(2, 8);
+  // };
+
+  // const handleExport = async () => {
+  //   const zip = new JSZip();
+
+  //   // Create CSV content
+  //   const csvContent =
+  //     "id,dellProductName,msrp,bestbuyPrice,bestbuyDeviation,bestbuyCompliance,neweggPrice,neweggDeviation,neweggCompliance\n" +
+  //     products
+  //       .map(
+  //         (product) =>
+  //           `${product.id},${product.dellProductName},${product.msrp},${product.bestbuyPrice},${product.bestbuyDeviation},${product.bestbuyCompliance},${product.neweggPrice},${product.neweggDeviation},${product.neweggCompliance}`
+  //       )
+  //       .join("\n");
+
+  //   // Create JSON content
+  //   const jsonContent = JSON.stringify(products, null, 2);
+
+  //   // Add files to the zip
+  //   zip.file("products.csv", csvContent);
+  //   zip.file("products.json", jsonContent);
+
+  //   // Generate the zip file
+  //   const content = await zip.generateAsync({ type: "blob" });
+
+  //   // Save the zip file
+  //   saveAs(content, "products.zip");
+  // };
+
   return (
     <div className="product-list__wrapper">
       <div className="product-list__details">
@@ -137,42 +169,76 @@ const ProductList = () => {
           </h2>
         </div>
       </div>
-      <div className="product-list__table"></div>
-      <div className="export-button"></div>
+      <div className="product-list__table">
+        <table className="product-table">
+          <thead className="product-table__head">
+            <tr className="product-table__column">
+              <th className="product-table__column--item product-column__id">
+                ID
+              </th>
+              <th className="product-table__column--item product-column__name">
+                Dell Product Name
+              </th>
+              <th className="product-table__column--item product-column__msrp">
+                MSRP
+              </th>
+              <th className="product-table__column--item product-column__bbp">
+                BestBuy Price
+              </th>
+              <th className="product-table__column--item product-column__bbd">
+                Deviation
+              </th>
+              <th className="product-table__column--item product-column__bbc">
+                Compliance
+              </th>
+              <th className="product-table__column--item product-column__nep">
+                Newegg Price
+              </th>
+              <th className="product-table__column--item product-column__ned">
+                Deviation
+              </th>
+              <th className="product-table__column--item product-column__nec">
+                Compliance
+              </th>
+            </tr>
+          </thead>
+          <tbody className="product-table__body">
+            {products.map((product) => (
+              <tr className="product-table__row" key={product.id}>
+                <td className="product-table__row--item">{product.id}</td>
+                <td className="product-table__row--item">{product.msrp}</td>
+                <td className="product-table__row--item">
+                  {product.bestbuyPrice}
+                </td>
+                <td className="product-table__row--item">
+                  {product.bestbuyDeviation}
+                </td>
+                <td className="product-table__row--item">
+                  {product.bestbuyCompliance}
+                </td>
+                <td className="product-table__row--item">
+                  {product.neweggPrice}
+                </td>
+                <td className="product-table__row--item">
+                  {product.neweggDeviation}
+                </td>
+                <td className="product-table__row--item">
+                  {product.neweggCompliance}
+                </td>
+                <td className="product-table__row--item">
+                  {product.dellProductName}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="export-container">
+        <button className="export-container__button">
+          <span className="export-container__button--text">Export</span>
+        </button>
+      </div>
     </div>
-
-    //   <p>Total Offending Products: {totalOffenders}</p>
-    //   <table>
-    //     <thead>
-    //       <tr>
-    //         <th>ID</th>
-    //         <th>Dell Product Name</th>
-    //         <th>MSRP</th>
-    //         <th>BestBuy Price</th>
-    //         <th>BestBuy Deviation</th>
-    //         <th>BestBuy Compliance</th>
-    //         <th>Newegg Price</th>
-    //         <th>Newegg Deviation</th>
-    //         <th>Newegg Compliance</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {products.map((product) => (
-    //         <tr key={product.id}>
-    //           <td>{product.id}</td>
-    //           <td>{product.dellProductName}</td>
-    //           <td>{product.msrp}</td>
-    //           <td>{product.bestbuyPrice}</td>
-    //           <td>{product.bestbuyDeviation}</td>
-    //           <td>{product.bestbuyCompliance}</td>
-    //           <td>{product.neweggPrice}</td>
-    //           <td>{product.neweggDeviation}</td>
-    //           <td>{product.neweggCompliance}</td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // </div>
   );
 };
 

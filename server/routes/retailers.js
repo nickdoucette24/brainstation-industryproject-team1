@@ -13,37 +13,41 @@ function getCurrentDate() {
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
 
-// Endpoint to fetch retailers
-router.get('/:retailerId', async (req, res) => {
-  const { retailerId } = req.params;
+// Endpoint to fetch retailer data
+router.get('/', async (req, res) => {
   const date = getCurrentDate();
-  let filePath;
-
-  if (retailerId === 'bestbuy') {
-    filePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
-  } else if (retailerId === 'newegg') {
-    filePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-  } else {
-    return res.status(400).json({ message: 'Invalid retailer ID' });
-  }
-
   try {
-    const retailerData = await csvtojson().fromFile(filePath);
+    const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+    const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
-    const totalProducts = retailerData.length;
-    const complianceRate = (retailerData.filter(item => item.Status === 'Green').length / totalProducts) * 100;
-    const averageDeviation = retailerData.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / totalProducts;
-    const topOffendingProducts = retailerData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+    const [bestbuyData, neweggData] = await Promise.all([
+      csvtojson().fromFile(bestbuyFilePath),
+      csvtojson().fromFile(neweggFilePath)
+    ]);
 
-    const retailer = {
-      name: retailerId.charAt(0).toUpperCase() + retailerId.slice(1),
-      totalProducts,
-      complianceRate: complianceRate.toFixed(2),
-      averageDeviation: averageDeviation.toFixed(2),
-      topOffendingProducts
+    const calculateMetrics = (data) => {
+      const totalProducts = data.length;
+      const complianceRate = (data.filter(item => item.Status === 'Green').length / totalProducts) * 100;
+      const averageDeviation = data.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / totalProducts;
+      const topOffendingProducts = data.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+      const totalDeviatedProducts = data.filter(item => item.Status !== 'Green').length;
+
+      return {
+        totalProducts,
+        complianceRate: complianceRate.toFixed(2),
+        averageDeviation: averageDeviation.toFixed(2),
+        topOffendingProducts,
+        totalDeviatedProducts
+      };
     };
 
-    res.json(retailer);
+    const retailerData = {
+      totalOffenders: bestbuyData.concat(neweggData).filter(item => item.Status !== 'Green').length,
+      bestbuy: calculateMetrics(bestbuyData),
+      newegg: calculateMetrics(neweggData)
+    };
+
+    res.json(retailerData);
   } catch (error) {
     console.error(`Error fetching retailer data: ${error.message}`);
     res.status(500).json({ message: 'Error fetching retailer data', error });
