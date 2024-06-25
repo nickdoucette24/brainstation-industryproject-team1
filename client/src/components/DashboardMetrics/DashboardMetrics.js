@@ -213,35 +213,19 @@ const DashboardMetrics = () => {
             </div>
 
             <div className="dashboard-widget__heading">
-                <div className="heading__content">
-                    <h1 className="heading__content--heading">
+                <div className="dashboard-heading__content">
+                    <h1 className="dashboard-heading__content--heading">
                     Welcome back, Ali!
                     </h1>
-                    <span className="heading__content--date">{currentDate}</span>
+                    <span className="dasshboard-heading__content--date">{currentDate}</span>
                 </div>
-                <h2 className="product-list__heading--directions">
+                <h2 className="dashboard__heading--directions">
                     Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
                     Please review the details below.
                 </h2>
             </div>
         </div>
         
-        <div className="dashboard__bestbuy-tiles">
-        <div>
-          <p>Total Deviated Products: {data.totalOffenders}</p>
-          <p>Total Retailers: 2</p>
-        </div>
-        </div>
-        <div>
-          <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
-          <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
-        </div>
-        <div>
-          <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
-          <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
-        </div>
-        <div>
-            </div>
           <canvas id="bestbuyChart" width="400" height="200"></canvas>
           <canvas id="neweggChart" width="400" height="200"></canvas>
         </div>
@@ -274,6 +258,22 @@ const DashboardMetrics = () => {
               </tr>
             </tbody>
           </table>
+
+          <div className="dashboard__bestbuy-tiles">
+        <div>
+          <p>Total Deviated Products: {data.totalOffenders}</p>
+        </div>
+        </div>
+        <div>
+          <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
+          <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
+        </div>
+        <div>
+          <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
+          <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
+        </div>
+        <div>
+            </div>
         </div>
       </div>
   );
