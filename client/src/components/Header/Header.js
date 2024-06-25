@@ -61,7 +61,7 @@ const Header = () => {
           <img
             src={searchIcon}
             className="header-wrapper__search--icon"
-            alt="magnifying glass seach icon"
+            alt="magnifying glass search icon"
           />
           <input
             className={`header-wrapper__search--input ${

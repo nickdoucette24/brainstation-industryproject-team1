@@ -1,46 +1,58 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./RetailerPage.scss";
 
+// Base URL for API requests
+const url = process.env.REACT_APP_BASE_URL;
+
 const RetailerPage = () => {
-  const { retailerId } = useParams();
-  const [retailer, setRetailer] = useState(null);
+  const [bestbuy, setBestbuy] = useState(null);
+  const [newegg, setNewegg] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchRetailer = useCallback(async () => {
+  const fetchRetailers = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/retailers/${retailerId}`);
-      setRetailer(response.data);
+      const response = await axios.get(`${url}/api/retailers`);
+      setBestbuy(response.data.bestbuy);
+      setNewegg(response.data.newegg);
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching retailer:', err);
+      console.error('Error fetching retailers:', err);
       setLoading(false);
     }
-  }, [retailerId]);
+  }, []);
 
   useEffect(() => {
-    fetchRetailer();
-  }, [fetchRetailer]);
+    fetchRetailers();
+  }, [fetchRetailers]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!retailer) {
-    return <div>Error loading retailer data.</div>;
-  }
-
   return (
     <div className="retailer-container">
-      <h1>Retailer: {retailer.name}</h1>
+      <h1>Retailers</h1>
       <div className="retailer-details">
-        <p>Total Products Monitored: {retailer.totalProducts}</p>
-        <p>Compliance Rate: {retailer.complianceRate}%</p>
-        <p>Average Deviation: ${retailer.averageDeviation}</p>
-        <h2>Top Offending Products</h2>
-        {retailer.topOffendingProducts.map(product => (
-          <div key={product.id} className="product-item">
+        <h2>BestBuy</h2>
+        <p>Total Products Monitored: {bestbuy.totalProducts}</p>
+        <p>Compliance Rate: {bestbuy.complianceRate}%</p>
+        <p>Average Deviation: ${bestbuy.averageDeviation}</p>
+        <h3>Top Offending Products</h3>
+        {bestbuy.topOffendingProducts.map((product, index) => (
+          <div key={`bestbuy-${index}`} className="product-item">
+            <p>{product.product_name} - ${product.price}</p>
+          </div>
+        ))}
+      </div>
+      <div className="retailer-details">
+        <h2>Newegg</h2>
+        <p>Total Products Monitored: {newegg.totalProducts}</p>
+        <p>Compliance Rate: {newegg.complianceRate}%</p>
+        <p>Average Deviation: ${newegg.averageDeviation}</p>
+        <h3>Top Offending Products</h3>
+        {newegg.topOffendingProducts.map((product, index) => (
+          <div key={`newegg-${index}`} className="product-item">
             <p>{product.product_name} - ${product.price}</p>
           </div>
         ))}
