@@ -8,11 +8,11 @@ const DashboardPage = () => {
   const { userId } = useParams();
 
   return (
-    <div className="dashboard">
-      <div className="dashboard__nav">
+    <div className="main-page">
+      <div className="main-page__nav">
         <SideNavigation />
       </div>
-      <main className="dashboard__body">
+      <main className="main-page__body">
         <div className="header-container">
           <Header userId={userId} />
         </div>
