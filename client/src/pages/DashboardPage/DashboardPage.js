@@ -10,7 +10,7 @@ import "./DashboardPage.scss";
 const url = process.env.REACT_APP_BASE_URL;
 
 const DashboardPage = () => {
-  const { id } = useParams();
+  const { userId } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
@@ -21,7 +21,7 @@ const DashboardPage = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("jwt");
-        const response = await axios.get(`${url}/dashboard/${id}`, {
+        const response = await axios.get(`${url}/dashboard/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,7 +64,7 @@ const DashboardPage = () => {
     fetchUser();
     fetchProducts();
     fetchDashboardData();
-  }, [id, navigate]);
+  }, [userId, navigate]);
 
   useEffect(() => {
     if (dashboardData) {
@@ -132,7 +132,7 @@ const DashboardPage = () => {
       </div>
       <main className="main-page__body">
         <div className="header-container">
-          <Header />
+          <Header userId={userId} />
         </div>
         <div className="dashboard-container">
           <h1>Dashboard</h1>
