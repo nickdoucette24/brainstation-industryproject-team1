@@ -1,13 +1,11 @@
 const express = require('express');
 const path = require('path');
-const os = require('os');
-const fs = require('fs');  
+const fs = require('fs');
 const csvtojson = require('csvtojson');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const router = express.Router();
 
 // Import the routes
 const authRoutes = require('./routes/auth');
@@ -41,7 +39,7 @@ function getCurrentDate() {
 }
 
 // Endpoint to fetch Dell data
-router.get('/dell', async (req, res) => {
+app.get('/api/data/dell', async (req, res) => {
   const date = getCurrentDate();
   const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
 
@@ -62,7 +60,7 @@ router.get('/dell', async (req, res) => {
 });
 
 // Endpoint to fetch BestBuy comparison data
-router.get('/compare/dell-bestbuy', async (req, res) => {
+app.get('/api/data/compare/dell-bestbuy', async (req, res) => {
   const date = getCurrentDate();
   const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
 
@@ -78,7 +76,7 @@ router.get('/compare/dell-bestbuy', async (req, res) => {
 });
 
 // Endpoint to fetch Newegg comparison data
-router.get('/compare/dell-newegg', async (req, res) => {
+app.get('/api/data/compare/dell-newegg', async (req, res) => {
   const date = getCurrentDate();
   const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
@@ -94,7 +92,7 @@ router.get('/compare/dell-newegg', async (req, res) => {
 });
 
 // Endpoint to fetch dashboard data
-router.get('/dashboard', async (req, res) => {
+app.get('/dashboard', async (req, res) => {
   const date = getCurrentDate();
   try {
     const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
@@ -145,42 +143,6 @@ app.get('/api/data/products', (req, res) => {
   const csvFilePath = path.join(DATA_DIR, `combined_product_data_${date}.csv`);
 
   console.log(`Fetching combined product data from: ${csvFilePath}`); // Debug log
-
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
-
-// Endpoint to fetch Dell-BestBuy comparison data
-app.get('/api/data/compare/dell-bestbuy', (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
-
-  console.log(`Fetching Dell-BestBuy comparison data from: ${csvFilePath}`); // Debug log
-
-  csvtojson()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      res.json(jsonObj);
-    })
-    .catch((err) => {
-      console.error(`Error reading CSV file: ${err.message}`);
-      res.status(500).json({ message: 'Error reading CSV data', error: err });
-    });
-});
-
-// Endpoint to fetch Dell-Newegg comparison data
-app.get('/api/data/compare/dell-newegg', (req, res) => {
-  const date = getCurrentDate();
-  const csvFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-
-  console.log(`Fetching Dell-Newegg comparison data from: ${csvFilePath}`); // Debug log
 
   csvtojson()
     .fromFile(csvFilePath)
@@ -245,43 +207,6 @@ app.get('/api/data/dell', (req, res) => {
       console.error(`Error reading CSV file: ${err.message}`);
       res.status(500).json({ message: 'Error reading CSV data', error: err });
     });
-});
-
-// Endpoint to fetch retailer data
-app.get('/api/retailers/:retailerId', async (req, res) => {
-  const { retailerId } = req.params;
-  const date = getCurrentDate();
-  let filePath;
-
-  if (retailerId === 'bestbuy') {
-    filePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
-  } else if (retailerId === 'newegg') {
-    filePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
-  } else {
-    return res.status(400).json({ message: 'Invalid retailer ID' });
-  }
-
-  try {
-    const retailerData = await csvtojson().fromFile(filePath);
-
-    const totalProducts = retailerData.length;
-    const complianceRate = (retailerData.filter(item => item.Status === 'Green').length / totalProducts) * 100;
-    const averageDeviation = retailerData.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / totalProducts;
-    const topOffendingProducts = retailerData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
-
-    const retailer = {
-      name: retailerId.charAt(0).toUpperCase() + retailerId.slice(1),
-      totalProducts,
-      complianceRate: complianceRate.toFixed(2),
-      averageDeviation: averageDeviation.toFixed(2),
-      topOffendingProducts
-    };
-
-    res.json(retailer);
-  } catch (error) {
-    console.error(`Error fetching retailer data: ${error.message}`);
-    res.status(500).json({ message: 'Error fetching retailer data', error });
-  }
 });
 
 app.use(express.static('public'));
