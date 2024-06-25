@@ -121,13 +121,15 @@ const DashboardPage = () => {
         <div className="header-container">
           <Header />
         </div>
-        <div className="dashboard-container">
+        <div className="dashboard">
           {loading && <p>Loading...</p>}
           {!loading && dashboardData && (
             <>
-              <div className="dashboard-metrics">
-                <div>
-                  <p>Total Offenders: {dashboardData.totalOffenders}</p>
+              <div className="dashboard__container">
+                <div className="dashboard__top-section">
+                  <div className="dashboard__total-offenders">
+                    <p>Total Offenders: {dashboardData.totalOffenders}</p>
+                  </div>
                 </div>
                 <div>
                   <p>Total Deviated Products (BestBuy): {dashboardData.totalDeviatedProductsBestBuy}</p>

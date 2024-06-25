@@ -1,0 +1,13 @@
+@import '../../styles/partials/mixins';
+@import '../../styles/partials/typography';
+@import '../../styles/partials/variables';
+
+.dashboard {
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        width: 67.9375rem;
+        padding: 2.3125rem 1.6875rem;
+    }
+}
