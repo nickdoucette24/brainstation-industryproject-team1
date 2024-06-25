@@ -12,7 +12,7 @@ import "./SideNavigation.scss";
 const SideNavigation = () => {
   const loggedIn = useAuth();
   const navigate = useNavigate();
-  const { userId, retailerId } = useParams();
+  const { userId } = useParams();
   const location = useLocation();
 
   const handleDashboardNav = () => {
@@ -78,15 +78,15 @@ const SideNavigation = () => {
             </li>
             <li className="nav-list__item">
               <Link
-                to={`/retailer/${retailerId}`}
+                to={`/retailer/${userId}`}
                 className={`nav-list__link ${
-                  isActive(`/retailer/${retailerId}`) ? "selected" : ""
+                  isActive(`/retailer/${userId}`) ? "selected" : ""
                 }`}
               >
                 <img
                   src={retailersIcon}
                   className={`nav-list__link--icon ${
-                    isActive(`/retailer/${retailerId}`) ? "selected-icon" : ""
+                    isActive(`/retailer/${userId}`) ? "selected-icon" : ""
                   }`}
                   alt="retailers icon"
                 />

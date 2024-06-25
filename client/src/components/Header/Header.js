@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import searchIcon from "../../assets/icons/search-icon.svg";
@@ -10,9 +10,8 @@ import "./Header.scss";
 // Base Url for get requests
 const url = process.env.REACT_APP_BASE_URL;
 
-const Header = () => {
+const Header = ({ userId }) => {
   const [isTyping, setIsTyping] = useState(false);
-  const { userId } = useParams(); // Get userId from URL parameters
   const loggedIn = useAuth();
   const userNameRef = useRef(null);
   const [displayName, setDisplayName] = useState("");

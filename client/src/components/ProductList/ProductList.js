@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-// import { useParams } from "react-router-dom"; - commented out for now since it's showing as an ESlint error
+import PropTypes from "prop-types";
 import boxIcon from "../../assets/icons/box-icon.svg";
 import axios from "axios";
 import { saveAs } from "file-saver";
@@ -9,12 +9,11 @@ import "./ProductList.scss";
 // Base Url
 const url = process.env.REACT_APP_BASE_URL;
 
-const ProductList = () => {
+const ProductList = ({ userId }) => {
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: "ascending",
   });
-  // const { userId } = useParams(); - commented out for now since it's showing as an ESlint error
 
   // State to store product data and total offenders
   const [products, setProducts] = useState([]);
@@ -420,6 +419,10 @@ const ProductList = () => {
       </div>
     </div>
   );
+};
+
+ProductList.propTypes = {
+  userId: PropTypes.string.isRequired,
 };
 
 export default ProductList;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Header from "../../components/Header/Header";
 import SideNavigation from "../../components/SideNavigation/SideNavigation";
@@ -11,7 +11,7 @@ import "./AccountSettingsPage.scss";
 
 const AccountSettingsPage = () => {
   const loggedIn = useAuth();
-  // const { userId } = useParams();
+  const { userId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedComponent, setSelectedComponent] = useState("Profile");
@@ -41,7 +41,7 @@ const AccountSettingsPage = () => {
       </div>
       <main className="main-page__body">
         <div className="header-container">
-          <Header />
+          <Header userId={userId} />
         </div>
         <section className="account-settings">
           <div className="account-settings__nav-container">
