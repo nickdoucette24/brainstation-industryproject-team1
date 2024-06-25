@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const os = require('os');
 const csvtojson = require('csvtojson');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+const router = express.Router();
 
 // Import the routes
 const authRoutes = require('./routes/auth');
@@ -39,7 +40,7 @@ function getCurrentDate() {
 }
 
 // Endpoint to fetch Dell data
-app.get('/api/data/dell', async (req, res) => {
+router.get('/dell', async (req, res) => {
   const date = getCurrentDate();
   const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
 
@@ -60,7 +61,7 @@ app.get('/api/data/dell', async (req, res) => {
 });
 
 // Endpoint to fetch BestBuy comparison data
-app.get('/api/data/compare/dell-bestbuy', async (req, res) => {
+router.get('/compare/dell-bestbuy', async (req, res) => {
   const date = getCurrentDate();
   const bestbuyFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
 
@@ -76,7 +77,7 @@ app.get('/api/data/compare/dell-bestbuy', async (req, res) => {
 });
 
 // Endpoint to fetch Newegg comparison data
-app.get('/api/data/compare/dell-newegg', async (req, res) => {
+router.get('/compare/dell-newegg', async (req, res) => {
   const date = getCurrentDate();
   const neweggFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
 
@@ -92,7 +93,7 @@ app.get('/api/data/compare/dell-newegg', async (req, res) => {
 });
 
 // Endpoint to fetch dashboard data
-app.get('/dashboard', async (req, res) => {
+router.get('/dashboard', async (req, res) => {
   const date = getCurrentDate();
   try {
     const dellFilePath = path.join(DATA_DIR, `official_dell_monitor_${date}.csv`);
@@ -110,14 +111,16 @@ app.get('/dashboard', async (req, res) => {
       csvtojson().fromFile(neweggFilePath)
     ]);
 
-    const totalOffenders = bestbuyData.concat(neweggData).filter(item => item.Status !== 'Green').length;
-    const bestbuyTop5 = bestbuyData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
-    const neweggTop5 = neweggData.filter(item => item.Status !== 'Green').sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+    const totalOffenders = 2; // Assuming monitoring BestBuy and Newegg
+    const bestbuyTop5 = bestbuyData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
+    const neweggTop5 = neweggData.sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
     const totalDeviatedProductsBestBuy = bestbuyData.filter(item => item.Deviation !== 0).length;
-    const averageDeviationBestBuy = bestbuyData.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / bestbuyData.length;
-    const averageDeviationNewegg = neweggData.reduce((sum, item) => sum + parseFloat(item.Deviation || 0), 0) / neweggData.length;
+    const averageDeviationBestBuy = bestbuyData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / bestbuyData.length;
+    const averageDeviationNewegg = neweggData.reduce((sum, item) => sum + parseFloat(item.Deviation), 0) / neweggData.length;
     const complianceRateBestBuy = (bestbuyData.filter(item => item.Status === 'Green').length / bestbuyData.length) * 100;
     const complianceRateNewegg = (neweggData.filter(item => item.Status === 'Green').length / neweggData.length) * 100;
+
+    const combinedTopOffenders = [...bestbuyTop5, ...neweggTop5].sort((a, b) => a.Deviation - b.Deviation).slice(0, 5);
 
     const dashboardData = {
       totalOffenders,
@@ -127,7 +130,8 @@ app.get('/dashboard', async (req, res) => {
       averageDeviationBestBuy,
       averageDeviationNewegg,
       complianceRateBestBuy,
-      complianceRateNewegg
+      complianceRateNewegg,
+      combinedTopOffenders
     };
 
     res.json(dashboardData);
@@ -143,6 +147,42 @@ app.get('/api/data/products', (req, res) => {
   const csvFilePath = path.join(DATA_DIR, `combined_product_data_${date}.csv`);
 
   console.log(`Fetching combined product data from: ${csvFilePath}`); // Debug log
+
+  csvtojson()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      res.json(jsonObj);
+    })
+    .catch((err) => {
+      console.error(`Error reading CSV file: ${err.message}`);
+      res.status(500).json({ message: 'Error reading CSV data', error: err });
+    });
+});
+
+// Endpoint to fetch Dell-BestBuy comparison data
+app.get('/api/data/compare/dell-bestbuy', (req, res) => {
+  const date = getCurrentDate();
+  const csvFilePath = path.join(DATA_DIR, `bestbuy_comparison_${date}.csv`);
+
+  console.log(`Fetching Dell-BestBuy comparison data from: ${csvFilePath}`); // Debug log
+
+  csvtojson()
+    .fromFile(csvFilePath)
+    .then((jsonObj) => {
+      res.json(jsonObj);
+    })
+    .catch((err) => {
+      console.error(`Error reading CSV file: ${err.message}`);
+      res.status(500).json({ message: 'Error reading CSV data', error: err });
+    });
+});
+
+// Endpoint to fetch Dell-Newegg comparison data
+app.get('/api/data/compare/dell-newegg', (req, res) => {
+  const date = getCurrentDate();
+  const csvFilePath = path.join(DATA_DIR, `newegg_comparison_${date}.csv`);
+
+  console.log(`Fetching Dell-Newegg comparison data from: ${csvFilePath}`); // Debug log
 
   csvtojson()
     .fromFile(csvFilePath)
