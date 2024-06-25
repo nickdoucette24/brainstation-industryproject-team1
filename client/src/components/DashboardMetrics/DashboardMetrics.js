@@ -194,35 +194,39 @@ const DashboardMetrics = () => {
     <div className="dashboard__wrapper">
       <div className="dashboard__details">
         <div className="dashboard-widget">
-            <div className="dashboard-widget__details">
-                <h2 className="dashboard-widget__details--heading">
-                    Total Offenders
+            <div className="dashboard-widget__container">
+                <div className="dashboard-widget__details">
+                    <h2 className="dashboard-widget__details--heading">
+                        Total Offenders
+                    </h2>
+                    <span className="dashboard-widget__details--count">
+                        2
+                    </span>
+                </div>
+                <div className="dashboard-widget__icon-container">
+                    <img
+                        className="dashboard-widget__cart-icon"
+                        src={shoppingCartIcon}
+                        alt="shopping cart icon for the total offenders widget"
+                    />
+                </div>
+            </div>
+
+            <div className="dashboard-widget__heading">
+                <div className="heading__content">
+                    <h1 className="heading__content--heading">
+                    Welcome back, Ali!
+                    </h1>
+                    <span className="heading__content--date">{currentDate}</span>
+                </div>
+                <h2 className="product-list__heading--directions">
+                    Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
+                    Please review the details below.
                 </h2>
-                <span className="dashboard-widget__details--count">
-                    2
-                </span>
-            </div>
-            <div className="dashboard-widget__icon-container">
-                <img
-                    className="dashboard-widget__cart-icon"
-                    src={shoppingCartIcon}
-                    alt="shopping cart icon for the total offenders widget"
-                />
             </div>
         </div>
-    
-        <div className="dashboard-widget__heading">
-          <div className="heading__content">
-            <h1 className="heading__content--heading">
-              Welcome back, Ali!
-            </h1>
-            <span className="heading__content--date">{currentDate}</span>
-          </div>
-          <h2 className="product-list__heading--directions">
-            Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
-            Please review the details below.
-          </h2>
-        </div>
+        
+        <div className="dashboard__bestbuy-tiles">
         <div>
           <p>Total Deviated Products: {data.totalOffenders}</p>
           <p>Total Retailers: 2</p>
@@ -237,6 +241,7 @@ const DashboardMetrics = () => {
           <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
         </div>
         <div>
+            </div>
           <canvas id="bestbuyChart" width="400" height="200"></canvas>
           <canvas id="neweggChart" width="400" height="200"></canvas>
         </div>
