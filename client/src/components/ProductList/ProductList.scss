@@ -5,6 +5,7 @@
 .product-list__wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   gap: 2.5rem;
 }
@@ -38,7 +39,7 @@
 
 .product-list__details {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 1.25rem;
   width: 100%;
 }
@@ -52,7 +53,7 @@
   padding: 1.25rem;
   background-color: $True-White;
   gap: 0.5rem;
-  flex-grow: 1;
+  width: 49.5rem;
 
   &--directions {
     font-family: roboto-regular;
@@ -85,12 +86,14 @@ strong {
 // Table styling
 .product-list__table {
   @include flex-center;
+  position: relative;
 }
 
 .product-table {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border-collapse: collapse;
 
   &__head {
     color: $True-White;
@@ -128,6 +131,69 @@ strong {
       }
     }
   }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__row {
+    height: 4rem;
+    width: 100%;
+    border-radius: 1rem;
+    background-color: $True-White;
+    display: flex;
+    flex-wrap: nowrap;
+
+    &--item {
+      border: 1px solid $Border-Grey;
+      font-size: 0.9rem;
+      color: $Table-Row-Text;
+      @include flex-center;
+    }
+  }
+}
+
+.row-id {
+  border-radius: 1rem 0 0 1rem;
+  width: 3.25rem;
+}
+
+.row-name {
+  width: 11.125rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.row-msrp {
+  width: 5rem;
+}
+
+.row-bbp {
+  width: 8.7rem;
+}
+
+.row-bbd {
+  width: 6.7rem;
+}
+
+.row-bbc {
+  width: 7.4rem;
+}
+
+.row-nep {
+  width: 8.4rem;
+}
+
+.row-ned {
+  width: 6.7rem;
+}
+
+.row-nec {
+  width: 7.8rem;
+  border-radius: 0 1rem 1rem 0;
 }
 
 .product-column {
@@ -198,10 +264,11 @@ strong {
 }
 
 .export-container {
-  width: 100%;
+  width: 65rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-bottom: 5rem;
 
   &__button {
     @include auth-button;
@@ -212,4 +279,44 @@ strong {
       z-index: 1;
     }
   }
+}
+
+.not-available {
+  border: 1px solid $Grey;
+  background-color: $Light-Grey;
+  color: $Grey;
+  border-radius: 2px;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  font-family: roboto-bold;
+}
+
+.compliant {
+  border: 1px solid $Basil;
+  background-color: $Lime;
+  color: $Basil;
+  border-radius: 2px;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  font-family: roboto-bold;
+}
+
+.noncompliant {
+  border: 1px solid $Scarlet;
+  background-color: $Light-Scarlet;
+  color: $Scarlet;
+  border-radius: 2px;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  font-family: roboto-bold;
+}
+
+.attention {
+  border: 1px solid $Attention-Text;
+  background-color: $Attention-bg;
+  color: $Attention-Text;
+  border-radius: 2px;
+  padding: 0.25rem;
+  font-size: 0.9rem;
+  font-family: roboto-bold;
 }
