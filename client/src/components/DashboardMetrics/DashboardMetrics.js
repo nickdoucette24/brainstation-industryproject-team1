@@ -210,6 +210,7 @@ const DashboardMetrics = () => {
                 />
             </div>
         </div>
+    
         <div className="dashboard-widget__heading">
           <div className="heading__content">
             <h1 className="heading__content--heading">
@@ -225,6 +226,7 @@ const DashboardMetrics = () => {
         <div>
           <p>Total Deviated Products: {data.totalOffenders}</p>
           <p>Total Retailers: 2</p>
+        </div>
         </div>
         <div>
           <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
@@ -269,7 +271,6 @@ const DashboardMetrics = () => {
           </table>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -195,7 +195,7 @@ const ProductList = ({ userId }) => {
         <div className="offenders-widget">
           <div className="offenders-widget__details">
             <h2 className="offenders-widget__details--heading">
-              Total Offending Products
+              Total Deviated Products
             </h2>
             <span className="offenders-widget__details--count">
               {totalOffenders}
