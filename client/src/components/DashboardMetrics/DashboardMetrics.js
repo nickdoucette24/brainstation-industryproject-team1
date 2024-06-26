@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Chart from "chart.js/auto";
 import boxIcon from "../../assets/icons/box-icon.svg";
+import chartIcon from "../../assets/icons/data-analysis-icon.svg";
+import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
 import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import "./DashboardMetrics.scss";
 
@@ -244,6 +246,24 @@ const DashboardMetrics = () => {
                         </div>
                         <div className="dashboard__deviated-products--img">
                             <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                        </div>
+                    </div>
+                    <div className="dashboard__average-deviation">
+                        <div className="dashboard__average-deviation--container">
+                            <h2 className="dashboard__average-deviation--heading">Average Deviation</h2> 
+                            <span className="dashboard__average-deviation--count">{bestbuyMetrics.averageDeviation}%</span>                        
+                        </div>
+                        <div className="dashboard__average-deviation--img">
+                            <img className="dashboard__average-deviation--icon" src={chartIcon} alt="chart icon" />
+                        </div>
+                    </div>
+                    <div className="dashboard__compliance-rate">
+                        <div className="dashboard__compliance-rate--container">
+                            <h2 className="dashboard__compliance-rate--heading">Complliance Rate</h2> 
+                            <span className="dashboard__compliance-rate--count">{bestbuyMetrics.averageDeviation}%</span>                        
+                        </div>
+                        <div className="dashboard__compliance-rate--img">
+                            <img className="dashboard__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
                         </div>
                     </div>
                 </div>

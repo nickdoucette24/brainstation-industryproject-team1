@@ -11,10 +11,83 @@
     }
 
     &__tiles {
-        margin-left: 1rem;
+        margin-left: 1.75rem;
+        display: flex;
+        justify-content: column;
+        gap: 1rem;
     }
 
     &__deviated-products {
+        max-width: 11rem;
+        min-width: 11rem;
+        height: 8.75rem;
+        box-shadow: 2px 2px 6px 0px #00000040;
+        padding: 1.5rem;
+        background-color: $True-White;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+          
+        &--container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        &--heading {
+          font-family: roboto-light;
+          font-size: 0.9rem;
+        }
+    
+        &--count {
+          font-family: roboto-bold;
+          font-size: 2rem;
+          line-height: 1.75rem;
+        }
+
+        &--icon {
+            width: 2.9325rem;
+            height: 2.9325rem;
+        }
+    }
+
+    &__average-deviation {
+        max-width: 11rem;
+        min-width: 11rem;
+        height: 8.75rem;
+        box-shadow: 2px 2px 6px 0px #00000040;
+        padding: 1.5rem;
+        background-color: $True-White;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+          
+        &--container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        &--heading {
+          font-family: roboto-light;
+          font-size: 0.9rem;
+        }
+    
+        &--count {
+          font-family: roboto-bold;
+          font-size: 2rem;
+          line-height: 1.75rem;
+        }
+
+        &--icon {
+            width: 2.9325rem;
+            height: 2.9325rem;
+        }
+    }
+
+    &__compliance-rate {
         max-width: 11rem;
         min-width: 11rem;
         height: 8.75rem;
