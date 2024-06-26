@@ -69,7 +69,7 @@ const PasswordSettings = () => {
 
         if (response.data.success) {
           alert("Password Successfully Changed.");
-          navigate(`/dashboard/${userId}/settings`);
+          navigate(`/dashboard/${userId}/settings?tab=profile`);
         } else {
           setErrors({ form: response.data.message });
         }
