@@ -3,7 +3,6 @@
 @use "../../styles/global/global" as *;
 
 .dashboard {
-
     &__container {
         min-width: 100%;
         display: flex;
@@ -254,6 +253,9 @@ strong {
 }
 
 // Table styling
+.dashboard__table-container {
+    margin-bottom: 6rem;
+}
 .dashboard-list__table {
     @include flex-center;
     margin-top: 2rem;
@@ -332,23 +334,24 @@ strong {
     width: 11.25rem;
   }
   
-  .row-name {
-    width: 11.125rem;
+  .row-dell-name {
+    width: 19rem;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
+
+  .row-retailer-price {
+    width: 12.7rem;
+  }
   
-  .row-msrp {
+  .row-retailer-msrp {
     width: 5rem;
   }
   
-  .row-price {
-    width: 8.7rem;
-  }
-  
-  .row-deviation {
-    width: 6.7rem;
+  .row-retailer-deviation {
+    width: 15.85rem;
+    border-radius: 0 1rem 1rem 0;
   }
   
   .dashboard-column {
@@ -359,8 +362,8 @@ strong {
       color: $Midnight;
     }
   
-    &__name {
-      width: 12.975rem;
+    &__dell-name {
+      width: 21.75rem;
       z-index: 8;
       padding-left: 2rem;
     }
