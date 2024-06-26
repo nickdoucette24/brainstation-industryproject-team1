@@ -256,6 +256,7 @@ strong {
 .dashboard__table-container {
     margin-bottom: 6rem;
 }
+
 .dashboard-list__table {
     @include flex-center;
     margin-top: 2rem;
@@ -264,6 +265,8 @@ strong {
 
 .dashboard-table {
     display: flex;
+    box-shadow: 2px 2px 6px 0px #00000040;
+    border-radius: 1rem;
     flex-direction: column;
     width: 100%;
     gap: 1rem;

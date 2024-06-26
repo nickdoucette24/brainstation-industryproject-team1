@@ -94,6 +94,8 @@ strong {
   flex-direction: column;
   gap: 1rem;
   border-collapse: collapse;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 6px 0px #00000040;
 
   &__head {
     color: $True-White;
