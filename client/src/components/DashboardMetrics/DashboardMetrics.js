@@ -99,8 +99,15 @@ const DashboardMetrics = () => {
       return;
     }
 
-    const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
-    const neweggMetrics = calculateMetrics(data.newegg.allProducts);
+    const bestbuyTop5 = data.bestbuy.allProducts
+      .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+      .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+      .slice(0, 5);
+
+    const neweggTop5 = data.newegg.allProducts
+      .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+      .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+      .slice(0, 5);
 
     const fields = [
       "Retailer",
@@ -114,25 +121,25 @@ const DashboardMetrics = () => {
     ];
 
     const csvData = [
-      ...data.bestbuy.topOffendingProducts.map(product => ({
+      ...bestbuyTop5.map(product => ({
         Retailer: "BestBuy",
         "Dell Product Name": product.Dell_product,
-        MSRP: product.Dell_price,
+        MSRP: parseFloat(product.Dell_price).toFixed(2),
         "Authorized Seller Price": parseFloat(product.Bestbuy_price).toFixed(2),
         "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
-        "Total Deviated Products": bestbuyMetrics.totalDeviatedProducts,
-        "Average Deviation": bestbuyMetrics.averageDeviation,
-        "Compliance Rate": bestbuyMetrics.complianceRate
+        "Total Deviated Products": calculateMetrics(data.bestbuy.allProducts).totalDeviatedProducts,
+        "Average Deviation": calculateMetrics(data.bestbuy.allProducts).averageDeviation,
+        "Compliance Rate": calculateMetrics(data.bestbuy.allProducts).complianceRate
       })),
-      ...data.newegg.topOffendingProducts.map(product => ({
+      ...neweggTop5.map(product => ({
         Retailer: "Newegg",
         "Dell Product Name": product.Dell_product,
-        MSRP: product.Dell_price,
+        MSRP: parseFloat(product.Dell_price).toFixed(2),
         "Authorized Seller Price": parseFloat(product.Newegg_price).toFixed(2),
         "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
-        "Total Deviated Products": neweggMetrics.totalDeviatedProducts,
-        "Average Deviation": neweggMetrics.averageDeviation,
-        "Compliance Rate": neweggMetrics.complianceRate
+        "Total Deviated Products": calculateMetrics(data.newegg.allProducts).totalDeviatedProducts,
+        "Average Deviation": calculateMetrics(data.newegg.allProducts).averageDeviation,
+        "Compliance Rate": calculateMetrics(data.newegg.allProducts).complianceRate
       }))
     ];
 
