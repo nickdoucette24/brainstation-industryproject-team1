@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Chart from "chart.js/auto";
+import boxIcon from "../../assets/icons/box-icon.svg";
 import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import "./DashboardMetrics.scss";
 
@@ -235,8 +236,16 @@ const DashboardMetrics = () => {
                         <p className="chart-label">Product Names</p>
                     </div>
                 </div>
-                <div className="dashboard__bestbuy-deviated-products">
-                    <p>Total Deviated Products BestBuy: {bestbuyMetrics.totalDeviatedProducts}</p>
+                <div className="dashboard__tiles">
+                    <div className="dashboard__deviated-products">
+                        <div className="dashboard__deviated-products--container">
+                            <h2 className="dashboard__deviated-products--heading">Total Deviated Products</h2> 
+                            <span className="dashboard__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>                        
+                        </div>
+                        <div className="dashboard__deviated-products--img">
+                            <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="dashboard__newegg-container">
