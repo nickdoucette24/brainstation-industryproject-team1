@@ -9,7 +9,7 @@ exports.seed = async function (knex) {
   await knex("users").del();
 
   // Tests User Password Hashing
-  const hashedPassword = await bcrypt.hash("delltech", 10);
+  const hashedPassword = await bcrypt.hash("team1spectra", 10);
 
   await knex("users").insert([
     {
