@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import boxIcon from "../../assets/icons/box-icon.svg";
-import chartIcon from "../../assets/icons/data-analysis-icon.svg";
-import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
-import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
+// import boxIcon from "../../assets/icons/box-icon.svg";
+// import chartIcon from "../../assets/icons/data-analysis-icon.svg";
+// import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
+// import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import "./RetailerList.scss";
 
 // Base Url
