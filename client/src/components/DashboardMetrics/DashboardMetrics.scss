@@ -354,7 +354,9 @@ strong {
   .dashboard-column {
     &__retailer {
       width: 11rem;
+      background-color: $Light-Scarlet;
       z-index: 9;
+      color: $Midnight;
     }
   
     &__name {
@@ -370,17 +372,17 @@ strong {
     }
   
     &__price {
-      width: 10.6rem;
-      background-color: $Best-Buy-Yellow;
+      width: 15rem;
+      background-color: $Light-Scarlet;
       color: $Midnight;
       z-index: 6;
       padding-left: 2rem;
     }
   
     &__deviation {
-      width: 8.75rem;
+      width: 17rem;
       z-index: 5;
-      background-color: $Best-Buy-Yellow;
+      background-color: $Light-Scarlet;
       color: $Midnight;
       padding-left: 2rem;
     }

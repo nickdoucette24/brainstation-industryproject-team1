@@ -337,12 +337,12 @@ const DashboardMetrics = () => {
                 <th
                     className="dashboard-table__column--item dashboard-column__price"
                 >
-                    BestBuy Price
+                    Authorized Seller Price
                 </th>
                 <th
                     className="dashboard-table__column--item dashboard-column__deviation"
                 >
-                    Deviation
+                    Authorized Seller Deviation
                 </th>
                 </tr>
             </thead>
