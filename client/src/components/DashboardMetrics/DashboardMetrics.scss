@@ -347,5 +347,18 @@ strong {
         width: 30rem;
         padding: 1rem;
         border-radius: .875rem;
+        margin-top: -2rem;
+    }
+
+    &__retailer-label {
+        width: 7.6875rem;
+        height: 3.6875rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $True-White;
+        border-radius: .875rem;
+        background-color: $Midnight;
+        box-shadow: inset 0 0 0 3px $True-White;
     }
 }

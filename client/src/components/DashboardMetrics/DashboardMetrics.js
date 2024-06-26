@@ -223,11 +223,17 @@ const DashboardMetrics = () => {
         </div>
         
         <div className="chart-container">
-            <div className="chart-container__bestbuy">
+            <div className="chart-container__retailer-label">
+                BestBuy
+            </div>
+            <div className="chart-container__bestbuy">    
                 <div className="chart-wrapper">
                     <canvas id="bestbuyChart" width="400" height="200"></canvas>
                     <p className="chart-label">Product Names</p>
                 </div>
+            </div>
+            <div className="chart-container__retailer-label">
+                Newegg
             </div>
             <div className="chart-container__newegg">
                 <div className="chart-wrapper">
