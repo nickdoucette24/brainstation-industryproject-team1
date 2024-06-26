@@ -98,26 +98,27 @@ const RetailerList = ({ userId }) => {
       .slice(0, 5); // Get top 5 non-compliant products
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Dell Product Name</th>
-            <th>MSRP</th>
-            <th>{`${retailer} Price`}</th>
-            <th>Deviation (%)</th>
-            <th>Compliance</th>
+        
+        <table className="retailer-table">
+        <thead className="retailer-table__head">
+        <tr className="retailer-table__column">
+        <th className="retailer-table__column--item retailer-column__id">ID</th>
+        <th className="retailer-table__column--item retailer-column__dell-product">Dell Product Name</th>
+        <th className="retailer-table__column--item retailer-column__msrp">MSRP</th>
+        <th className="retailer-table__column--item retailer-column__retailer-price">{`${retailer} Price`}</th>
+        <th className="retailer-table__column--item retailer-column__deviation">Deviation (%)</th>
+        <th className="retailer-table__column--item retailer-column__compliance">Compliance</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="retailer-table__body">
           {topNonCompliantProducts.map((product, index) => (
-            <tr key={`${retailer}-${index}`}>
-              <td>{index + 1}</td>
-              <td>{product.Dell_product}</td>
-              <td>{product.Dell_price}</td>
-              <td>{product[`${retailer}_price`]}</td>
-              <td>{parseFloat(product.Deviation).toFixed(2)}%</td>
-              <td>{getStatus(parseFloat(product.Deviation))}</td>
+            <tr className="retailer-table__row" key={`${retailer}-${index}`}>
+              <td className="retailer-table__row--item row-id">{index + 1}</td>
+              <td className="retailer-table__row--item row-dell-product">{product.Dell_product}</td>
+              <td className="retailer-table__row--item row-msrp">{product.Dell_price}</td>
+              <td className="retailer-table__row--item row-retailer-price">{product[`${retailer}_price`]}</td>
+              <td className="retailer-table__row--item row-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
+              <td className="retailer-table__row--item row-compliance">{getStatus(parseFloat(product.Deviation))}</td>
             </tr>
           ))}
         </tbody>
