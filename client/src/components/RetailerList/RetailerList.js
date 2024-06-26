@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
-import boxIcon from "../../assets/icons/box-icon.svg";
+import boxFullIcon from "../../assets/icons/box-full-icon.svg";
 import chartIcon from "../../assets/icons/data-analysis-icon.svg";
 import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
 import "./RetailerList.scss";
@@ -20,7 +20,7 @@ const RetailerList = ({ userId }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${url}/api/retailers`);
-        console.log("Fetched data:", response.data);  // Log fetched data for debugging
+        console.log("Fetched data:", response.data); // Log fetched data for debugging
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -46,7 +46,7 @@ const RetailerList = ({ userId }) => {
 
   // Function to calculate compliance rate and average deviation
   const calculateMetrics = (products) => {
-    console.log("Calculating metrics for products:", products);  // Log products for debugging
+    console.log("Calculating metrics for products:", products); // Log products for debugging
     if (!products || products.length === 0) {
       return {
         complianceRate: 0,
@@ -61,12 +61,15 @@ const RetailerList = ({ userId }) => {
     ).length;
     const complianceRate = (compliantProducts / totalProducts) * 100;
     const averageDeviation =
-      products.reduce((sum, product) => sum + Math.abs(parseFloat(product.Deviation) || 0), 0) / totalProducts;
+      products.reduce(
+        (sum, product) => sum + Math.abs(parseFloat(product.Deviation) || 0),
+        0
+      ) / totalProducts;
 
-    console.log("Total Products: ", totalProducts);  // Log total products count
-    console.log("Compliant Products: ", compliantProducts);  // Log compliant products count
-    console.log("Compliance Rate: ", complianceRate);  // Log compliance rate
-    console.log("Average Deviation: ", averageDeviation);  // Log average deviation
+    console.log("Total Products: ", totalProducts); // Log total products count
+    console.log("Compliant Products: ", compliantProducts); // Log compliant products count
+    console.log("Compliance Rate: ", complianceRate); // Log compliance rate
+    console.log("Average Deviation: ", averageDeviation); // Log average deviation
 
     return {
       complianceRate: complianceRate.toFixed(2),
@@ -80,7 +83,7 @@ const RetailerList = ({ userId }) => {
   }
 
   if (!data) {
-    console.log("Data is not available yet.");  // Log if data is not available
+    console.log("Data is not available yet."); // Log if data is not available
     return null;
   }
 
@@ -101,7 +104,7 @@ const RetailerList = ({ userId }) => {
             <th>Dell Product Name</th>
             <th>MSRP</th>
             <th>{`${retailer} Price`}</th>
-            <th>Deviation</th>
+            <th>Deviation (%)</th>
             <th>Compliance</th>
           </tr>
         </thead>
@@ -112,7 +115,7 @@ const RetailerList = ({ userId }) => {
               <td>{product.Dell_product}</td>
               <td>{product.Dell_price}</td>
               <td>{product[`${retailer}_price`]}</td>
-              <td>{parseFloat(product.Deviation).toFixed(2)}</td>
+              <td>{parseFloat(product.Deviation).toFixed(2)}%</td>
               <td>{getStatus(parseFloat(product.Deviation))}</td>
             </tr>
           ))}
@@ -147,58 +150,90 @@ const RetailerList = ({ userId }) => {
   const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
   const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
-  console.log("BestBuy Metrics:", bestbuyMetrics);  // Log BestBuy metrics
-  console.log("Newegg Metrics:", neweggMetrics);  // Log Newegg metrics
+  console.log("BestBuy Metrics:", bestbuyMetrics); // Log BestBuy metrics
+  console.log("Newegg Metrics:", neweggMetrics); // Log Newegg metrics
 
   return (
-    <div className="dashboard__wrapper">
-      <div className="dashboard__details">
-        <div className="dashboard-widget">
-          <div className="dashboard-widget__container">
-            <div className="dashboard-widget__details">
-              <h2 className="dashboard-widget__details--heading">Total Offenders</h2>
-              <span className="dashboard-widget__details--count">2</span>
+    <div className="retailer__wrapper">
+      <div className="retailer__details">
+        <div className="retailer-widget">
+          <div className="retailer-widget__container">
+            <div className="retailer-widget__details">
+              <h2 className="retailer-widget__details--heading">Total Offenders</h2>
+              <span className="retailer-widget__details--count">2</span>
             </div>
-            <div className="dashboard-widget__icon-container">
+            <div className="retailer-widget__icon-container">
               <img
-                className="dashboard-widget__cart-icon"
+                className="retailer-widget__cart-icon"
                 src={shoppingCartIcon}
                 alt="shopping cart icon for the total offenders widget"
               />
             </div>
           </div>
 
-          <div className="dashboard-widget__heading">
-            <div className="dashboard-heading__content">
-              <h1 className="dashboard-heading__content--heading">Welcome back, Ali!</h1>
-              <span className="dashboard-heading__content--date">{currentDate}</span>
+          <div className="retailer-widget__heading">
+            <div className="retailer-heading__content">
+              <h1 className="retailer-heading__content--heading">Retailer Pricing Compliance</h1>
+              <span className="retailer-heading__content--date">{currentDate}</span>
             </div>
-            <h2 className="dashboard-widget__heading--directions">
-              Here are the <strong>top deviated products</strong> by <strong>retailer</strong>. 
-              Please review the details below.
+            <h2 className="retailer-widget__heading--directions">
+              Please review the <strong>compliance</strong> and <strong>deviation</strong> values for products sold by these <strong>retailers</strong>.
             </h2>
           </div>
         </div>
-        
-        <div className="chart-container"></div>
-    
-    <div className="retailer-container">
-      <div className="retailer-section">
-        <h2>BestBuy</h2>
-        <div className="retailer-content">
-          {renderTable(data.bestbuy.allProducts, "Bestbuy")}
-          {renderCards(bestbuyMetrics)}
+
+        <div className="retailer__bestbuy-container">
+          <div className="chart-container__retailer-label">BestBuy</div>
+          <div className="dashboard__tiles">
+            <div className="dashboard__deviated-products">
+              <div className="dashboard__deviated-products--container">
+                <h2 className="dashboard__deviated-products--heading">Total Deviated Products</h2>
+                <span className="dashboard__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>
+              </div>
+              <div className="dashboard__deviated-products--img">
+                <img className="dashboard__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
+              </div>
+            </div>
+            <div className="dashboard__average-deviation">
+              <div className="dashboard__average-deviation--container">
+                <h2 className="dashboard__average-deviation--heading">Average Deviation</h2>
+                <span className="dashboard__average-deviation--count">{bestbuyMetrics.averageDeviation}%</span>
+              </div>
+              <div className="dashboard__average-deviation--img">
+                <img className="dashboard__average-deviation--icon" src={chartIcon} alt="chart icon" />
+              </div>
+            </div>
+            <div className="dashboard__compliance-rate">
+              <div className="dashboard__compliance-rate--container">
+                <h2 className="dashboard__compliance-rate--heading">Compliance Rate</h2>
+                <span className="dashboard__compliance-rate--count">{bestbuyMetrics.complianceRate}%</span>
+              </div>
+              <div className="dashboard__compliance-rate--img">
+                <img className="dashboard__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="chart-container">
+          <div className="retailer-container">
+            <div className="retailer-section">
+              <h2>BestBuy</h2>
+              <div className="retailer-content">
+                {renderTable(data.bestbuy.allProducts, "Bestbuy")}
+                {renderCards(bestbuyMetrics)}
+              </div>
+            </div>
+            <div className="retailer-section">
+              <h2>Newegg</h2>
+              <div className="retailer-content">
+                {renderTable(data.newegg.allProducts, "Newegg")}
+                {renderCards(neweggMetrics)}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="retailer-section">
-        <h2>Newegg</h2>
-        <div className="retailer-content">
-          {renderTable(data.newegg.allProducts, "Newegg")}
-          {renderCards(neweggMetrics)}
-        </div>
-      </div>
-    </div>
-    </div>
     </div>
   );
 };

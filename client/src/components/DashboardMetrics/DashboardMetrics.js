@@ -4,7 +4,7 @@ import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
 import axios from "axios";
 import Chart from "chart.js/auto";
-import boxIcon from "../../assets/icons/box-icon.svg";
+import boxFullIcon from "../../assets/icons/box-full-icon.svg";
 import chartIcon from "../../assets/icons/data-analysis-icon.svg";
 import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
 import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
@@ -118,7 +118,7 @@ const DashboardMetrics = () => {
         Retailer: "BestBuy",
         "Dell Product Name": product.Dell_product,
         MSRP: product.Dell_price,
-        "Authorized Seller Price": product.Bestbuy_price,
+        "Authorized Seller Price": parseFloat(product.Bestbuy_price).toFixed(2),
         "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
         "Total Deviated Products": bestbuyMetrics.totalDeviatedProducts,
         "Average Deviation": bestbuyMetrics.averageDeviation,
@@ -128,7 +128,7 @@ const DashboardMetrics = () => {
         Retailer: "Newegg",
         "Dell Product Name": product.Dell_product,
         MSRP: product.Dell_price,
-        "Authorized Seller Price": product.Newegg_price,
+        "Authorized Seller Price": parseFloat(product.Newegg_price).toFixed(2),
         "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
         "Total Deviated Products": neweggMetrics.totalDeviatedProducts,
         "Average Deviation": neweggMetrics.averageDeviation,
@@ -190,7 +190,7 @@ const DashboardMetrics = () => {
               labels: bestbuyTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation (%)",
+                  label: "Price Deviation $CAD",
                   data: bestbuyTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(252, 236, 93, 0.65)",
                   borderColor: "#FCEC5D",
@@ -205,7 +205,7 @@ const DashboardMetrics = () => {
                   beginAtZero: true,
                   ticks: {
                     callback: function(value) {
-                      return value + "%";
+                      return "$" + value;
                     }
                   }
                 },
@@ -223,7 +223,7 @@ const DashboardMetrics = () => {
               labels: neweggTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation (%)",
+                  label: "Price Deviation $CAD",
                   data: neweggTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(236, 157, 74, 0.65)",
                   borderColor: "#EC9D4A",
@@ -238,7 +238,7 @@ const DashboardMetrics = () => {
                   beginAtZero: true,
                   ticks: {
                     callback: function(value) {
-                      return value + "%";
+                      return "$" + value;
                     }
                   }
                 },
@@ -268,6 +268,19 @@ const DashboardMetrics = () => {
     month: "long",
     day: "numeric",
   });
+
+  // Find the most deviated product for each retailer
+  const getMostDeviatedProduct = (products) => {
+    return products.reduce((max, product) => {
+      const deviation = Math.abs(parseFloat(product.Deviation) || 0);
+      return deviation > max.deviation
+        ? { ...product, deviation }
+        : max;
+    }, { deviation: 0 });
+  };
+
+  const mostDeviatedBestbuy = getMostDeviatedProduct(data.bestbuy.allProducts);
+  const mostDeviatedNewegg = getMostDeviatedProduct(data.newegg.allProducts);
 
   return (
     <div className="dashboard__wrapper">
@@ -317,7 +330,7 @@ const DashboardMetrics = () => {
                   <span className="dashboard__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>                        
                 </div>
                 <div className="dashboard__deviated-products--img">
-                  <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                  <img className="dashboard__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
                 </div>
               </div>
               <div className="dashboard__average-deviation">
@@ -357,7 +370,7 @@ const DashboardMetrics = () => {
                   <span className="dashboard__deviated-products--count">{neweggMetrics.totalDeviatedProducts}</span>                        
                 </div>
                 <div className="dashboard__deviated-products--img">
-                  <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                  <img className="dashboard__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
                 </div>
               </div>
               <div className="dashboard__average-deviation">
@@ -396,24 +409,20 @@ const DashboardMetrics = () => {
               </tr>
             </thead>
             <tbody className="dashboard-table__body">
-              {data.bestbuy.topOffendingProducts.slice(0, 1).map((product, index) => (
-                <tr className="dashboard-table__row" key={`bestbuy-${index}`}>
-                  <td className="dashboard-table__row--item row-retailer">BestBuy</td>
-                  <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
-                  <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-price">{product.Bestbuy_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
-                </tr>
-              ))}
-              {data.newegg.topOffendingProducts.slice(0, 1).map((product, index) => (
-                <tr className="dashboard-table__row" key={`newegg-${index}`}>
-                  <td className="dashboard-table__row--item row-retailer">Newegg</td>
-                  <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
-                  <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-price">{product.Newegg_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
-                </tr>
-              ))}
+              <tr className="dashboard-table__row">
+                <td className="dashboard-table__row--item row-retailer">BestBuy</td>
+                <td className="dashboard-table__row--item row-dell-name">{mostDeviatedBestbuy.Dell_product}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedBestbuy.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedBestbuy.Bestbuy_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedBestbuy.deviation.toFixed(2)}%</td>
+              </tr>
+              <tr className="dashboard-table__row">
+                <td className="dashboard-table__row--item row-retailer">Newegg</td>
+                <td className="dashboard-table__row--item row-dell-name">{mostDeviatedNewegg.Dell_product}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedNewegg.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedNewegg.Newegg_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedNewegg.deviation.toFixed(2)}%</td>
+              </tr>
             </tbody>
           </table>
         </div>
