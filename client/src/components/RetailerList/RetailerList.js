@@ -44,7 +44,7 @@ const RetailerList = ({ userId }) => {
     return "Undetermined";
   };
 
-  // Function to calculate compliance rate and average deviation
+  // Function to calculate compliance rate and average deviation for all deviated products per retailer
   const calculateMetrics = (products) => {
     console.log("Calculating metrics for products:", products);  // Log products for debugging
     if (!products || products.length === 0) {
