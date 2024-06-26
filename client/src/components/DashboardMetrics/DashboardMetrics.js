@@ -159,7 +159,7 @@ const DashboardMetrics = () => {
               labels: neweggTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation",
+                  label: "Price Deviation $CAD",
                   data: neweggTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(236, 157, 74, 0.65)",
                   borderColor: "#EC9D4A",
@@ -314,15 +314,15 @@ const DashboardMetrics = () => {
         </div>
     </div>
 
-      <div className="offending-products-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Retailer</th>
-              <th>Product Name</th>
-              <th>MSRP</th>
-              <th>Current Price</th>
-              <th>Deviation</th>
+      <div className="dashboard__top-deviated-products">
+        <table classname="dashboard__table">
+          <thead className="dashboard__thead">
+            <tr className="dashboard__header-row">
+              <th className="dashboard__header-retailer">Retailer</th>
+              <th className="dashboard__header-product-name">Product Name</th>
+              <th className="dashboard__header-msrp">MSRP</th>
+              <th className="dashboard__header-price">Current Price</th>
+              <th className="dashboard__header-deviation">Deviation</th>
             </tr>
           </thead>
           <tbody>
