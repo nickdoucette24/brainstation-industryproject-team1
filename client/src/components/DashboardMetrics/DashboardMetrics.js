@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import Chart from "chart.js/auto";
+import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import "./DashboardMetrics.scss";
 
 // Base URL
@@ -89,11 +89,11 @@ const DashboardMetrics = () => {
     if (data) {
       const bestbuyTop5 = data.bestbuy.topOffendingProducts.map((product) => ({
         name: product.Dell_product,
-        deviation: parseFloat(product.Deviation) || 0,
+        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
       }));
       const neweggTop5 = data.newegg.topOffendingProducts.map((product) => ({
         name: product.Dell_product,
-        deviation: parseFloat(product.Deviation) || 0,
+        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
       }));
 
       // Destroy existing charts before rendering new ones
@@ -123,11 +123,12 @@ const DashboardMetrics = () => {
               labels: bestbuyTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation ($CAD)",
+                  label: "Price Deviation",
                   data: bestbuyTop5.map((product) => product.deviation),
-                  backgroundColor: "rgba(255, 99, 132, 0.2)",
-                  borderColor: "rgba(255, 99, 132, 1)",
+                  backgroundColor: "rgba(252, 236, 93, 0.65)",
+                  borderColor: "#FCEC5D",
                   borderWidth: 1,
+                  borderRadius: 5,
                 },
               ],
             },
@@ -150,11 +151,12 @@ const DashboardMetrics = () => {
               labels: neweggTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation ($CAD)",
+                  label: "Price Deviation",
                   data: neweggTop5.map((product) => product.deviation),
-                  backgroundColor: "rgba(54, 162, 235, 0.2)",
-                  borderColor: "rgba(54, 162, 235, 1)",
+                  backgroundColor: "rgba(236, 157, 74, 0.65)",
+                  borderColor: "#EC9D4A",
                   borderWidth: 1,
+                  borderRadius: 5,
                 },
               ],
             },
@@ -194,75 +196,82 @@ const DashboardMetrics = () => {
     <div className="dashboard__wrapper">
       <div className="dashboard__details">
         <div className="dashboard-widget">
-            <div className="dashboard-widget__container">
-                <div className="dashboard-widget__details">
-                    <h2 className="dashboard-widget__details--heading">
-                        Total Offenders
-                    </h2>
-                    <span className="dashboard-widget__details--count">
-                        2
-                    </span>
-                </div>
-                <div className="dashboard-widget__icon-container">
-                    <img
-                        className="dashboard-widget__cart-icon"
-                        src={shoppingCartIcon}
-                        alt="shopping cart icon for the total offenders widget"
-                    />
-                </div>
+          <div className="dashboard-widget__container">
+            <div className="dashboard-widget__details">
+              <h2 className="dashboard-widget__details--heading">Total Offenders</h2>
+              <span className="dashboard-widget__details--count">2</span>
             </div>
+            <div className="dashboard-widget__icon-container">
+              <img
+                className="dashboard-widget__cart-icon"
+                src={shoppingCartIcon}
+                alt="shopping cart icon for the total offenders widget"
+              />
+            </div>
+          </div>
 
-            <div className="dashboard-widget__heading">
-                <div className="dashboard-heading__content">
-                    <h1 className="dashboard-heading__content--heading">
-                    Welcome back, Ali!
-                    </h1>
-                    <span className="dasshboard-heading__content--date">{currentDate}</span>
-                </div>
-                <h2 className="dashboard__heading--directions">
-                    Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
-                    Please review the details below.
-                </h2>
+          <div className="dashboard-widget__heading">
+            <div className="dashboard-heading__content">
+              <h1 className="dashboard-heading__content--heading">Welcome back, Ali!</h1>
+              <span className="dashboard-heading__content--date">{currentDate}</span>
             </div>
+            <h2 className="dashboard__heading--directions">
+              Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
+              Please review the details below.
+            </h2>
+          </div>
         </div>
         
-          <canvas id="bestbuyChart" width="400" height="200"></canvas>
-          <canvas id="neweggChart" width="400" height="200"></canvas>
+        <div className="chart-container">
+            <div className="chart-container__bestbuy">
+                <div className="chart-wrapper">
+                    <canvas id="bestbuyChart" width="400" height="200"></canvas>
+                    <p className="chart-label">Product Names</p>
+                </div>
+            </div>
+            <div className="chart-container__newegg">
+                <div className="chart-wrapper">
+                    <canvas id="neweggChart" width="400" height="200"></canvas>
+                    <p className="chart-label">Product Names</p>
+                </div>
+            </div>
         </div>
-        <div className="offending-products-table">
-          <h2>Top Offending Products</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Retailer</th>
-                <th>Product Name</th>
-                <th>MSRP</th>
-                <th>Current Price</th>
-                <th>Deviation</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>BestBuy</td>
-                <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
-                <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
-                <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
-                <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td>Newegg</td>
-                <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
-                <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
-                <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
-                <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </table>
+    </div>
 
-          <div className="dashboard__bestbuy-tiles">
+      <div className="offending-products-table">
+        <h2>Top Offending Products</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Retailer</th>
+              <th>Product Name</th>
+              <th>MSRP</th>
+              <th>Current Price</th>
+              <th>Deviation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BestBuy</td>
+              <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
+              <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
+              <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
+              <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Newegg</td>
+              <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
+              <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
+              <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
+              <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div className="dashboard__metrics">
         <div>
           <p>Total Deviated Products: {data.totalOffenders}</p>
-        </div>
         </div>
         <div>
           <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
@@ -272,10 +281,8 @@ const DashboardMetrics = () => {
           <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
           <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
         </div>
-        <div>
-            </div>
-        </div>
       </div>
+    </div>
   );
 };
 
