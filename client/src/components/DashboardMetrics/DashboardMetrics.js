@@ -57,11 +57,50 @@ const DashboardMetrics = () => {
     fetchDashboardData();
   }, [userId, navigate]);
 
+  const getStatus = (deviation) => {
+    if (Math.abs(deviation) <= 5) {
+      return "Compliant";
+    } else if (Math.abs(deviation) > 5 && Math.abs(deviation) <= 15) {
+      return "Needs Attention";
+    } else if (Math.abs(deviation) > 15) {
+      return "Non-Compliant";
+    }
+    return "Undetermined";
+  };
+
+  const calculateMetrics = (products) => {
+    if (!products || products.length === 0) {
+      return {
+        complianceRate: 0,
+        averageDeviation: 0,
+        totalDeviatedProducts: 0,
+      };
+    }
+
+    const totalProducts = products.length;
+    const compliantProducts = products.filter(
+      (product) => getStatus(parseFloat(product.Deviation)) === "Compliant"
+    ).length;
+    const complianceRate = (compliantProducts / totalProducts) * 100;
+    const averageDeviation =
+      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+    const totalDeviatedProducts = totalProducts - compliantProducts;
+
+    return {
+      complianceRate: complianceRate.toFixed(2),
+      averageDeviation: averageDeviation.toFixed(2),
+      totalDeviatedProducts: totalDeviatedProducts,
+    };
+  };
+
   const handleExport = () => {
     if (!data) {
       console.warn("No data to export.");
       return;
     }
+
+    const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
+    const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
     const fields = [
       "Retailer",
@@ -100,43 +139,7 @@ const DashboardMetrics = () => {
     const csv = unparse(csvData, { fields });
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "product_pricing_compliance.csv");
-  };
-
-  const getStatus = (deviation) => {
-    if (Math.abs(deviation) <= 5) {
-      return "Compliant";
-    } else if (Math.abs(deviation) > 5 && Math.abs(deviation) <= 15) {
-      return "Needs Attention";
-    } else if (Math.abs(deviation) > 15) {
-      return "Non-Compliant";
-    }
-    return "Undetermined";
-  };
-
-  const calculateMetrics = (products) => {
-    if (!products || products.length === 0) {
-      return {
-        complianceRate: 0,
-        averageDeviation: 0,
-        totalDeviatedProducts: 0,
-      };
-    }
-
-    const totalProducts = products.length;
-    const compliantProducts = products.filter(
-      (product) => getStatus(parseFloat(product.Deviation)) === "Compliant"
-    ).length;
-    const complianceRate = (compliantProducts / totalProducts) * 100;
-    const averageDeviation =
-      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
-    const totalDeviatedProducts = totalProducts - compliantProducts;
-
-    return {
-      complianceRate: complianceRate.toFixed(2),
-      averageDeviation: averageDeviation.toFixed(2),
-      totalDeviatedProducts: totalDeviatedProducts,
-    };
+    saveAs(blob, "product_pricing_compliance_generated_by_spectra.csv");
   };
 
   useEffect(() => {
@@ -390,12 +393,12 @@ const DashboardMetrics = () => {
             </tbody>
           </table>
         </div>
-        </div>
-        <div className="export-container">
-            <button className="export-container__button" onClick={handleExport}>
-            <span className="export-container__button--text">Export</span>
-            </button>
-        </div>
+      </div>
+      <div className="export-container">
+        <button className="export-container__button" onClick={handleExport}>
+          <span className="export-container__button--text">Export</span>
+        </button>
+      </div>
     </div>
   );
 };
