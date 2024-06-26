@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-// import boxIcon from "../../assets/icons/box-icon.svg";
-// import chartIcon from "../../assets/icons/data-analysis-icon.svg";
-// import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
-// import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
 import "./RetailerList.scss";
 
 // Base Url
@@ -44,7 +40,7 @@ const RetailerList = ({ userId }) => {
     return "Undetermined";
   };
 
-  // Function to calculate compliance rate and average deviation for all deviated products per retailer
+  // Function to calculate compliance rate and average deviation
   const calculateMetrics = (products) => {
     console.log("Calculating metrics for products:", products);  // Log products for debugging
     if (!products || products.length === 0) {
@@ -61,7 +57,7 @@ const RetailerList = ({ userId }) => {
     ).length;
     const complianceRate = (compliantProducts / totalProducts) * 100;
     const averageDeviation =
-      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+      products.reduce((sum, product) => sum + Math.abs(parseFloat(product.Deviation) || 0), 0) / totalProducts;
 
     console.log("Total Products: ", totalProducts);  // Log total products count
     console.log("Compliant Products: ", compliantProducts);  // Log compliant products count
@@ -84,32 +80,42 @@ const RetailerList = ({ userId }) => {
     return null;
   }
 
-  const renderTable = (products, retailer) => (
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Dell Product Name</th>
-          <th>MSRP</th>
-          <th>{`${retailer} Price`}</th>
-          <th>Deviation</th>
-          <th>Compliance</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.map((product, index) => (
-          <tr key={`${retailer}-${index}`}>
-            <td>{index + 1}</td>
-            <td>{product.Dell_product}</td>
-            <td>{product.Dell_price}</td>
-            <td>{product[`${retailer}_price`]}</td>
-            <td>{parseFloat(product.Deviation).toFixed(2)}</td>
-            <td>{getStatus(parseFloat(product.Deviation))}</td>
+  const renderTable = (products, retailer) => {
+    // Filter out non-compliant products and sort them based on deviation (absolute value)
+    const nonCompliantProducts = products.filter(
+      (product) => getStatus(parseFloat(product.Deviation)) === "Non-Compliant"
+    );
+    const topNonCompliantProducts = nonCompliantProducts
+      .sort((a, b) => Math.abs(b.Deviation) - Math.abs(a.Deviation))
+      .slice(0, 5); // Get top 5 non-compliant products
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Dell Product Name</th>
+            <th>MSRP</th>
+            <th>{`${retailer} Price`}</th>
+            <th>Deviation</th>
+            <th>Compliance</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+        </thead>
+        <tbody>
+          {topNonCompliantProducts.map((product, index) => (
+            <tr key={`${retailer}-${index}`}>
+              <td>{index + 1}</td>
+              <td>{product.Dell_product}</td>
+              <td>{product.Dell_price}</td>
+              <td>{product[`${retailer}_price`]}</td>
+              <td>{parseFloat(product.Deviation).toFixed(2)}</td>
+              <td>{getStatus(parseFloat(product.Deviation))}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   const renderCards = (metrics) => (
     <div className="cards">
@@ -135,24 +141,23 @@ const RetailerList = ({ userId }) => {
   console.log("Newegg Metrics:", neweggMetrics);  // Log Newegg metrics
 
   return (
-        <div className="retailer-container">
-          <h1>Retailers</h1>
-          <div className="retailer-section">
-            <h2>BestBuy</h2>
-            <div className="retailer-content">
-              {renderTable(data.bestbuy.topOffendingProducts, "Bestbuy")}
-              {renderCards(bestbuyMetrics)}
-            </div>
-          </div>
-          <div className="retailer-section">
-            <h2>Newegg</h2>
-            <div className="retailer-content">
-              {renderTable(data.newegg.topOffendingProducts, "Newegg")}
-              {renderCards(neweggMetrics)}
-            </div>
-          </div>
+    <div className="retailer-container">
+      <h1>Retailers</h1>
+      <div className="retailer-section">
+        <h2>BestBuy</h2>
+        <div className="retailer-content">
+          {renderTable(data.bestbuy.allProducts, "Bestbuy")}
+          {renderCards(bestbuyMetrics)}
         </div>
-
+      </div>
+      <div className="retailer-section">
+        <h2>Newegg</h2>
+        <div className="retailer-content">
+          {renderTable(data.newegg.allProducts, "Newegg")}
+          {renderCards(neweggMetrics)}
+        </div>
+      </div>
+    </div>
   );
 };
 
