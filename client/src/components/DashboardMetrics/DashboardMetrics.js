@@ -60,7 +60,7 @@ const DashboardMetrics = () => {
     return "Undetermined";
   };
 
-  // Function to calculate compliance rate and average deviation
+  // Function to calculate compliance rate, average deviation, and total deviated products
   const calculateMetrics = (products) => {
     if (!products || products.length === 0) {
       return {
@@ -77,11 +77,12 @@ const DashboardMetrics = () => {
     const complianceRate = (compliantProducts / totalProducts) * 100;
     const averageDeviation =
       products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+    const totalDeviatedProducts = totalProducts - compliantProducts;
 
     return {
       complianceRate: complianceRate.toFixed(2),
       averageDeviation: averageDeviation.toFixed(2),
-      totalDeviatedProducts: totalProducts - compliantProducts,
+      totalDeviatedProducts: totalDeviatedProducts,
     };
   };
 
@@ -277,7 +278,8 @@ const DashboardMetrics = () => {
 
       <div className="dashboard__metrics">
         <div>
-          <p>Total Deviated Products: {data.totalOffenders}</p>
+          <p>Total Deviated Products BestBuy: {bestbuyMetrics.totalDeviatedProducts}</p>
+          <p>Total Deviated Products Newegg: {neweggMetrics.totalDeviatedProducts}</p>
         </div>
         <div>
           <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
