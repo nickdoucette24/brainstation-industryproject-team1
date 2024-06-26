@@ -147,7 +147,12 @@
         justify-content: center;
         flex-direction: row;
         color: $True-White;
-          
+        cursor: url('../../assets/icons/error-24px.svg'), auto;
+       
+        &__notify:hover {
+            box-shadow: 0 0 15px 5px rgba(72, 128, 255, 0.75); /* Glow effect on hover */
+        }
+        
         &--container {
             display: flex;
             flex-direction: column;

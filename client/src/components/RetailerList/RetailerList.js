@@ -233,16 +233,29 @@ const RetailerList = ({ userId }) => {
                     <img className="retailer__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
                 </div>
                 </div>
-                <div className="retailer__notify">
-                <div className="retailer__notify--container">
-                    <h2 className="retailer__notify--heading">Send Report to BestBuy</h2>
-                    <span className="retailer__notify--copy">Notify Retailer</span>
+                <div
+                    className="retailer__notify"
+                    onClick={() => window.location.href = encodeURI(
+                        'mailto:jessicaherzog@bestbuy.ca?subject=MSRP Compliance Report for BestBuy&body=Dear BestBuy Team,\n\n' +
+                        'We hope this message finds you well.\n\n' +
+                        'We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n' +
+                        'Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n' +
+                        'Best regards,\n\n' +
+                        'Ali Hayder\n' +
+                        'Lead Data Scientist\n' +
+                        '(Merchandising/Growth/Pricing)\n' +
+                        'Sent through Dell Technologies | Spectra\n'
+                    )}
+                    >
+                    <div className="retailer__notify--container">
+                        <h2 className="retailer__notify--heading">Send Report to BestBuy</h2>
+                        <span className="retailer__notify--copy">Notify Retailer</span>
+                    </div>
+                    <div className="retailer__notify--img">
+                        <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
+                    </div>
+                    </div>
                 </div>
-                <div className="retailer__notify--img">
-                    <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
-                </div>
-                </div>
-            </div>
             </div>
         </div>
       </div>
