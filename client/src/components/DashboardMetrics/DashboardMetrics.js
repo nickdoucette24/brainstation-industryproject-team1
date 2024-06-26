@@ -224,29 +224,51 @@ const DashboardMetrics = () => {
         </div>
         
         <div className="chart-container">
-            <div className="chart-container__retailer-label">
-                BestBuy
-            </div>
-            <div className="chart-container__bestbuy">    
-                <div className="chart-wrapper">
-                    <canvas id="bestbuyChart" width="400" height="200"></canvas>
-                    <p className="chart-label">Product Names</p>
+            <div className="dashboard__bestbuy-container">
+                
+                <div className="chart-container__bestbuy"> 
+                    <div className="chart-container__retailer-label">
+                        BestBuy
+                    </div>   
+                    <div className="chart-wrapper">
+                        <canvas id="bestbuyChart" width="400" height="200"></canvas>
+                        <p className="chart-label">Product Names</p>
+                    </div>
+                </div>
+                <div className="dashboard__bestbuy-deviated-products">
+                    <p>Total Deviated Products BestBuy: {bestbuyMetrics.totalDeviatedProducts}</p>
                 </div>
             </div>
-            <div className="chart-container__retailer-label">
-                Newegg
-            </div>
-            <div className="chart-container__newegg">
-                <div className="chart-wrapper">
-                    <canvas id="neweggChart" width="400" height="200"></canvas>
-                    <p className="chart-label">Product Names</p>
+            <div className="dashboard__newegg-container">
+                
+                <div className="chart-container__newegg">
+                    <div className="chart-container__retailer-label">
+                        Newegg
+                    </div>
+                    <div className="chart-wrapper">
+                        <canvas id="neweggChart" width="400" height="200"></canvas>
+                        <p className="chart-label">Product Names</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div className="dashboard__metrics">
+        <div>
+           
+            <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
+            <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
+        </div>
+        <div>
+            <p>Total Deviated Products Newegg: {neweggMetrics.totalDeviatedProducts}</p>
+            <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
+            <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
+        </div>
+    </div>
+
       <div className="offending-products-table">
-        <h2>Top Offending Products</h2>
+        {/* <h2>Top Offending Products</h2> */}
         <table>
           <thead>
             <tr>
@@ -274,21 +296,6 @@ const DashboardMetrics = () => {
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <div className="dashboard__metrics">
-        <div>
-          <p>Total Deviated Products BestBuy: {bestbuyMetrics.totalDeviatedProducts}</p>
-          <p>Total Deviated Products Newegg: {neweggMetrics.totalDeviatedProducts}</p>
-        </div>
-        <div>
-          <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
-          <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
-        </div>
-        <div>
-          <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
-          <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
-        </div>
       </div>
     </div>
   );
