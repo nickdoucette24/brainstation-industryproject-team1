@@ -154,96 +154,111 @@ const RetailerList = ({ userId }) => {
   console.log("BestBuy Metrics:", bestbuyMetrics); // Log BestBuy metrics
   console.log("Newegg Metrics:", neweggMetrics); // Log Newegg metrics
 
+  const handleNotifyClick = () => {
+    window.location.href = encodeURI(
+      'mailto:jessicaherzog@bestbuy.ca?subject=MSRP Compliance Report for BestBuy&body=Dear BestBuy Team,\n\n' +
+      'We hope this message finds you well.\n\n' +
+      'We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n' +
+      'Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n' +
+      'Best regards,\n\n' +
+      'Ali Hayder\n' +
+      'Lead Data Scientist\n' +
+      '(Merchandising/Growth/Pricing)\n' +
+      'Sent through Spectra | Dell Technologies\n'
+    );
+  };
+
   return (
     <div className="retailer__wrapper">
-        <div className="retailer__details">
-            <div className="retailer-widget">
-                <div className="retailer-widget__container">
+      <div className="retailer__details">
+        <div className="retailer-widget">
+          <div className="retailer-widget__container">
             <div className="retailer-widget__details">
-                <h2 className="retailer-widget__details--heading">Total Offenders</h2>
-                <span className="retailer-widget__details--count">2</span>
+              <h2 className="retailer-widget__details--heading">Total Offenders</h2>
+              <span className="retailer-widget__details--count">2</span>
             </div>
             <div className="retailer-widget__icon-container">
-                <img
-                    className="retailer-widget__cart-icon"
-                    src={shoppingCartIcon}
-                    alt="shopping cart icon for the total offenders widget"
-                />
+              <img
+                className="retailer-widget__cart-icon"
+                src={shoppingCartIcon}
+                alt="shopping cart icon for the total offenders widget"
+              />
             </div>
-        </div>
+          </div>
 
-        <div className="retailer-widget__heading">
+          <div className="retailer-widget__heading">
             <div className="retailer-heading__content">
-                <h1 className="retailer-heading__content--heading">Retailer Pricing Compliance</h1>
-                <span className="retailer-heading__content--date">{currentDate}</span>
+              <h1 className="retailer-heading__content--heading">Retailer Pricing Compliance</h1>
+              <span className="retailer-heading__content--date">{currentDate}</span>
             </div>
             <h2 className="retailer-widget__heading--directions">
               Please review the <strong>compliance</strong> and <strong>deviation</strong> values for products sold by these <strong>retailers</strong>.
             </h2>
-        </div>
+          </div>
         </div>
 
         <div className="retailer__main-content">
-
-
-            <div className="retailer__bestbuy-container">
+          <div className="retailer__bestbuy-container">
             <div className="chart-container__retailer-label">BestBuy</div>
             <div className="table-container">
-            <div className="retailer-container">
+              <div className="retailer-container">
                 <div className="retailer-section">
-                <div className="retailer-content">
+                  <div className="retailer-content">
                     {renderTable(data.bestbuy.allProducts, "Bestbuy")}
                     {renderCards(bestbuyMetrics)}
-                </div>
+                  </div>
                 </div>
                 <div className="retailer-section">
-                <h2>Newegg</h2>
-                <div className="retailer-content">
+                  <h2>Newegg</h2>
+                  <div className="retailer-content">
                     {renderTable(data.newegg.allProducts, "Newegg")}
                     {renderCards(neweggMetrics)}
+                  </div>
                 </div>
-                </div>
-            </div>
+              </div>
             </div>
             <div className="retailer__tiles">
-                <div className="retailer__deviated-products">
+              <div className="retailer__deviated-products">
                 <div className="retailer__deviated-products--container">
-                    <h2 className="retailer__deviated-products--heading">Total Deviated Products</h2>
-                    <span className="retailer__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>
+                  <h2 className="retailer__deviated-products--heading">Total Deviated Products</h2>
+                  <span className="retailer__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>
                 </div>
                 <div className="retailer__deviated-products--img">
-                    <img className="retailer__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
+                  <img className="retailer__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
                 </div>
-                </div>
-                <div className="retailer__average-deviation">
+              </div>
+              <div className="retailer__average-deviation">
                 <div className="retailer__average-deviation--container">
-                    <h2 className="retailer__average-deviation--heading">Average Deviation</h2>
-                    <span className="retailer__average-deviation--count">{bestbuyMetrics.averageDeviation}%</span>
+                  <h2 className="retailer__average-deviation--heading">Average Deviation</h2>
+                  <span className="retailer__average-deviation--count">{bestbuyMetrics.averageDeviation}%</span>
                 </div>
                 <div className="retailer__average-deviation--img">
-                    <img className="retailer__average-deviation--icon" src={chartIcon} alt="chart icon" />
+                  <img className="retailer__average-deviation--icon" src={chartIcon} alt="chart icon" />
                 </div>
-                </div>
-                <div className="retailer__compliance-rate">
+              </div>
+              <div className="retailer__compliance-rate">
                 <div className="retailer__compliance-rate--container">
-                    <h2 className="retailer__compliance-rate--heading">Compliance Rate</h2>
-                    <span className="retailer__compliance-rate--count">{bestbuyMetrics.complianceRate}%</span>
+                  <h2 className="retailer__compliance-rate--heading">Compliance Rate</h2>
+                  <span className="retailer__compliance-rate--count">{bestbuyMetrics.complianceRate}%</span>
                 </div>
                 <div className="retailer__compliance-rate--img">
-                    <img className="retailer__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
+                  <img className="retailer__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
                 </div>
-                </div>
-                <div className="retailer__notify">
+              </div>
+              <div
+                className="retailer__notify"
+                onClick={handleNotifyClick}
+              >
                 <div className="retailer__notify--container">
-                    <h2 className="retailer__notify--heading">Send Report to BestBuy</h2>
-                    <span className="retailer__notify--copy">Notify Retailer</span>
+                  <h2 className="retailer__notify--heading">Send Report to BestBuy</h2>
+                  <span className="retailer__notify--copy">Notify Retailer</span>
                 </div>
                 <div className="retailer__notify--img">
-                    <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
+                  <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
                 </div>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
