@@ -22,6 +22,11 @@
   }
 }
 
+.register-logo:hover {
+  filter: drop-shadow(3px 3px 2px $Glacier);
+  transform: scale(1.02);
+}
+
 .register-wrapper {
   display: flex;
   flex-direction: column;
