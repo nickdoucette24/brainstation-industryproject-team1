@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import spectraLogo from "../../assets/images/logos/dell-spectra-logo-dark.svg";
@@ -26,7 +27,9 @@ export const AuthPage = () => {
       <div className="register-wrapper">
         <div className="register-container">
           <div className="spectra-container">
-            <img src={spectraLogo} alt="dell spectra brand logo" />
+            <Link to="/" >
+              <img src={spectraLogo} className="register-logo" alt="dell spectra brand logo" title="Head back to the landing page"/>
+            </Link>
           </div>
           <div className="auth-form">
             <h1 className="auth-form__heading">Create an account</h1>

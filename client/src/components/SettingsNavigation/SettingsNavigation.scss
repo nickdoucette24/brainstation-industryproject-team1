@@ -42,6 +42,11 @@
         color: $Glacier;
         border-radius: 0 10px 10px 0;
       }
+
+      &.selected-tab:hover {
+        box-shadow: 0 0 10px 2px rgba($Midnight, 0.4);
+        font-weight: bold;
+      }
     }
   }
 }
