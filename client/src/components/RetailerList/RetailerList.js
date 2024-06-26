@@ -165,7 +165,6 @@ const RetailerList = ({ userId }) => {
     );
   };
 
-
   return (
     <div className="retailer__wrapper">
       <div className="retailer__details">
@@ -197,7 +196,7 @@ const RetailerList = ({ userId }) => {
 
         <div className="retailer__main-content">
           <div className="retailer__bestbuy-container">
-            <div className="chart-container__retailer-label">BestBuy</div>
+            <div className="retailer-container__retailer-label--bb">BestBuy</div>
             <div className="table-container">
               <div className="retailer-container">
                 <div className="retailer-section">
@@ -249,7 +248,7 @@ const RetailerList = ({ userId }) => {
             </div>
 
                 <div className="retailer-section">
-                  <h2>Newegg</h2>
+                <div className="retailer-container__retailer-label--newegg">Newegg</div>
                   <div className="retailer-content">
                     {renderTable(data.newegg.allProducts, "Newegg")}
                   </div>
