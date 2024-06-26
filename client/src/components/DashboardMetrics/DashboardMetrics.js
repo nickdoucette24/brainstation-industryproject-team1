@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Chart from "chart.js/auto";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
+import axios from "axios";
+import Chart from "chart.js/auto";
 import boxIcon from "../../assets/icons/box-icon.svg";
 import chartIcon from "../../assets/icons/data-analysis-icon.svg";
 import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
@@ -119,7 +119,7 @@ const DashboardMetrics = () => {
         "Dell Product Name": product.Dell_product,
         MSRP: product.Dell_price,
         "Authorized Seller Price": product.Bestbuy_price,
-        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
         "Total Deviated Products": bestbuyMetrics.totalDeviatedProducts,
         "Average Deviation": bestbuyMetrics.averageDeviation,
         "Compliance Rate": bestbuyMetrics.complianceRate
@@ -129,7 +129,7 @@ const DashboardMetrics = () => {
         "Dell Product Name": product.Dell_product,
         MSRP: product.Dell_price,
         "Authorized Seller Price": product.Newegg_price,
-        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
         "Total Deviated Products": neweggMetrics.totalDeviatedProducts,
         "Average Deviation": neweggMetrics.averageDeviation,
         "Compliance Rate": neweggMetrics.complianceRate
@@ -190,7 +190,7 @@ const DashboardMetrics = () => {
               labels: bestbuyTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation $CAD",
+                  label: "Price Deviation (%)",
                   data: bestbuyTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(252, 236, 93, 0.65)",
                   borderColor: "#FCEC5D",
@@ -203,6 +203,11 @@ const DashboardMetrics = () => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return value + "%";
+                    }
+                  }
                 },
               },
             },
@@ -218,7 +223,7 @@ const DashboardMetrics = () => {
               labels: neweggTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation $CAD",
+                  label: "Price Deviation (%)",
                   data: neweggTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(236, 157, 74, 0.65)",
                   borderColor: "#EC9D4A",
@@ -231,6 +236,11 @@ const DashboardMetrics = () => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return value + "%";
+                    }
+                  }
                 },
               },
             },
@@ -392,7 +402,7 @@ const DashboardMetrics = () => {
                   <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
                   <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
                   <td className="dashboard-table__row--item row-retailer-price">{product.Bestbuy_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}</td>
+                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
                 </tr>
               ))}
               {data.newegg.topOffendingProducts.slice(0, 1).map((product, index) => (
@@ -401,7 +411,7 @@ const DashboardMetrics = () => {
                   <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
                   <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
                   <td className="dashboard-table__row--item row-retailer-price">{product.Newegg_price}</td>
-                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}</td>
+                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
                 </tr>
               ))}
             </tbody>
