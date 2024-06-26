@@ -215,8 +215,8 @@ const DashboardMetrics = () => {
               <h1 className="dashboard-heading__content--heading">Welcome back, Ali!</h1>
               <span className="dashboard-heading__content--date">{currentDate}</span>
             </div>
-            <h2 className="dashboard__heading--directions">
-              Here are the <strong>top offending products</strong> by <strong>retailer</strong>. 
+            <h2 className="dashboard-widget__heading--directions">
+              Here are the <strong>top deviated products</strong> by <strong>retailer</strong>. 
               Please review the details below.
             </h2>
           </div>

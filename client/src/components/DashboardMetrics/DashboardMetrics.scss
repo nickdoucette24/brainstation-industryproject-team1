@@ -34,13 +34,6 @@
         background-color: $True-White;
         gap: 0.5rem;
         width: 49.5rem;
-      
-        &--directions {
-          font-family: roboto-regular;
-          
-          color: $Grey;
-          font-size: 0.9rem;
-        }
       }
 }
 
@@ -71,7 +64,7 @@
   &__heading {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     border-radius: 1rem;
     box-shadow: 2px 2px 6px 0px #00000040;
     padding: 1.25rem;
@@ -79,11 +72,11 @@
     margin-left: 1.7rem;
     width: 47.9375rem;
   
-    // &--directions {
-    //   font-family: roboto-regular;
-    //   color: $Grey;
-    //   font-size: 0.9rem;
-    // }
+    &--directions {
+      font-family: roboto-regular;
+      color: $Grey;
+      font-size: 0.9rem;
+    }
   }
 
   &__icon-container {
@@ -93,8 +86,6 @@
     height: 4.4525rem;
     margin-left: 1rem
   }
-
-  
 
   &__details {
     display: flex;
@@ -121,24 +112,6 @@
   width: 100%;
 }
 
-// .dashboard-widget__heading {
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     border-radius: 1rem;
-//     box-shadow: 2px 2px 6px 0px #00000040;
-//     padding: 1.25rem;
-//     background-color: $True-White;
-//     gap: 0.5rem;
-//     width: 49.5rem;
-  
-//     &--directions {
-//       font-family: roboto-regular;
-//       color: $Grey;
-//       font-size: 0.9rem;
-//     }
-//   }
-
 strong {
   font-family: roboto-bold;
   font-size: 0.9rem;
@@ -149,15 +122,12 @@ strong {
   justify-content: space-between;
   width: 100%;
 
-  &--heading {
-    font-family: roboto-regular;
-    font-size: 1.5rem;
-    color: $Midnight;
-  }
-
-//   &--date {
-//     @extend .heading__content--heading;
-//   }
+    &--heading,
+    &--date {
+        font-family: roboto-regular;
+        font-size: 1.5rem;
+        color: $Midnight;
+    }
 }
 
 // Table styling
@@ -358,46 +328,6 @@ strong {
   }
 }
 
-.not-available {
-  border: 1px solid $Grey;
-  background-color: $Light-Grey;
-  color: $Grey;
-  border-radius: 2px;
-  padding: 0.25rem;
-  font-size: 0.9rem;
-  font-family: roboto-bold;
-}
-
-.compliant {
-  border: 1px solid $Compliant-Text;
-  background-color: $Compliant-bg;
-  color: $Compliant-Text;
-  border-radius: 2px;
-  padding: 0.25rem;
-  font-size: 0.9rem;
-  font-family: roboto-bold;
-}
-
-.noncompliant {
-  border: 1px solid $Scarlet;
-  background-color: $Light-Scarlet;
-  color: $Scarlet;
-  border-radius: 2px;
-  padding: 0.25rem;
-  font-size: 0.9rem;
-  font-family: roboto-bold;
-}
-
-.attention {
-  border: 1px solid $Attention-Text;
-  background-color: $Attention-bg;
-  color: $Attention-Text;
-  border-radius: 2px;
-  padding: 0.25rem;
-  font-size: 0.9rem;
-  font-family: roboto-bold;
-}
-
 .chart-label {
     display: flex;
     justify-content: center;
@@ -407,6 +337,15 @@ strong {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    border: 1px solid black;
     width: 50rem;
+    margin-top: 2rem;
+
+    &__bestbuy, 
+    &__newegg {
+        border: 1px solid $True-White;
+        box-shadow: 2px 2px 6px 0px #00000040;
+        width: 30rem;
+        padding: 1rem;
+        border-radius: .875rem;
+    }
 }
