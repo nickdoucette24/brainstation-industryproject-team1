@@ -6,37 +6,19 @@
   background-color: #0d2155;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
   color: white;
-  height: 65rem;
-  padding: 0 5.375rem;
-}
-
-.landing-container {
-  width: 40rem;
-  margin-top: 9.75rem;
-  max-width: 55rem;
-}
-
-.absolute-container {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-end;
-  justify-content: flex-end;
-  min-width: 30rem;
-  margin-top: 5.375rem;
-  gap: 12.75rem;
+  height: 100vh;
+  padding: 0 2rem;
 }
 
 main {
   height: 80%;
   display: flex;
-  max-width: 554px;
   flex-direction: column;
   justify-content: space-around;
-  position: relative;
-  z-index: 1;
 }
 
 .title {
@@ -50,17 +32,11 @@ main {
   }
 }
 
-.card-container {
-  min-width: 17rem;
-  width: 22.375rem;
-}
-
 .card {
   display: flex;
   flex-direction: column;
   height: fit-content;
-  width: 100%;
-  padding: 6.375rem 0;
+  max-width: 80%;
 
   &__features {
     display: flex;
@@ -72,6 +48,7 @@ main {
       rgb(43, 77, 153) 100%
     );
     border-radius: 8px;
+    margin-right: 1rem;
     padding: 1rem;
 
     &--img {
@@ -86,7 +63,6 @@ main {
 
       & p {
         text-align: center;
-        font-size: 0.6875rem;
       }
     }
   }
@@ -101,7 +77,7 @@ main {
       rgb(43, 77, 153) 100%
     );
     border-radius: 8px;
-    margin: 0.5rem 0 0rem 0rem;
+    margin: 0.5rem 1rem 0rem 0rem;
     padding-bottom: 1rem;
 
     &--img {
@@ -116,7 +92,6 @@ main {
 
       & p {
         text-align: center;
-        font-size: 0.6875rem;
       }
     }
   }
@@ -143,18 +118,14 @@ main {
 }
 
 .dell-logo {
-  width: 11.625rem;
-  height: 5.5625rem;
+  height: 80%;
+  justify-content: center;
 }
 
 .dell-molecules {
   box-shadow: var(--enhanced-drop-shadow);
   height: 508px;
   width: 641px;
-  //   position: absolute;
-  //   right: 7rem;
-  //   top: 17.5rem;
-  z-index: 0;
 
   &__overlap {
     height: 508px;
@@ -164,6 +135,7 @@ main {
       height: 508px;
       left: 0;
       position: absolute;
+      top: 100px;
       width: 641px;
     }
   }

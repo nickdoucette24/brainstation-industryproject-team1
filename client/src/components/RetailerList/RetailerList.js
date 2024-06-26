@@ -146,7 +146,6 @@ const RetailerList = ({ userId }) => {
 
   return (
     <div className="retailer-container">
-      <h1>Retailers</h1>
       <div className="retailer-section">
         <h2>BestBuy</h2>
         <div className="retailer-content">
