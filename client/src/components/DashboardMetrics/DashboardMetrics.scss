@@ -153,7 +153,8 @@
         width: 49.5rem;
     }
 
-    &__bestbuy-container{
+    &__bestbuy-container,
+    &__newegg-container{
         display: flex;
         flex-direction: row;
     }

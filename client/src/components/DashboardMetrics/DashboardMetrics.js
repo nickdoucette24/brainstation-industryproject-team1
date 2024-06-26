@@ -17,6 +17,10 @@ const DashboardMetrics = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const truncateName = (name, maxLength = 20) => {
+    return name.length > maxLength ? `${name.substring(0, maxLength)}...` : name;
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -92,11 +96,11 @@ const DashboardMetrics = () => {
   useEffect(() => {
     if (data) {
       const bestbuyTop5 = data.bestbuy.topOffendingProducts.map((product) => ({
-        name: product.Dell_product,
+        name: truncateName(product.Dell_product),
         deviation: Math.abs(parseFloat(product.Deviation)) || 0,
       }));
       const neweggTop5 = data.newegg.topOffendingProducts.map((product) => ({
-        name: product.Dell_product,
+        name: truncateName(product.Dell_product),
         deviation: Math.abs(parseFloat(product.Deviation)) || 0,
       }));
 
@@ -127,7 +131,7 @@ const DashboardMetrics = () => {
               labels: bestbuyTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation",
+                  label: "Price Deviation $CAD",
                   data: bestbuyTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(252, 236, 93, 0.65)",
                   borderColor: "#FCEC5D",
@@ -228,7 +232,6 @@ const DashboardMetrics = () => {
         
         <div className="chart-container">
             <div className="dashboard__bestbuy-container">
-                
                 <div className="chart-container__bestbuy"> 
                     <div className="chart-container__retailer-label">
                         BestBuy
@@ -260,7 +263,7 @@ const DashboardMetrics = () => {
                     <div className="dashboard__compliance-rate">
                         <div className="dashboard__compliance-rate--container">
                             <h2 className="dashboard__compliance-rate--heading">Complliance Rate</h2> 
-                            <span className="dashboard__compliance-rate--count">{bestbuyMetrics.averageDeviation}%</span>                        
+                            <span className="dashboard__compliance-rate--count">{bestbuyMetrics.complianceRate}%</span>                        
                         </div>
                         <div className="dashboard__compliance-rate--img">
                             <img className="dashboard__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
@@ -269,7 +272,6 @@ const DashboardMetrics = () => {
                 </div>
             </div>
             <div className="dashboard__newegg-container">
-                
                 <div className="chart-container__newegg">
                     <div className="chart-container__retailer-label">
                         Newegg
@@ -279,25 +281,40 @@ const DashboardMetrics = () => {
                         <p className="chart-label">Product Names</p>
                     </div>
                 </div>
+                <div className="dashboard__tiles">
+                    <div className="dashboard__deviated-products">
+                        <div className="dashboard__deviated-products--container">
+                            <h2 className="dashboard__deviated-products--heading">Total Deviated Products</h2> 
+                            <span className="dashboard__deviated-products--count">{neweggMetrics.totalDeviatedProducts}</span>                        
+                        </div>
+                        <div className="dashboard__deviated-products--img">
+                            <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                        </div>
+                    </div>
+                    <div className="dashboard__average-deviation">
+                        <div className="dashboard__average-deviation--container">
+                            <h2 className="dashboard__average-deviation--heading">Average Deviation</h2> 
+                            <span className="dashboard__average-deviation--count">{neweggMetrics.averageDeviation}%</span>                        
+                        </div>
+                        <div className="dashboard__average-deviation--img">
+                            <img className="dashboard__average-deviation--icon" src={chartIcon} alt="chart icon" />
+                        </div>
+                    </div>
+                    <div className="dashboard__compliance-rate">
+                        <div className="dashboard__compliance-rate--container">
+                            <h2 className="dashboard__compliance-rate--heading">Complliance Rate</h2> 
+                            <span className="dashboard__compliance-rate--count">{neweggMetrics.complianceRate}%</span>                        
+                        </div>
+                        <div className="dashboard__compliance-rate--img">
+                            <img className="dashboard__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div className="dashboard__metrics">
-        <div>
-           
-            <h3>BestBuy Compliance Rate: {bestbuyMetrics.complianceRate}%</h3>
-            <h3>Average Deviation BestBuy: {bestbuyMetrics.averageDeviation}%</h3>
-        </div>
-        <div>
-            <p>Total Deviated Products Newegg: {neweggMetrics.totalDeviatedProducts}</p>
-            <h3>Newegg Compliance Rate: {neweggMetrics.complianceRate}%</h3>
-            <h3>Average Deviation Newegg: {neweggMetrics.averageDeviation}%</h3>
-        </div>
-    </div>
-
       <div className="offending-products-table">
-        {/* <h2>Top Offending Products</h2> */}
         <table>
           <thead>
             <tr>
