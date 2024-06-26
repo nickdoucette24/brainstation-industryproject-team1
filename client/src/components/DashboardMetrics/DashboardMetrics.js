@@ -314,35 +314,69 @@ const DashboardMetrics = () => {
         </div>
     </div>
 
-      <div className="dashboard__top-deviated-products">
-        <table classname="dashboard__table">
-          <thead className="dashboard__thead">
-            <tr className="dashboard__header-row">
-              <th className="dashboard__header-retailer">Retailer</th>
-              <th className="dashboard__header-product-name">Product Name</th>
-              <th className="dashboard__header-msrp">MSRP</th>
-              <th className="dashboard__header-price">Current Price</th>
-              <th className="dashboard__header-deviation">Deviation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>BestBuy</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
-              <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
-              <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Newegg</td>
-              <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
-              <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
-              <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
-              <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div className="dashboard__table-container">
+        <div className="dashboard-list__table">
+            <table className="dashboard-table">
+            <thead className="dashboard-table__head">
+                <tr className="dashboard-table__column">
+                <th
+                    className="dashboard-table__column--item dashboard-column__retailer"
+                >
+                    Retailer
+                </th>
+                <th
+                    className="dashboard-table__column--item dashboard-column__name"
+                >
+                    Dell Product Name
+                </th>
+                <th
+                    className="dashboard-table__column--item dashboard-column__msrp"
+                >
+                    MSRP
+                </th>
+                <th
+                    className="dashboard-table__column--item dashboard-column__price"
+                >
+                    BestBuy Price
+                </th>
+                <th
+                    className="dashboard-table__column--item dashboard-column__deviation"
+                >
+                    Deviation
+                </th>
+                </tr>
+            </thead>
+
+        {/* <div className="dashboard__top-deviated-products">
+            <table classname="dashboard__table">
+            <thead className="dashboard__thead">
+                <tr className="dashboard__header-row">
+                <th className="dashboard__header-retailer">Retailer</th>
+                <th className="dashboard__header-product-name">Product Name</th>
+                <th className="dashboard__header-msrp">MSRP</th>
+                <th className="dashboard__header-price">Current Price</th>
+                <th className="dashboard__header-deviation">Deviation</th>
+                </tr>
+            </thead> */}
+            <tbody>
+                <tr>
+                <td>BestBuy</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
+                <td>{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
+                <td>{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+                </tr>
+                <tr>
+                <td>Newegg</td>
+                <td>{data.newegg.topOffendingProducts[0].Dell_product}</td>
+                <td>{data.newegg.topOffendingProducts[0].Dell_price}</td>
+                <td>{data.newegg.topOffendingProducts[0].Newegg_price}</td>
+                <td>{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+                </tr>
+            </tbody>
+            </table>
+            </div>
+        </div>
     </div>
   );
 };
