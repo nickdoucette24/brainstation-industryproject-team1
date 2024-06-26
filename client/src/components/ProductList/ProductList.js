@@ -31,6 +31,9 @@ const ProductList = ({ userId }) => {
 
   // Function to get the status based on deviation
   const getStatus = (deviation) => {
+    if (isNaN(deviation)) {
+      return "Undetermined";
+    }
     const absDeviation = Math.abs(deviation);
     if (absDeviation <= 5) {
       return "Compliant";
@@ -55,8 +58,12 @@ const ProductList = ({ userId }) => {
           newegg.find((item) => item.Dell_product === dellItem.Dell_product) ||
           {};
 
-        const bestbuyDeviation = parseFloat(bestbuyItem.Deviation);
-        const neweggDeviation = parseFloat(neweggItem.Deviation);
+        const bestbuyPrice = parseFloat(bestbuyItem.Bestbuy_price);
+        const neweggPrice = parseFloat(neweggItem.Newegg_price);
+        const msrp = parseFloat(dellItem.Dell_price);
+
+        const bestbuyDeviation = bestbuyPrice ? ((bestbuyPrice - msrp) / msrp) * 100 : NaN;
+        const neweggDeviation = neweggPrice ? ((neweggPrice - msrp) / msrp) * 100 : NaN;
 
         // Count as non-compliant if deviation is not within the compliant range
         if (!isNaN(bestbuyDeviation) && getStatus(bestbuyDeviation) !== "Compliant") {
@@ -72,12 +79,12 @@ const ProductList = ({ userId }) => {
           msrp: dellItem.Dell_price,
           bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
           bestbuyDeviation: bestbuyItem.Deviation
-            ? bestbuyDeviation.toFixed(2)
+            ? bestbuyDeviation.toFixed(2) + "%"
             : "N/A",
           bestbuyCompliance: getStatus(bestbuyDeviation),
           neweggPrice: neweggItem.Newegg_price || "Not Available",
           neweggDeviation: neweggItem.Deviation
-            ? neweggDeviation.toFixed(2)
+            ? neweggDeviation.toFixed(2) + "%"
             : "N/A",
           neweggCompliance: getStatus(neweggDeviation),
         };
@@ -321,7 +328,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.bestbuyDeviation &&
                     product.bestbuyDeviation !== "N/A"
-                      ? `$${product.bestbuyDeviation}`
+                      ? `${product.bestbuyDeviation}`
                       : product.bestbuyDeviation}
                   </span>
                 </td>
@@ -377,7 +384,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.neweggDeviation &&
                     product.neweggDeviation !== "N/A"
-                      ? `$${product.neweggDeviation}`
+                      ? `${product.neweggDeviation}`
                       : product.neweggDeviation}
                   </span>
                 </td>

@@ -83,7 +83,7 @@ const DashboardMetrics = () => {
     ).length;
     const complianceRate = (compliantProducts / totalProducts) * 100;
     const averageDeviation =
-      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+      products.reduce((sum, product) => sum + Math.abs(parseFloat(product.Deviation) || 0), 0) / totalProducts;
     const totalDeviatedProducts = totalProducts - compliantProducts;
 
     return {
@@ -144,14 +144,24 @@ const DashboardMetrics = () => {
 
   useEffect(() => {
     if (data) {
-      const bestbuyTop5 = data.bestbuy.topOffendingProducts.map((product) => ({
-        name: truncateName(product.Dell_product),
-        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
-      }));
-      const neweggTop5 = data.newegg.topOffendingProducts.map((product) => ({
-        name: truncateName(product.Dell_product),
-        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
-      }));
+      // Filter and sort the top 5 offending products
+      const bestbuyTop5 = data.bestbuy.allProducts
+        .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+        .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+        .slice(0, 5)
+        .map(product => ({
+          name: truncateName(product.Dell_product),
+          deviation: Math.abs(parseFloat(product.Deviation)) || 0,
+        }));
+
+      const neweggTop5 = data.newegg.allProducts
+        .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+        .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+        .slice(0, 5)
+        .map(product => ({
+          name: truncateName(product.Dell_product),
+          deviation: Math.abs(parseFloat(product.Deviation)) || 0,
+        }));
 
       // Destroy existing charts before rendering new ones
       const destroyCharts = () => {
@@ -376,20 +386,24 @@ const DashboardMetrics = () => {
               </tr>
             </thead>
             <tbody className="dashboard-table__body">
-              <tr className="dashboard-table__row">
-                <td className="dashboard-table__row--item row-retailer">BestBuy</td>
-                <td className="dashboard-table__row--item row-dell-name">{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
-                <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-              </tr>
-              <tr className="dashboard-table__row">
-                <td className="dashboard-table__row--item row-retailer">Newegg</td>
-                <td className="dashboard-table__row--item row-dell-name">{data.newegg.topOffendingProducts[0].Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{data.newegg.topOffendingProducts[0].Dell_price}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{data.newegg.topOffendingProducts[0].Newegg_price}</td>
-                <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
-              </tr>
+              {data.bestbuy.topOffendingProducts.slice(0, 1).map((product, index) => (
+                <tr className="dashboard-table__row" key={`bestbuy-${index}`}>
+                  <td className="dashboard-table__row--item row-retailer">BestBuy</td>
+                  <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
+                  <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
+                  <td className="dashboard-table__row--item row-retailer-price">{product.Bestbuy_price}</td>
+                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}</td>
+                </tr>
+              ))}
+              {data.newegg.topOffendingProducts.slice(0, 1).map((product, index) => (
+                <tr className="dashboard-table__row" key={`newegg-${index}`}>
+                  <td className="dashboard-table__row--item row-retailer">Newegg</td>
+                  <td className="dashboard-table__row--item row-dell-name">{product.Dell_product}</td>
+                  <td className="dashboard-table__row--item row-retailer-msrp">{product.Dell_price}</td>
+                  <td className="dashboard-table__row--item row-retailer-price">{product.Newegg_price}</td>
+                  <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(product.Deviation).toFixed(2)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
