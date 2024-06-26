@@ -131,12 +131,13 @@
         width: 100%;
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
 
     &__wrapper {
         display: flex;
         flex-direction: column;
-        width: 64rem;
+        width: 100%;
         align-items: center;
     }
     
@@ -162,7 +163,6 @@
 .dashboard-widget {
   display: flex;
   justify-content: center;
-  max-width: 90rem;
   margin-right: 0;
 
   &__cart-icon {
@@ -260,7 +260,7 @@ strong {
 .dashboard-list__table {
     @include flex-center;
     margin-top: 2rem;
-    width: 100%;
+    width: auto;
 }
 
 .dashboard-table {
@@ -268,7 +268,7 @@ strong {
     box-shadow: 2px 2px 6px 0px #00000040;
     border-radius: 1rem;
     flex-direction: column;
-    width: 100%;
+    width: auto;
     gap: 1rem;
     border-collapse: collapse;
   
@@ -322,6 +322,7 @@ strong {
       background-color: $True-White;
       display: flex;
       flex-wrap: nowrap;
+      justify-content: center;
   
       &--item {
         border: 1px solid $Border-Grey;
@@ -423,15 +424,16 @@ strong {
 .chart-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 2rem;
-    width: 50rem;
+    width: auto;
     margin-top: 2rem;
 
     &__bestbuy, 
     &__newegg {
         border: 1px solid $True-White;
         box-shadow: 2px 2px 6px 0px #00000040;
-        width: 30rem;
+        width: 27rem;
         padding: 1rem;
         border-radius: .875rem;
     }
