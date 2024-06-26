@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Chart from "chart.js/auto";
+import { saveAs } from "file-saver";
+import { unparse } from "papaparse";
 import boxIcon from "../../assets/icons/box-icon.svg";
 import chartIcon from "../../assets/icons/data-analysis-icon.svg";
 import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
@@ -55,7 +57,52 @@ const DashboardMetrics = () => {
     fetchDashboardData();
   }, [userId, navigate]);
 
-  // Function to get the status based on deviation
+  const handleExport = () => {
+    if (!data) {
+      console.warn("No data to export.");
+      return;
+    }
+
+    const fields = [
+      "Retailer",
+      "Dell Product Name",
+      "MSRP",
+      "Authorized Seller Price",
+      "Authorized Seller Deviation",
+      "Total Deviated Products",
+      "Average Deviation",
+      "Compliance Rate"
+    ];
+
+    const csvData = [
+      ...data.bestbuy.topOffendingProducts.map(product => ({
+        Retailer: "BestBuy",
+        "Dell Product Name": product.Dell_product,
+        MSRP: product.Dell_price,
+        "Authorized Seller Price": product.Bestbuy_price,
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
+        "Total Deviated Products": bestbuyMetrics.totalDeviatedProducts,
+        "Average Deviation": bestbuyMetrics.averageDeviation,
+        "Compliance Rate": bestbuyMetrics.complianceRate
+      })),
+      ...data.newegg.topOffendingProducts.map(product => ({
+        Retailer: "Newegg",
+        "Dell Product Name": product.Dell_product,
+        MSRP: product.Dell_price,
+        "Authorized Seller Price": product.Newegg_price,
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
+        "Total Deviated Products": neweggMetrics.totalDeviatedProducts,
+        "Average Deviation": neweggMetrics.averageDeviation,
+        "Compliance Rate": neweggMetrics.complianceRate
+      }))
+    ];
+
+    const csv = unparse(csvData, { fields });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "product_pricing_compliance.csv");
+  };
+
   const getStatus = (deviation) => {
     if (Math.abs(deviation) <= 5) {
       return "Compliant";
@@ -67,7 +114,6 @@ const DashboardMetrics = () => {
     return "Undetermined";
   };
 
-  // Function to calculate compliance rate, average deviation, and total deviated products
   const calculateMetrics = (products) => {
     if (!products || products.length === 0) {
       return {
@@ -344,7 +390,12 @@ const DashboardMetrics = () => {
             </tbody>
           </table>
         </div>
-      </div>
+        </div>
+        <div className="export-container">
+            <button className="export-container__button" onClick={handleExport}>
+            <span className="export-container__button--text">Export</span>
+            </button>
+        </div>
     </div>
   );
 };

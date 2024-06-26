@@ -254,7 +254,7 @@ strong {
 
 // Table styling
 .dashboard__table-container {
-    margin-bottom: 6rem;
+    margin-bottom: 1rem;
 }
 
 .dashboard-list__table {
@@ -393,7 +393,6 @@ strong {
       padding-left: 2rem;
     }
 }
-  
 
 .export-container {
   width: 65rem;
@@ -401,6 +400,7 @@ strong {
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 5rem;
+  margin-right: 1rem;
 
   &__button {
     @include auth-button;
