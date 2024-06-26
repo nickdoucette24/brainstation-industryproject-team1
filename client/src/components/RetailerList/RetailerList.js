@@ -138,6 +138,12 @@ const RetailerList = ({ userId }) => {
     </div>
   );
 
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
   const neweggMetrics = calculateMetrics(data.newegg.allProducts);
 
@@ -145,6 +151,37 @@ const RetailerList = ({ userId }) => {
   console.log("Newegg Metrics:", neweggMetrics);  // Log Newegg metrics
 
   return (
+    <div className="dashboard__wrapper">
+      <div className="dashboard__details">
+        <div className="dashboard-widget">
+          <div className="dashboard-widget__container">
+            <div className="dashboard-widget__details">
+              <h2 className="dashboard-widget__details--heading">Total Offenders</h2>
+              <span className="dashboard-widget__details--count">2</span>
+            </div>
+            <div className="dashboard-widget__icon-container">
+              <img
+                className="dashboard-widget__cart-icon"
+                src={shoppingCartIcon}
+                alt="shopping cart icon for the total offenders widget"
+              />
+            </div>
+          </div>
+
+          <div className="dashboard-widget__heading">
+            <div className="dashboard-heading__content">
+              <h1 className="dashboard-heading__content--heading">Welcome back, Ali!</h1>
+              <span className="dashboard-heading__content--date">{currentDate}</span>
+            </div>
+            <h2 className="dashboard-widget__heading--directions">
+              Here are the <strong>top deviated products</strong> by <strong>retailer</strong>. 
+              Please review the details below.
+            </h2>
+          </div>
+        </div>
+        
+        <div className="chart-container"></div>
+    
     <div className="retailer-container">
       <div className="retailer-section">
         <h2>BestBuy</h2>
@@ -160,6 +197,8 @@ const RetailerList = ({ userId }) => {
           {renderCards(neweggMetrics)}
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 };
