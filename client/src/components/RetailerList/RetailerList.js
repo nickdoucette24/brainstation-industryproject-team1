@@ -146,10 +146,10 @@ const RetailerList = ({ userId }) => {
                 {truncateText(product.Dell_product, 15)}
               </td>
               <td className="retailer-table__row--item rrow-msrp">
-                ${product.Dell_price}
+                ${parseFloat(product.Dell_price).toFixed(2)}
               </td>
               <td className="retailer-table__row--item rrow-retailer-price">
-                ${product[`${retailer}_price`]}
+                ${parseFloat(product[`${retailer}_price`]).toFixed(2)}
               </td>
               <td className="retailer-table__row--item rrow-deviation">
                 {parseFloat(product.Deviation).toFixed(2)}%
