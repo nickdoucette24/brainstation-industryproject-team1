@@ -6,7 +6,11 @@ Spectra is a PaaS solution that helps monitor and ensure MSRP compliance across 
 
 
 ## Problem
-With the proliferation of streaming services, users often face the challenge of finding where a particular movie or show is available to stream. Additionally, deciding what to watch next and keeping track of scheduled viewing can be time-consuming and overwhelming. Endless scrolling and searching through various platforms add to the frustration. NextStream addresses these issues by informing users where content is available to stream and helping them plan their viewing schedule in advance.
+Dell Technologies manufactures and sells technology products to customers through two primary channels:
+1. Direct selling (we sell directly to the customer)
+2. Retailers (retailers sell to the customer)
+
+Dell Technologies requires retailers to adhere to their specified MSRPs (Manufacturer Suggested Retail Price). This practice helps maintain Dell Technologies’ brand perception, stabilize market prices, and prevent retailers from cannibalizing Dell’s direct sales.
 
 
 ## User Profile

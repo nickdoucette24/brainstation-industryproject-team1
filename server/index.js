@@ -39,6 +39,15 @@ function getCurrentDate() {
   return `${current_time.getFullYear()}${String(current_time.getMonth() + 1).padStart(2, '0')}${String(current_time.getDate()).padStart(2, '0')}`;
 }
 
+// Platform-specific logging
+if (process.platform === 'win32') {
+  console.log('Running on Windows');
+} else if (process.platform === 'darwin') {
+  console.log('Running on macOS');
+} else {
+  console.log('Running on a non-Windows, non-macOS platform');
+}
+
 // Endpoint to fetch Dell data
 router.get('/dell', async (req, res) => {
   const date = getCurrentDate();
