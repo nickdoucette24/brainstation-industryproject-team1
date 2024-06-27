@@ -146,16 +146,36 @@ const RetailerList = ({ userId }) => {
                 {truncateText(product.Dell_product, 15)}
               </td>
               <td className="retailer-table__row--item rrow-msrp">
-                {product.Dell_price}
+                ${product.Dell_price}
               </td>
               <td className="retailer-table__row--item rrow-retailer-price">
-                {product[`${retailer}_price`]}
+                ${product[`${retailer}_price`]}
               </td>
               <td className="retailer-table__row--item rrow-deviation">
                 {parseFloat(product.Deviation).toFixed(2)}%
               </td>
               <td className="retailer-table__row--item rrow-compliance">
-                {getStatus(parseFloat(product.Deviation))}
+                <span
+                  className={`cell-content ${
+                    getStatus(parseFloat(product.Deviation)) === "Compliant"
+                      ? "compliant"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Non-Compliant"
+                      ? "non-compliant"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Needs Attention"
+                      ? "attention"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Undetermined"
+                      ? "not-available"
+                      : ""
+                  }`}
+                >
+                  {getStatus(parseFloat(product.Deviation))}
+                </span>
               </td>
             </tr>
           ))}

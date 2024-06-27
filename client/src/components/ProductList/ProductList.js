@@ -167,7 +167,7 @@ const ProductList = ({ userId }) => {
     console.log("CSV Data:", csvData); // Add console log for CSV data
 
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "dell_product_pricing_compliance_generated_by_spectra.csv");
+    saveAs(blob, "dell_product_pricing_compliance_products_list_data_generated_by_spectra.csv");
   };
 
   // Function to truncate text with ellipsis
