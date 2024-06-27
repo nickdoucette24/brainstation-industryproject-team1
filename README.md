@@ -14,8 +14,10 @@ Dell Technologies requires retailers to adhere to their specified MSRPs (Manufac
 
 
 ## User Profile
+The lead data scientist at Dell Technologies in the Merchandising/Growth/Pricing department is responsible for tracking MSRP compliance. Based in Round Rock, Texas, this role involves flagging retailers guilty of underpricing to maintain Dell’s brand perception and market stability. The main goals include efficiently identifying top offending retailers and products, tracking price deviations, and exporting and sharing compliance reports. Motivations include maintaining market prices, preventing the undermining of Dell’s direct sales, and ensuring adherence to MSRP guidelines.
 
-### Features
+
+## Features
 - Continuous monitoring of product prices
 - Detection of MSRP deviations
 - Ranking of top offending products by retailer
