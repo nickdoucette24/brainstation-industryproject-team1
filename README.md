@@ -187,12 +187,12 @@ DATA_DIR=./scripts/data
 - npm start
 - Press `Cmd + R` (Mac) or `Ctrl + R` (Windows/Linux) if your screen is blank
 
-![Automated Data Scraping](https://drive.google.com/file/d/1V0iBF4nQbwAlBX1wvmpTG6GI08pv_xvJ/view?usp=share_link)
+![Automated Data Scraping](./docs/images/web-scraper-scheduler.png)
 8. Automated Data Scraping:
 - The server is configured to scrape data automatically at midnight to ensure up-to-date pricing information. This scheduled task scrapes the data from authorized retailer websites and updates the database.
 
 **Handling Errors - Missing CSV File**
-![Manual Scraping](https://drive.google.com/file/d/1SYI_2LByCZ40M9cjq0o5iQ56mcvcf-Ti/view?usp=share_link)
+![Manual Scraping](./docs/images/python3_scrape1.png)
 9. If the terminal outputs an error indicating a missing CSV file, you may need to perform a manual scrape to obtain the required data.
 Follow these instructions for manual scraping.
 - To manually scrape data, navigate to the data folder and run the Python script:
