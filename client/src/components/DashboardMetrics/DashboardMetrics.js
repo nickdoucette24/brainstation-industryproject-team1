@@ -146,7 +146,7 @@ const DashboardMetrics = () => {
     const csv = unparse(csvData, { fields });
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "dell_product_pricing_compliance_generated_by_spectra.csv");
+    saveAs(blob, "dell_product_pricing_compliance_dashboard_data_generated_by_spectra.csv");
   };
 
   useEffect(() => {
