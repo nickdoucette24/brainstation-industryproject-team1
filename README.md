@@ -52,26 +52,26 @@ Dell Technologies requires retailers to adhere to their specified MSRPs (Manufac
 
 ## Pages and Components
 
-![Spectra Landing Page](https://drive.google.com/file/d/1Zg14iZLuzwvxCHMHoKojBAjSjcrGjtAY/view?usp=share_link)
+![Spectra Landing Page](./docs/images/landing-page.png)
 ### Landing Page
 The Landing Page serves as the entry point to the application, providing a brief introduction and overview of the services offered. The page contains a 'Start Now' button which routes the user to the Authorization Page to log in or create an account.
 
-![Auth Page](https://drive.google.com/file/d/1NddwWmIwUxHZNdOc6MSDqhRD7oU6D-Er/view?usp=share_link)
+![Auth Page](./docs/images/auth-page.png)
 ### Authorization Page (Login / Register)
 This page handles user authentication, offering both login and registration functionalities. It uses React.js for form handling and validation, Axios for making secure API post requests with the login/register payload info, and jsonwebtoken stored in localStorage for managing user sessions. Passwords are securely hashed using bcrypt and stored along with the user data in a MySQL database.
 
 ### Navigation & Header
 The Navigation and Header components provide a consistent user interface across the application. They include links to different pages, user account information, and are implemented using react-router-dom for seamless navigation. The alert's icon in the header routes directly to the Alert's notification tab. Each tab in the navigation routes directly to the selected page and applies conditional styling to the page list. Everything is functional and working.
 
-![Dashboard Page](https://drive.google.com/file/d/1qPuZB3yVWkXlMYtkny9wutR2ZxpGnSCx/view?usp=share_link)
+![Dashboard Page](./docs/images/dashboard-page.png)
 ### The Spectra Dashboard
 The Spectra dashboard offers a comprehensive and intuitive interface for monitoring MSRP compliance. It displays key metrics such as total offenders, top 5 deviated products, average deviation, and compliance rates. Users can view retailer-specific data, giving them a high-level view of their MSRP compliance. The dashboard also includes dynamic alerts and the ability to generate detailed compliance reports, making it easy for users to take actionable steps to address pricing discrepancies. With its user-friendly design and robust data visualization, the Spectra dashboard empowers Dell Technologies to efficiently manage and ensure MSRP compliance across multiple retailers.
 
-![Product List Page](https://drive.google.com/file/d/1u7DT7cyFcvGCUO6xNnUWBaWp4czm2BoL/view?usp=share_link)
+![Product List Page](./docs/images/product-list.png)
 ### Product List Page
 The Product List Page displays a list of products with their pricing details from different retailers. It uses React.js for state management and dynamic content updates, Axios for fetching data from the backend, and functional custom sorting and filtering logic to present the data efficiently. Just click on each table header to sort that column. Pricing compliance and deviations are highlighted with specific styles using Sass. There is also an Export button at the bottom which is functional and will export a .csv file to the user's local machine.
 
-![Account Settings Page](https://drive.google.com/file/d/1umiX4Jed7qMNJuZCwQZuUaDUr2Ym1kOt/view?usp=share_link)
+![Account Settings Page](./docs/images/account-settings-page.png)
 ### Account Settings Page
 The Account Settings Page allows users to update their personal information and preferences. It includes form validation, secure data handling with Axios, and integrates with the backend to persist changes in the MySQL database. The page ensures user data security and integrity using jsonwebtoken for authentication and bcrypt for password management. This is also functional and you can successfully edit all user information from this page.
 
