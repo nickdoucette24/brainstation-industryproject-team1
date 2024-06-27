@@ -109,6 +109,11 @@ main {
       justify-content: space-around;
       margin: 1rem 0 -1.5rem 0;
     }
+    &--img {
+      display: flex;
+      justify-content: space-around;
+      margin: 1rem 0 -1.5rem 0;
+    }
 
     &--text {
       display: flex;
@@ -121,7 +126,6 @@ main {
     }
   }
 }
-
 .login {
   text-decoration: none;
 

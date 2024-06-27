@@ -31,6 +31,9 @@ const ProductList = ({ userId }) => {
 
   // Function to get the status based on deviation
   const getStatus = (deviation) => {
+    if (isNaN(deviation)) {
+      return "Undetermined";
+    }
     const absDeviation = Math.abs(deviation);
     if (absDeviation <= 5) {
       return "Compliant";
@@ -55,8 +58,12 @@ const ProductList = ({ userId }) => {
           newegg.find((item) => item.Dell_product === dellItem.Dell_product) ||
           {};
 
-        const bestbuyDeviation = parseFloat(bestbuyItem.Deviation);
-        const neweggDeviation = parseFloat(neweggItem.Deviation);
+        const bestbuyPrice = parseFloat(bestbuyItem.Bestbuy_price);
+        const neweggPrice = parseFloat(neweggItem.Newegg_price);
+        const msrp = parseFloat(dellItem.Dell_price);
+
+        const bestbuyDeviation = bestbuyPrice ? ((bestbuyPrice - msrp) / msrp) * 100 : NaN;
+        const neweggDeviation = neweggPrice ? ((neweggPrice - msrp) / msrp) * 100 : NaN;
 
         // Count as non-compliant if deviation is not within the compliant range
         if (!isNaN(bestbuyDeviation) && getStatus(bestbuyDeviation) !== "Compliant") {
@@ -72,12 +79,12 @@ const ProductList = ({ userId }) => {
           msrp: dellItem.Dell_price,
           bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
           bestbuyDeviation: bestbuyItem.Deviation
-            ? bestbuyDeviation.toFixed(2)
+            ? bestbuyDeviation.toFixed(2) + "%"
             : "N/A",
           bestbuyCompliance: getStatus(bestbuyDeviation),
           neweggPrice: neweggItem.Newegg_price || "Not Available",
           neweggDeviation: neweggItem.Deviation
-            ? neweggDeviation.toFixed(2)
+            ? neweggDeviation.toFixed(2) + "%"
             : "N/A",
           neweggCompliance: getStatus(neweggDeviation),
         };
@@ -160,7 +167,7 @@ const ProductList = ({ userId }) => {
     console.log("CSV Data:", csvData); // Add console log for CSV data
 
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "dell_product_pricing_compliance_generate_by_spectra.csv");
+    saveAs(blob, "dell_product_pricing_compliance_products_list_data_generated_by_spectra.csv");
   };
 
   // Function to truncate text with ellipsis
@@ -181,13 +188,35 @@ const ProductList = ({ userId }) => {
     setProducts((prevProducts) => {
       const sortedProducts = [...prevProducts];
       sortedProducts.sort((a, b) => {
-        if (a[key] < b[key]) {
-          return direction === "ascending" ? -1 : 1;
+        if (key === "dellProductName") {
+          return direction === "ascending"
+            ? a[key].localeCompare(b[key])
+            : b[key].localeCompare(a[key]);
+        } else if (key === "msrp" || key === "bestbuyPrice" || key === "neweggPrice") {
+          const aValue = parseFloat(a[key].replace('$', '')) || a[key];
+          const bValue = parseFloat(b[key].replace('$', '')) || b[key];
+          if (!isNaN(aValue) && !isNaN(bValue)) {
+            return direction === "ascending" ? aValue - bValue : bValue - aValue;
+          } else {
+            return direction === "ascending" ? String(aValue).localeCompare(String(bValue)) : String(bValue).localeCompare(String(aValue));
+          }
+        } else if (key === "bestbuyDeviation" || key === "neweggDeviation") {
+          const aValue = parseFloat(a[key].replace('%', '')) || a[key];
+          const bValue = parseFloat(b[key].replace('%', '')) || b[key];
+          if (!isNaN(aValue) && !isNaN(bValue)) {
+            return direction === "ascending" ? aValue - bValue : bValue - aValue;
+          } else {
+            return direction === "ascending" ? String(aValue).localeCompare(String(bValue)) : String(bValue).localeCompare(String(aValue));
+          }
+        } else {
+          if (a[key] < b[key]) {
+            return direction === "ascending" ? -1 : 1;
+          }
+          if (a[key] > b[key]) {
+            return direction === "ascending" ? 1 : -1;
+          }
+          return 0;
         }
-        if (a[key] > b[key]) {
-          return direction === "ascending" ? 1 : -1;
-        }
-        return 0;
       });
       return sortedProducts;
     });
@@ -321,7 +350,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.bestbuyDeviation &&
                     product.bestbuyDeviation !== "N/A"
-                      ? `$${product.bestbuyDeviation}`
+                      ? `${product.bestbuyDeviation}`
                       : product.bestbuyDeviation}
                   </span>
                 </td>
@@ -345,14 +374,7 @@ const ProductList = ({ userId }) => {
                         : ""
                     }`}
                   >
-                    {product.bestbuyCompliance &&
-                    product.bestbuyCompliance !==
-                      ("Compliant" ||
-                        "Non-Compliant" ||
-                        "Attention" ||
-                        "Undetermined")
-                      ? `${product.bestbuyCompliance}`
-                      : product.bestbuyCompliance}
+                    {product.bestbuyCompliance}
                   </span>
                 </td>
                 <td className="product-table__row--item row-nep">
@@ -377,7 +399,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.neweggDeviation &&
                     product.neweggDeviation !== "N/A"
-                      ? `$${product.neweggDeviation}`
+                      ? `${product.neweggDeviation}`
                       : product.neweggDeviation}
                   </span>
                 </td>
@@ -401,14 +423,7 @@ const ProductList = ({ userId }) => {
                         : ""
                     }`}
                   >
-                    {product.neweggCompliance &&
-                    product.neweggCompliance !==
-                      ("Compliant" ||
-                        "Non-Compliant" ||
-                        "Attention" ||
-                        "Undetermined")
-                      ? `${product.neweggCompliance}`
-                      : product.neweggCompliance}
+                    {product.neweggCompliance}
                   </span>
                 </td>
               </tr>

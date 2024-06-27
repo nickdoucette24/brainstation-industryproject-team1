@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Chart from "chart.js/auto";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
-import boxIcon from "../../assets/icons/box-icon.svg";
+import axios from "axios";
+import Chart from "chart.js/auto";
+import boxFullIcon from "../../assets/icons/box-full-icon.svg";
 import chartIcon from "../../assets/icons/data-analysis-icon.svg";
 import checkmarkIcon from "../../assets/icons/compliance-rate-icon.svg";
 import shoppingCartIcon from "../../assets/icons/shopping-cart.svg";
@@ -83,7 +83,7 @@ const DashboardMetrics = () => {
     ).length;
     const complianceRate = (compliantProducts / totalProducts) * 100;
     const averageDeviation =
-      products.reduce((sum, product) => sum + parseFloat(product.Deviation || 0), 0) / totalProducts;
+      products.reduce((sum, product) => sum + Math.abs(parseFloat(product.Deviation) || 0), 0) / totalProducts;
     const totalDeviatedProducts = totalProducts - compliantProducts;
 
     return {
@@ -99,8 +99,15 @@ const DashboardMetrics = () => {
       return;
     }
 
-    const bestbuyMetrics = calculateMetrics(data.bestbuy.allProducts);
-    const neweggMetrics = calculateMetrics(data.newegg.allProducts);
+    const bestbuyTop5 = data.bestbuy.allProducts
+      .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+      .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+      .slice(0, 5);
+
+    const neweggTop5 = data.newegg.allProducts
+      .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+      .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+      .slice(0, 5);
 
     const fields = [
       "Retailer",
@@ -114,44 +121,54 @@ const DashboardMetrics = () => {
     ];
 
     const csvData = [
-      ...data.bestbuy.topOffendingProducts.map(product => ({
+      ...bestbuyTop5.map(product => ({
         Retailer: "BestBuy",
         "Dell Product Name": product.Dell_product,
-        MSRP: product.Dell_price,
-        "Authorized Seller Price": product.Bestbuy_price,
-        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
-        "Total Deviated Products": bestbuyMetrics.totalDeviatedProducts,
-        "Average Deviation": bestbuyMetrics.averageDeviation,
-        "Compliance Rate": bestbuyMetrics.complianceRate
+        MSRP: parseFloat(product.Dell_price).toFixed(2),
+        "Authorized Seller Price": parseFloat(product.Bestbuy_price).toFixed(2),
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
+        "Total Deviated Products": calculateMetrics(data.bestbuy.allProducts).totalDeviatedProducts,
+        "Average Deviation": calculateMetrics(data.bestbuy.allProducts).averageDeviation,
+        "Compliance Rate": calculateMetrics(data.bestbuy.allProducts).complianceRate
       })),
-      ...data.newegg.topOffendingProducts.map(product => ({
+      ...neweggTop5.map(product => ({
         Retailer: "Newegg",
         "Dell Product Name": product.Dell_product,
-        MSRP: product.Dell_price,
-        "Authorized Seller Price": product.Newegg_price,
-        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2),
-        "Total Deviated Products": neweggMetrics.totalDeviatedProducts,
-        "Average Deviation": neweggMetrics.averageDeviation,
-        "Compliance Rate": neweggMetrics.complianceRate
+        MSRP: parseFloat(product.Dell_price).toFixed(2),
+        "Authorized Seller Price": parseFloat(product.Newegg_price).toFixed(2),
+        "Authorized Seller Deviation": parseFloat(product.Deviation).toFixed(2) + "%",
+        "Total Deviated Products": calculateMetrics(data.newegg.allProducts).totalDeviatedProducts,
+        "Average Deviation": calculateMetrics(data.newegg.allProducts).averageDeviation,
+        "Compliance Rate": calculateMetrics(data.newegg.allProducts).complianceRate
       }))
     ];
 
     const csv = unparse(csvData, { fields });
 
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "dell_product_pricing_compliance_generated_by_spectra.csv");
+    saveAs(blob, "dell_product_pricing_compliance_dashboard_data_generated_by_spectra.csv");
   };
 
   useEffect(() => {
     if (data) {
-      const bestbuyTop5 = data.bestbuy.topOffendingProducts.map((product) => ({
-        name: truncateName(product.Dell_product),
-        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
-      }));
-      const neweggTop5 = data.newegg.topOffendingProducts.map((product) => ({
-        name: truncateName(product.Dell_product),
-        deviation: Math.abs(parseFloat(product.Deviation)) || 0,
-      }));
+      // Filter and sort the top 5 offending products
+      const bestbuyTop5 = data.bestbuy.allProducts
+        .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+        .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+        .slice(0, 5)
+        .map(product => ({
+          name: truncateName(product.Dell_product),
+          deviation: Math.abs(parseFloat(product.Deviation)) || 0,
+        }));
+
+      const neweggTop5 = data.newegg.allProducts
+        .filter(product => getStatus(parseFloat(product.Deviation)) === "Non-Compliant")
+        .sort((a, b) => Math.abs(parseFloat(b.Deviation)) - Math.abs(parseFloat(a.Deviation)))
+        .slice(0, 5)
+        .map(product => ({
+          name: truncateName(product.Dell_product),
+          deviation: Math.abs(parseFloat(product.Deviation)) || 0,
+        }));
 
       // Destroy existing charts before rendering new ones
       const destroyCharts = () => {
@@ -193,6 +210,11 @@ const DashboardMetrics = () => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return "$" + value;
+                    }
+                  }
                 },
               },
             },
@@ -221,6 +243,11 @@ const DashboardMetrics = () => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  ticks: {
+                    callback: function(value) {
+                      return "$" + value;
+                    }
+                  }
                 },
               },
             },
@@ -248,6 +275,19 @@ const DashboardMetrics = () => {
     month: "long",
     day: "numeric",
   });
+
+  // Find the most deviated product for each retailer
+  const getMostDeviatedProduct = (products) => {
+    return products.reduce((max, product) => {
+      const deviation = Math.abs(parseFloat(product.Deviation) || 0);
+      return deviation > max.deviation
+        ? { ...product, deviation }
+        : max;
+    }, { deviation: 0 });
+  };
+
+  const mostDeviatedBestbuy = getMostDeviatedProduct(data.bestbuy.allProducts);
+  const mostDeviatedNewegg = getMostDeviatedProduct(data.newegg.allProducts);
 
   return (
     <div className="dashboard__wrapper">
@@ -287,7 +327,7 @@ const DashboardMetrics = () => {
               </div>   
               <div className="chart-wrapper">
                 <canvas id="bestbuyChart" width="400" height="200"></canvas>
-                <p className="chart-label">Product Names</p>
+                <p className="chart-label">Product Names of Top 5 Deviated Products</p>
               </div>
             </div>
             <div className="dashboard__tiles">
@@ -297,7 +337,7 @@ const DashboardMetrics = () => {
                   <span className="dashboard__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>                        
                 </div>
                 <div className="dashboard__deviated-products--img">
-                  <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                  <img className="dashboard__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
                 </div>
               </div>
               <div className="dashboard__average-deviation">
@@ -327,7 +367,7 @@ const DashboardMetrics = () => {
               </div>
               <div className="chart-wrapper">
                 <canvas id="neweggChart" width="400" height="200"></canvas>
-                <p className="chart-label">Product Names</p>
+                <p className="chart-label">Product Names of Top 5 Deviated Products</p>
               </div>
             </div>
             <div className="dashboard__tiles">
@@ -337,7 +377,7 @@ const DashboardMetrics = () => {
                   <span className="dashboard__deviated-products--count">{neweggMetrics.totalDeviatedProducts}</span>                        
                 </div>
                 <div className="dashboard__deviated-products--img">
-                  <img className="dashboard__deviated-products--icon" src={boxIcon} alt="product box icon" />
+                  <img className="dashboard__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
                 </div>
               </div>
               <div className="dashboard__average-deviation">
@@ -378,17 +418,17 @@ const DashboardMetrics = () => {
             <tbody className="dashboard-table__body">
               <tr className="dashboard-table__row">
                 <td className="dashboard-table__row--item row-retailer">BestBuy</td>
-                <td className="dashboard-table__row--item row-dell-name">{data.bestbuy.topOffendingProducts[0].Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{data.bestbuy.topOffendingProducts[0].Dell_price}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{data.bestbuy.topOffendingProducts[0].Bestbuy_price}</td>
-                <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(data.bestbuy.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-dell-name">{mostDeviatedBestbuy.Dell_product}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedBestbuy.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedBestbuy.Bestbuy_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedBestbuy.deviation.toFixed(2)}%</td>
               </tr>
               <tr className="dashboard-table__row">
                 <td className="dashboard-table__row--item row-retailer">Newegg</td>
-                <td className="dashboard-table__row--item row-dell-name">{data.newegg.topOffendingProducts[0].Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{data.newegg.topOffendingProducts[0].Dell_price}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{data.newegg.topOffendingProducts[0].Newegg_price}</td>
-                <td className="dashboard-table__row--item row-retailer-deviation">{parseFloat(data.newegg.topOffendingProducts[0].Deviation).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-dell-name">{mostDeviatedNewegg.Dell_product}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedNewegg.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedNewegg.Newegg_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedNewegg.deviation.toFixed(2)}%</td>
               </tr>
             </tbody>
           </table>

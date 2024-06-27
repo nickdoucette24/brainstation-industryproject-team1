@@ -23,8 +23,10 @@ const Header = ({ userId }) => {
           const response = await axios.get(`${url}/dashboard/${userId}`);
           formatUserName(response.data.first_name, response.data.last_name);
         } catch (error) {
-          console.error(error.message);
+          console.error(`Error fetching user data: ${error.message}`);
         }
+      } else {
+        console.log('LoggedIn:', loggedIn, 'UserId:', userId);
       }
     };
 
