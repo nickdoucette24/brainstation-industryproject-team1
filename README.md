@@ -181,13 +181,16 @@ DATA_DIR=./scripts/data
 
 7. Start the frontend:
 - npm start
+- Press `Cmd + R` (Mac) or `Ctrl + R` (Windows/Linux) if your screen is blank
 
 ![Automated Data Scraping](https://drive.google.com/file/d/1V0iBF4nQbwAlBX1wvmpTG6GI08pv_xvJ/view?usp=share_link)
-7. Automated Data Scraping:
+8. Automated Data Scraping:
 - The server is configured to scrape data automatically at midnight to ensure up-to-date pricing information. This scheduled task scrapes the data from authorized retailer websites and updates the database.
 
+**Handling Errors - Missing CSV File**
 ![Manual Scraping](https://drive.google.com/file/d/1SYI_2LByCZ40M9cjq0o5iQ56mcvcf-Ti/view?usp=share_link)
-8. Alternatively, you can also do manual data scraping:
+9. If the terminal outputs an error indicating a missing CSV file, you may need to perform a manual scrape to obtain the required data.
+Follow these instructions for manual scraping.
 - To manually scrape data, navigate to the data folder and run the Python script:
 - cd scripts/data
   - python3 dell_scraper.py
@@ -199,3 +202,10 @@ DATA_DIR=./scripts/data
   
 ### Notes:
 - By following these steps, you can set up the Spectra platform, ensure it is scraping data on schedule, and manually trigger data scrapes when needed. This comprehensive setup allows Dell Technologies to maintain accurate and up-to-date MSRP compliance monitoring across its retailer network.
+
+### Contact Us
+- **Team Spectra (for general inquiries):** team1.spectra@gmail.com
+- **Sunshine Agoo (Team Lead):** sunshine.agoo@gmail.com
+- **Nick Doucette (Head of Software Engineering):** nickdoucette24@gmail.com
+- **Alessandra Bondoc (Head of User Experience Design):** alessandra.bondoc@gmail.com 
+- **Xiaozhuo Chelsea Wu (Head of Data Science):** xiaozhuowu@hotmail.com
