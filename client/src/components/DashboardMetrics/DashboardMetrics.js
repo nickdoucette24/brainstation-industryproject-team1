@@ -327,7 +327,7 @@ const DashboardMetrics = () => {
               </div>   
               <div className="chart-wrapper">
                 <canvas id="bestbuyChart" width="400" height="200"></canvas>
-                <p className="chart-label">Product Names</p>
+                <p className="chart-label">Product Names of Top 5 Deviated Products</p>
               </div>
             </div>
             <div className="dashboard__tiles">
@@ -367,7 +367,7 @@ const DashboardMetrics = () => {
               </div>
               <div className="chart-wrapper">
                 <canvas id="neweggChart" width="400" height="200"></canvas>
-                <p className="chart-label">Product Names</p>
+                <p className="chart-label">Product Names of Top 5 Deviated Products</p>
               </div>
             </div>
             <div className="dashboard__tiles">
