@@ -197,7 +197,7 @@ const DashboardMetrics = () => {
               labels: bestbuyTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation $CAD",
+                  label: "Price Deviation (%)",
                   data: bestbuyTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(252, 236, 93, 0.65)",
                   borderColor: "#FCEC5D",
@@ -212,7 +212,7 @@ const DashboardMetrics = () => {
                   beginAtZero: true,
                   ticks: {
                     callback: function(value) {
-                      return "$" + value;
+                      return value + "%";
                     }
                   }
                 },
@@ -230,7 +230,7 @@ const DashboardMetrics = () => {
               labels: neweggTop5.map((product) => product.name),
               datasets: [
                 {
-                  label: "Price Deviation $CAD",
+                  label: "Price Deviation (%)",
                   data: neweggTop5.map((product) => product.deviation),
                   backgroundColor: "rgba(236, 157, 74, 0.65)",
                   borderColor: "#EC9D4A",
@@ -245,7 +245,7 @@ const DashboardMetrics = () => {
                   beginAtZero: true,
                   ticks: {
                     callback: function(value) {
-                      return "$" + value;
+                      return value + "%";
                     }
                   }
                 },
