@@ -419,15 +419,15 @@ const DashboardMetrics = () => {
               <tr className="dashboard-table__row">
                 <td className="dashboard-table__row--item row-retailer">BestBuy</td>
                 <td className="dashboard-table__row--item row-dell-name">{mostDeviatedBestbuy.Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedBestbuy.Dell_price).toFixed(2)}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedBestbuy.Bestbuy_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">${parseFloat(mostDeviatedBestbuy.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">${parseFloat(mostDeviatedBestbuy.Bestbuy_price).toFixed(2)}</td>
                 <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedBestbuy.deviation.toFixed(2)}%</td>
               </tr>
               <tr className="dashboard-table__row">
                 <td className="dashboard-table__row--item row-retailer">Newegg</td>
                 <td className="dashboard-table__row--item row-dell-name">{mostDeviatedNewegg.Dell_product}</td>
-                <td className="dashboard-table__row--item row-retailer-msrp">{parseFloat(mostDeviatedNewegg.Dell_price).toFixed(2)}</td>
-                <td className="dashboard-table__row--item row-retailer-price">{parseFloat(mostDeviatedNewegg.Newegg_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-msrp">${parseFloat(mostDeviatedNewegg.Dell_price).toFixed(2)}</td>
+                <td className="dashboard-table__row--item row-retailer-price">${parseFloat(mostDeviatedNewegg.Newegg_price).toFixed(2)}</td>
                 <td className="dashboard-table__row--item row-retailer-deviation">{mostDeviatedNewegg.deviation.toFixed(2)}%</td>
               </tr>
             </tbody>
