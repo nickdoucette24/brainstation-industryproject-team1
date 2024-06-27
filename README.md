@@ -151,23 +151,23 @@ The Account Settings Page allows users to update their personal information and 
 REACT_APP_BASE_URL=http://localhost:8080
 - In the server root folder, create a .env file with the following content:
 
-# Port
+**# Port**
 PORT=8080
 
-# Database Variables
+**# Database Variables**
 DB_HOST=127.0.0.1
 DB_NAME=Dell
 DB_USER=root
 DB_PASSWORD=rootroot
 
-# CORS
+**# CORS**
 CORS_ORIGIN=http://localhost:3000
 
-# JWT Config
+**# JWT Config**
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRY=1h
 
-# Data Directory
+**# Data Directory**
 DATA_DIR=./scripts/data
 
 4. Configure the database:
