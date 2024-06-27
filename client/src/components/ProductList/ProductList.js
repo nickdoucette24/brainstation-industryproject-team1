@@ -77,12 +77,16 @@ const ProductList = ({ userId }) => {
           id: generateId(),
           dellProductName: dellItem.Dell_product,
           msrp: dellItem.Dell_price,
-          bestbuyPrice: bestbuyItem.Bestbuy_price || "Not Available",
+          bestbuyPrice: bestbuyItem.Bestbuy_price
+            ? `$${parseFloat(bestbuyItem.Bestbuy_price).toFixed(2)}`
+            : "Not Available",
           bestbuyDeviation: bestbuyItem.Deviation
             ? bestbuyDeviation.toFixed(2) + "%"
             : "N/A",
           bestbuyCompliance: getStatus(bestbuyDeviation),
-          neweggPrice: neweggItem.Newegg_price || "Not Available",
+          neweggPrice: neweggItem.Newegg_price
+            ? `$${parseFloat(neweggItem.Newegg_price).toFixed(2)}`
+            : "Not Available",
           neweggDeviation: neweggItem.Deviation
             ? neweggDeviation.toFixed(2) + "%"
             : "N/A",
@@ -338,7 +342,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.bestbuyPrice &&
                     product.bestbuyPrice !== "Not Available"
-                      ? `$${product.bestbuyPrice}`
+                      ? product.bestbuyPrice
                       : product.bestbuyPrice}
                   </span>
                 </td>
@@ -387,7 +391,7 @@ const ProductList = ({ userId }) => {
                   >
                     {product.neweggPrice &&
                     product.neweggPrice !== "Not Available"
-                      ? `$${product.neweggPrice}`
+                      ? product.neweggPrice
                       : product.neweggPrice}
                   </span>
                 </td>
