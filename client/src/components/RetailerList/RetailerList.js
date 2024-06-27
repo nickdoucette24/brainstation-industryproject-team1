@@ -97,28 +97,86 @@ const RetailerList = ({ userId }) => {
       .sort((a, b) => Math.abs(b.Deviation) - Math.abs(a.Deviation))
       .slice(0, 5); // Get top 5 non-compliant products
 
+    const truncateText = (text, maxLength) => {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    };
+
     return (
-        
-        <table className="retailer-table">
+      <table className="retailer-table">
         <thead className="retailer-table__head">
-        <tr className="retailer-table__column">
-        <th className="retailer-table__column--item retailer-column__id">ID</th>
-        <th className="retailer-table__column--item retailer-column__dell-product">Dell Product Name</th>
-        <th className="retailer-table__column--item retailer-column__msrp">MSRP</th>
-        <th className="retailer-table__column--item retailer-column__retailer-price">{`${retailer} Price`}</th>
-        <th className="retailer-table__column--item retailer-column__deviation">Deviation (%)</th>
-        <th className="retailer-table__column--item retailer-column__compliance">Compliance</th>
+          <tr className="retailer-table__column">
+            <th className="retailer-table__column--item retailer-column__id">
+              ID
+            </th>
+            <th className="retailer-table__column--item retailer-column__dell-product">
+              Dell Product Name
+            </th>
+            <th className="retailer-table__column--item retailer-column__msrp">
+              MSRP
+            </th>
+            <th
+              className={`retailer-table__column--item retailer-column__retailer-price ${
+                retailer === "Bestbuy" ? "bestbuy-header" : ""
+              } ${retailer === "Newegg" ? "newegg-header" : ""}`}
+            >{`${retailer} Price`}</th>
+            <th
+              className={`retailer-table__column--item retailer-column__deviation ${
+                retailer === "Bestbuy" ? "bestbuy-header" : ""
+              } ${retailer === "Newegg" ? "newegg-header" : ""}`}
+            >
+              Deviation
+            </th>
+            <th
+              className={`retailer-table__column--item retailer-column__compliance ${
+                retailer === "Bestbuy" ? "bestbuy-header" : ""
+              } ${retailer === "Newegg" ? "newegg-header" : ""}`}
+            >
+              Compliance
+            </th>
           </tr>
         </thead>
         <tbody className="retailer-table__body">
           {topNonCompliantProducts.map((product, index) => (
             <tr className="retailer-table__row" key={`${retailer}-${index}`}>
-              <td className="retailer-table__row--item row-id">{index + 1}</td>
-              <td className="retailer-table__row--item row-dell-product">{product.Dell_product}</td>
-              <td className="retailer-table__row--item row-msrp">{product.Dell_price}</td>
-              <td className="retailer-table__row--item row-retailer-price">{product[`${retailer}_price`]}</td>
-              <td className="retailer-table__row--item row-deviation">{parseFloat(product.Deviation).toFixed(2)}%</td>
-              <td className="retailer-table__row--item row-compliance">{getStatus(parseFloat(product.Deviation))}</td>
+              <td className="retailer-table__row--item rrow-id">{index + 1}</td>
+              <td className="retailer-table__row--item rrow-dell-product">
+                {truncateText(product.Dell_product, 15)}
+              </td>
+              <td className="retailer-table__row--item rrow-msrp">
+                ${product.Dell_price}
+              </td>
+              <td className="retailer-table__row--item rrow-retailer-price">
+                ${product[`${retailer}_price`]}
+              </td>
+              <td className="retailer-table__row--item rrow-deviation">
+                {parseFloat(product.Deviation).toFixed(2)}%
+              </td>
+              <td className="retailer-table__row--item rrow-compliance">
+                <span
+                  className={`cell-content ${
+                    getStatus(parseFloat(product.Deviation)) === "Compliant"
+                      ? "compliant"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Non-Compliant"
+                      ? "non-compliant"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Needs Attention"
+                      ? "attention"
+                      : ""
+                  } ${
+                    getStatus(parseFloat(product.Deviation)) === "Undetermined"
+                      ? "not-available"
+                      : ""
+                  }`}
+                >
+                  {getStatus(parseFloat(product.Deviation))}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -140,29 +198,29 @@ const RetailerList = ({ userId }) => {
 
   const handleNotifyBBClick = () => {
     window.location.href = encodeURI(
-      'mailto:jessicaherzog@bestbuy.ca?subject=MSRP Compliance Report for BestBuy&body=Dear BestBuy Team,\n\n' +
-      'We hope this message finds you well.\n\n' +
-      'We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n' +
-      'Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n' +
-      'Best regards,\n\n' +
-      'Ali Hayder\n' +
-      'Lead Data Scientist\n' +
-      '(Merchandising/Growth/Pricing)\n' +
-      'Sent through Spectra | Dell Technologies\n'
+      "mailto:jessicaherzog@bestbuy.ca?subject=MSRP Compliance Report for BestBuy&body=Dear BestBuy Team,\n\n" +
+        "We hope this message finds you well.\n\n" +
+        "We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n" +
+        "Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n" +
+        "Best regards,\n\n" +
+        "Ali Hayder\n" +
+        "Lead Data Scientist\n" +
+        "(Merchandising/Growth/Pricing)\n" +
+        "Sent through Spectra | Dell Technologies\n"
     );
   };
 
   const handleNotifyNeweggClick = () => {
     window.location.href = encodeURI(
-      'mailto:ronaldchan@newegg.ca?subject=MSRP Compliance Report for Newegg&body=Dear Newegg Team,\n\n' +
-      'We hope this message finds you well.\n\n' +
-      'We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n' +
-      'Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n' +
-      'Best regards,\n\n' +
-      'Ali Hayder\n' +
-      'Lead Data Scientist\n' +
-      '(Merchandising/Growth/Pricing)\n' +
-      'Sent through Spectra | Dell Technologies\n'
+      "mailto:ronaldchan@newegg.ca?subject=MSRP Compliance Report for Newegg&body=Dear Newegg Team,\n\n" +
+        "We hope this message finds you well.\n\n" +
+        "We have conducted a recent review and identified some pricing discrepancies for Dell products on your platform that do not align with our MSRP. To help you address these issues, we have attached a detailed report outlining the specific products and their current pricing. We kindly request you to review this report and make the necessary adjustments to ensure compliance with our MSRP guidelines.\n\n" +
+        "Thank you for your prompt attention to this matter. We value our partnership and appreciate your cooperation.\n\n" +
+        "Best regards,\n\n" +
+        "Ali Hayder\n" +
+        "Lead Data Scientist\n" +
+        "(Merchandising/Growth/Pricing)\n" +
+        "Sent through Spectra | Dell Technologies\n"
     );
   };
 
@@ -172,7 +230,9 @@ const RetailerList = ({ userId }) => {
         <div className="retailer-widget">
           <div className="retailer-widget__container">
             <div className="retailer-widget__details">
-              <h2 className="retailer-widget__details--heading">Total Offenders</h2>
+              <h2 className="retailer-widget__details--heading">
+                Total Offenders
+              </h2>
               <span className="retailer-widget__details--count">2</span>
             </div>
             <div className="retailer-widget__icon-container">
@@ -186,19 +246,27 @@ const RetailerList = ({ userId }) => {
 
           <div className="retailer-widget__heading">
             <div className="retailer-heading__content">
-              <h1 className="retailer-heading__content--heading">Retailer Pricing Compliance</h1>
-              <span className="retailer-heading__content--date">{currentDate}</span>
+              <h1 className="retailer-heading__content--heading">
+                Retailer Pricing Compliance
+              </h1>
+              <span className="retailer-heading__content--date">
+                {currentDate}
+              </span>
             </div>
             <h2 className="retailer-widget__heading--directions">
-              Please review the <strong>compliance</strong> and <strong>deviation</strong> values for products sold by these <strong>retailers</strong>.
+              Please review the <strong>compliance</strong> and{" "}
+              <strong>deviation</strong> values for products sold by these{" "}
+              <strong>retailers</strong>.
             </h2>
           </div>
         </div>
 
         <div className="retailer__main-content">
           <div className="retailer__bestbuy-container">
-            <div className="retailer-container__retailer-label--bb">BestBuy</div>
-            <div className="table-container">
+            <div className="retailer-container__retailer-label--bb">
+              BestBuy
+            </div>
+            <div className="table-container__retails">
               <div className="retailer-container">
                 <div className="retailer-section">
                   <div className="retailer-content">
@@ -206,43 +274,79 @@ const RetailerList = ({ userId }) => {
                   </div>
                 </div>
                 <div className="retailer__tiles">
-                  <div className="retailer__deviated-products">
-                    <div className="retailer__deviated-products--container">
-                      <h2 className="retailer__deviated-products--heading">Total Deviated Products</h2>
-                      <span className="retailer__deviated-products--count">{bestbuyMetrics.totalDeviatedProducts}</span>
+                  <div className="tiles__container--one">
+                    <div className="retailer__deviated-products">
+                      <div className="retailer__deviated-products--container">
+                        <h2 className="retailer__deviated-products--heading">
+                          Total Deviated Products
+                        </h2>
+                        <span className="retailer__deviated-products--count">
+                          {bestbuyMetrics.totalDeviatedProducts}
+                        </span>
+                      </div>
+                      <div className="retailer__deviated-products--img">
+                        <img
+                          className="retailer__deviated-products--icon"
+                          src={boxFullIcon}
+                          alt="product box icon"
+                        />
+                      </div>
                     </div>
-                    <div className="retailer__deviated-products--img">
-                      <img className="retailer__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
+                    <div className="retailer__average-deviation">
+                      <div className="retailer__average-deviation--container">
+                        <h2 className="retailer__average-deviation--heading">
+                          Total Average Deviation
+                        </h2>
+                        <span className="retailer__average-deviation--count">
+                          {bestbuyMetrics.averageDeviation}%
+                        </span>
+                      </div>
+                      <div className="retailer__average-deviation--img">
+                        <img
+                          className="retailer__average-deviation--icon"
+                          src={chartIcon}
+                          alt="chart icon"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="retailer__average-deviation">
-                    <div className="retailer__average-deviation--container">
-                      <h2 className="retailer__average-deviation--heading">Total Average Deviation</h2>
-                      <span className="retailer__average-deviation--count">{bestbuyMetrics.averageDeviation}%</span>
+                  <div className="tiles__container--two">
+                    <div className="retailer__compliance-rate">
+                      <div className="retailer__compliance-rate--container">
+                        <h2 className="retailer__compliance-rate--heading">
+                          Total Compliance Rate
+                        </h2>
+                        <span className="retailer__compliance-rate--count">
+                          {bestbuyMetrics.complianceRate}%
+                        </span>
+                      </div>
+                      <div className="retailer__compliance-rate--img">
+                        <img
+                          className="retailer__compliance-rate--icon"
+                          src={checkmarkIcon}
+                          alt="checkmark icon"
+                        />
+                      </div>
                     </div>
-                    <div className="retailer__average-deviation--img">
-                      <img className="retailer__average-deviation--icon" src={chartIcon} alt="chart icon" />
-                    </div>
-                  </div>
-                  <div className="retailer__compliance-rate">
-                    <div className="retailer__compliance-rate--container">
-                      <h2 className="retailer__compliance-rate--heading">Total Compliance Rate</h2>
-                      <span className="retailer__compliance-rate--count">{bestbuyMetrics.complianceRate}%</span>
-                    </div>
-                    <div className="retailer__compliance-rate--img">
-                      <img className="retailer__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
-                    </div>
-                  </div>
-                  <div
-                    className="retailer__notify"
-                    onClick={handleNotifyBBClick}
-                  >
-                    <div className="retailer__notify--container">
-                      <h2 className="retailer__notify--heading">Send Report to BestBuy</h2>
-                      <span className="retailer__notify--copy">Notify Retailer</span>
-                    </div>
-                    <div className="retailer__notify--img">
-                      <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
+                    <div
+                      className="retailer__notify"
+                      onClick={handleNotifyBBClick}
+                    >
+                      <div className="retailer__notify--container">
+                        <h2 className="retailer__notify--heading">
+                          Send Report to BestBuy
+                        </h2>
+                        <span className="retailer__notify--copy">
+                          Notify Retailer
+                        </span>
+                      </div>
+                      <div className="retailer__notify--img">
+                        <img
+                          className="retailer__notify--icon"
+                          src={notifyIcon}
+                          alt="notify icon"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -251,7 +355,9 @@ const RetailerList = ({ userId }) => {
           </div>
 
           <div className="retailer__newegg-container">
-            <div className="retailer-container__retailer-label--newegg">Newegg</div>
+            <div className="retailer-container__retailer-label--newegg">
+              Newegg
+            </div>
             <div className="table-container">
               <div className="retailer-container">
                 <div className="retailer-section">
@@ -260,43 +366,79 @@ const RetailerList = ({ userId }) => {
                   </div>
                 </div>
                 <div className="retailer__tiles">
-                  <div className="retailer__deviated-products">
-                    <div className="retailer__deviated-products--container">
-                      <h2 className="retailer__deviated-products--heading">Total Deviated Products</h2>
-                      <span className="retailer__deviated-products--count">{neweggMetrics.totalDeviatedProducts}</span>
+                  <div className="newegg-tiles__container">
+                    <div className="retailer__deviated-products">
+                      <div className="retailer__deviated-products--container">
+                        <h2 className="retailer__deviated-products--heading">
+                          Total Deviated Products
+                        </h2>
+                        <span className="retailer__deviated-products--count">
+                          {neweggMetrics.totalDeviatedProducts}
+                        </span>
+                      </div>
+                      <div className="retailer__deviated-products--img">
+                        <img
+                          className="retailer__deviated-products--icon"
+                          src={boxFullIcon}
+                          alt="product box icon"
+                        />
+                      </div>
                     </div>
-                    <div className="retailer__deviated-products--img">
-                      <img className="retailer__deviated-products--icon" src={boxFullIcon} alt="product box icon" />
+                    <div className="retailer__average-deviation">
+                      <div className="retailer__average-deviation--container">
+                        <h2 className="retailer__average-deviation--heading">
+                          Total Average Deviation
+                        </h2>
+                        <span className="retailer__average-deviation--count">
+                          {neweggMetrics.averageDeviation}%
+                        </span>
+                      </div>
+                      <div className="retailer__average-deviation--img">
+                        <img
+                          className="retailer__average-deviation--icon"
+                          src={chartIcon}
+                          alt="chart icon"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="retailer__average-deviation">
-                    <div className="retailer__average-deviation--container">
-                      <h2 className="retailer__average-deviation--heading">Total Average Deviation</h2>
-                      <span className="retailer__average-deviation--count">{neweggMetrics.averageDeviation}%</span>
+                  <div className="newegg-tiles__container">
+                    <div className="retailer__compliance-rate">
+                      <div className="retailer__compliance-rate--container">
+                        <h2 className="retailer__compliance-rate--heading">
+                          Total Compliance Rate
+                        </h2>
+                        <span className="retailer__compliance-rate--count">
+                          {neweggMetrics.complianceRate}%
+                        </span>
+                      </div>
+                      <div className="retailer__compliance-rate--img">
+                        <img
+                          className="retailer__compliance-rate--icon"
+                          src={checkmarkIcon}
+                          alt="checkmark icon"
+                        />
+                      </div>
                     </div>
-                    <div className="retailer__average-deviation--img">
-                      <img className="retailer__average-deviation--icon" src={chartIcon} alt="chart icon" />
-                    </div>
-                  </div>
-                  <div className="retailer__compliance-rate">
-                    <div className="retailer__compliance-rate--container">
-                      <h2 className="retailer__compliance-rate--heading">Total Compliance Rate</h2>
-                      <span className="retailer__compliance-rate--count">{neweggMetrics.complianceRate}%</span>
-                    </div>
-                    <div className="retailer__compliance-rate--img">
-                      <img className="retailer__compliance-rate--icon" src={checkmarkIcon} alt="checkmark icon" />
-                    </div>
-                  </div>
-                  <div
-                    className="retailer__notify"
-                    onClick={handleNotifyNeweggClick}
-                  >
-                    <div className="retailer__notify--container">
-                      <h2 className="retailer__notify--heading">Send Report to Newegg</h2>
-                      <span className="retailer__notify--copy">Notify Retailer</span>
-                    </div>
-                    <div className="retailer__notify--img">
-                      <img className="retailer__notify--icon" src={notifyIcon} alt="notify icon" />
+                    <div
+                      className="retailer__notify"
+                      onClick={handleNotifyNeweggClick}
+                    >
+                      <div className="retailer__notify--container">
+                        <h2 className="retailer__notify--heading">
+                          Send Report to Newegg
+                        </h2>
+                        <span className="retailer__notify--copy">
+                          Notify Retailer
+                        </span>
+                      </div>
+                      <div className="retailer__notify--img">
+                        <img
+                          className="retailer__notify--icon"
+                          src={notifyIcon}
+                          alt="notify icon"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
