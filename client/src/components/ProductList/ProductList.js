@@ -440,8 +440,11 @@ const ProductList = ({ userId }) => {
   );
 };
 
+<<<<<<< HEAD
 ProductList.propTypes = {
   userId: PropTypes.string.isRequired,
 };
 
+=======
+>>>>>>> 35a551d (Resolved merge errors)
 export default ProductList;
