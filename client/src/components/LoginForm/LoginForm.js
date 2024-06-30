@@ -1,10 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import Api from "../../api/Api";
 import "./LoginForm.scss";
-
-const url = process.env.REACT_APP_BASE_URL;
 
 const LoginForm = () => {
   const [errors, setErrors] = useState({});
@@ -44,36 +42,27 @@ const LoginForm = () => {
           email: formValues.email,
           password: formValues.password,
         };
-        const response = await axios.post(`${url}/auth/login`, loginPayload);
-        const userId = response.data.id;
-        const message = response.data.message;
+        const response = await Api.post('/auth/login', loginPayload);
+        const { id: userId, message, token, success } = response.data;
   
-        if (response.data.success) {
-          localStorage.setItem("jwt", response.data.token);
-          navigate(`/dashboard/${userId}`); // Navigate to dashboard after successful login
+        if (success) {
+          localStorage.setItem("jwt", token);
+          navigate(`/dashboard/${userId}`);
         } else {
           setErrors({ form: message });
         }
       } catch (error) {
         console.error("Login error:", error);
         if (error.response) {
-          // The request was made and the server responded with a status code
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
           setErrors({ form: error.response.data.message || "Unable to Login User." });
         } else if (error.request) {
-          // The request was made but no response was received
-          console.error("Request data:", error.request);
           setErrors({ form: "No response from server. Please try again later." });
         } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error("Error message:", error.message);
           setErrors({ form: "Login request failed. Please try again." });
         }
       }
     }
-  };  
+  };
 
   const handleShowPassword = async (event) => {
     event.preventDefault();
@@ -132,7 +121,6 @@ const LoginForm = () => {
       <button
         className="login-form__submit"
         type="submit"
-        onSubmit={handleSubmit}
       >
         <span className="login-button__text">Sign In</span>
       </button>
